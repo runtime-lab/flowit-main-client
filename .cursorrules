@@ -1,0 +1,44 @@
+# Commit Message Rules
+
+When generating Git commit messages, always follow the format below.
+
+## Format
+
+```text
+<type>: <Korean description>
+```
+
+## Types
+
+- Feat: Add a new feature
+- Fix: Fix a bug
+- Docs: Documentation changes
+- Style: Code style changes (formatting, semicolons, etc.)
+- Refactor: Refactoring (no functional changes)
+- Test: Add or update tests
+- Chore: Build, config, or tooling changes
+- Perf: Performance improvements
+
+## Rules
+
+1. Only the first letter of the type is uppercase (PascalCase)
+2. Description must be concise in Korean (50 characters or less)
+3. Do not start with English verbs such as "Add", "Update", or "Fix"
+4. Do not use a period (`.`)
+5. Write in present tense
+
+## Examples
+
+✅ Valid examples:
+
+- `Feat: 소셜 로그인 기능 추가`
+- `Fix: 사용자 조회 에러 수정`
+- `Chore: 커밋 메시지 룰 추가`
+- `Refactor: 공통 버튼 컴포넌트 분리`
+
+❌ Invalid examples:
+
+- `Add 소셜 로그인` (starts with English verb, no type)
+- `Update 설정 파일` (starts with English verb, no type)
+- `Feat: 로그인.` (contains period)
+- `FEAT: 로그인` (all uppercase)
