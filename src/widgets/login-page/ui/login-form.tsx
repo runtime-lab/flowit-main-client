@@ -19,7 +19,7 @@ export function LoginForm() {
                 <LabeledInput type="password" label={t('Password')} />
             </div>
             <Button fullWidth type="submit">
-                <span className="font-bold">{t('Login')}</span>
+                <span className="font-extrabold">{t('Login')}</span>
             </Button>
         </form>
     );
