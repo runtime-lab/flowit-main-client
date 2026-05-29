@@ -5,6 +5,8 @@ import { getMessages, setRequestLocale } from 'next-intl/server';
 
 import { routing } from '@shared/i18n/routing';
 
+import { QueryProvider } from '@/app/providers';
+
 import type { Metadata } from 'next';
 
 import '../globals.css';
@@ -36,7 +38,9 @@ export default async function LocaleLayout({ children, params }: Props) {
     return (
         <html lang={locale} className="h-full antialiased">
             <body className="flex min-h-full flex-col">
-                <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+                <QueryProvider>
+                    <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+                </QueryProvider>
             </body>
         </html>
     );
