@@ -19,7 +19,14 @@ export function AuthCard({ logoAlt, title, description, children, footer, bottom
             <div className="absolute top-[100px] left-[100px] h-[350px] w-[350px] rounded-full bg-indigo-300/30 mix-blend-multiply blur-[80px]" />
 
             <Card className="flex w-100 flex-col items-center">
-                <Image className="mb-5" src="/images/flowit-logo.png" alt={logoAlt} width={100} height={100} />
+                <Image
+                    className="mb-5 h-auto w-28"
+                    src="/images/flowit-logo.png"
+                    width={100}
+                    height={100}
+                    alt={logoAlt}
+                    priority
+                />
                 <div className="mb-5 flex flex-col gap-2">
                     <h1 className="text-center text-xl font-bold text-slate-900">{title}</h1>
                     <p className="text-center text-sm font-bold text-slate-500">{description}</p>
