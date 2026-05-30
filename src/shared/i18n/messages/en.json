@@ -22,7 +22,8 @@
     "signingUp": "Signing up...",
     "signupSuccessTitle": "Sign up complete",
     "signupSuccessDescription": "Your account has been created. Please log in.",
-    "goToLogin": "Go to login"
+    "goToLogin": "Go to login",
+    "loginFailed": "Login failed"
   },
   "common": {
     "home": "Home"

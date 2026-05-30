@@ -22,7 +22,8 @@
     "signingUp": "가입 중...",
     "signupSuccessTitle": "회원가입 완료",
     "signupSuccessDescription": "회원가입이 완료되었습니다. 로그인해 주세요.",
-    "goToLogin": "로그인하기"
+    "goToLogin": "로그인하기",
+    "loginFailed": "로그인에 실패했습니다"
   },
   "common": {
     "home": "홈"

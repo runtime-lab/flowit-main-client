@@ -116,11 +116,9 @@ export function SignupForm() {
                     />
                 </div>
                 {submitErrorMessage && <p className="text-sm text-red-600">{submitErrorMessage}</p>}
-                <div>
-                    <Button fullWidth type="submit" disabled={isDisabled}>
-                        <span className="font-extrabold">{isPending ? t('signingUp') : t('signUpButton')}</span>
-                    </Button>
-                </div>
+                <Button fullWidth type="submit" disabled={isDisabled}>
+                    <span className="font-extrabold">{isPending ? t('signingUp') : t('signUpButton')}</span>
+                </Button>
             </form>
             <SignupSuccessModal open={isSuccessModalOpen} onConfirm={handleGoToLogin} />
         </>
