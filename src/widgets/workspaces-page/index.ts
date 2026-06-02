@@ -1,2 +1,1 @@
-export { WorkspacesPage } from './ui/workspaces-page';
-export { WorkspacesHeader } from './ui/workspaces-header';
+export { WorkspacesHeader, WorkspacesPage } from './ui';
