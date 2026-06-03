@@ -42,5 +42,12 @@
     "workspaceNameRequired": "Please enter a workspace name",
     "workspaceNamePlaceholder": "Example: App development team",
     "descriptionPlaceholder": "What is the space for?"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "board": "Board",
+    "members": "Members",
+    "settings": "Settings",
+    "currentWorkspace": "Current workspace"
   }
 }
