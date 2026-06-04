@@ -2,9 +2,11 @@ import { Kanban, LayoutDashboard, Settings, Users } from 'lucide-react';
 
 import { WORKSPACE_ROUTES } from '@shared/lib/routes/workspace-routes';
 
+type WorkspaceNavItemKey = 'dashboard' | 'board' | 'members' | 'settings';
+
 export type WorkspaceNavItem = {
-    key: 'dashboard' | 'board' | 'members' | 'settings';
-    labelKey: 'dashboard' | 'board' | 'members' | 'settings';
+    key: WorkspaceNavItemKey;
+    labelKey: WorkspaceNavItemKey;
     href: (workspaceId: string) => string;
     icon: typeof LayoutDashboard;
 };
