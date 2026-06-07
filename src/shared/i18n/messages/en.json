@@ -50,5 +50,8 @@
     "settings": "Settings",
     "currentWorkspace": "Current workspace",
     "myPage": "My page"
+  },
+  "myPage": {
+    "title": "My page"
   }
 }

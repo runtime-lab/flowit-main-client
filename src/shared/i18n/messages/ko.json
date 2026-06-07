@@ -50,5 +50,8 @@
     "settings": "설정",
     "currentWorkspace": "현재 워크스페이스",
     "myPage": "마이페이지"
+  },
+  "myPage": {
+    "title": "마이페이지"
   }
 }
