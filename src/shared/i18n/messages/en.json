@@ -62,6 +62,9 @@
     "profileUpdateFailed": "Failed to update profile",
     "passwordUpdating": "Updating...",
     "passwordUpdateFailed": "Failed to change password",
+    "profileImageInvalidType": "Only JPEG, PNG, and GIF images can be uploaded",
+    "profileImageTooLarge": "Please choose an image that is 3MB or smaller",
+    "profileImageUploadFailed": "Failed to upload profile image",
     "accountInfo": "Account info",
     "joinedWorkspaces": "Joined workspaces"
   }

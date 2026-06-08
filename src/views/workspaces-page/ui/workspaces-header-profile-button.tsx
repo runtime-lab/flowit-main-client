@@ -3,13 +3,17 @@
 import { useTranslations } from 'next-intl';
 
 import { useLogoutMutation } from '@features/logout';
-import { useMeUserQuery } from '@entities/user';
+import { useMeProfileImageQuery, useMeUserQuery, useProfileImageObjectUrl } from '@entities/user';
 
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@shared/ui';
 
 export function WorkspacesHeaderProfileButton() {
     const t = useTranslations('auth');
     const { data: meUser } = useMeUserQuery({ enabled: true });
+    const { data: profileImageBlob } = useMeProfileImageQuery({
+        profileImageFileId: meUser?.profileImageFileId,
+    });
+    const profileImageObjectUrl = useProfileImageObjectUrl(profileImageBlob);
     const profileText = meUser?.nickname?.trim().slice(0, 1) || 'U';
     const { mutate } = useLogoutMutation();
 
@@ -28,7 +32,16 @@ export function WorkspacesHeaderProfileButton() {
                     aria-label={meUser?.nickname || 'Profile'}
                     shadow={false}
                 >
-                    {profileText}
+                    {profileImageObjectUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                            src={profileImageObjectUrl}
+                            alt={meUser?.nickname || 'Profile'}
+                            className="h-full w-full rounded-full object-cover"
+                        />
+                    ) : (
+                        profileText
+                    )}
                 </Button>
             </DropdownTrigger>
             <DropdownMenu>

@@ -11,6 +11,16 @@ export {
 export { cn } from './clsx';
 export { WORKSPACE_ROUTES } from './routes/workspace-routes';
 export {
+    ALLOWED_PROFILE_IMAGE_MIME_TYPES,
+    compressProfileImage,
+    FLOWIT_PROFILE_IMAGE_MAX_SIZE,
+    isAllowedProfileImageFile,
+    isAllowedProfileImageMimeType,
+    ProfileImageSizeError,
+    ProfileImageTypeError,
+} from './image';
+export type { AllowedProfileImageMimeType } from './image';
+export {
     isPasswordConfirmed,
     isValidEmail,
     isValidName,

@@ -62,6 +62,9 @@
     "profileUpdateFailed": "프로필 수정에 실패했습니다",
     "passwordUpdating": "변경 중...",
     "passwordUpdateFailed": "비밀번호 변경에 실패했습니다",
+    "profileImageInvalidType": "JPEG, PNG, GIF 이미지만 업로드할 수 있습니다",
+    "profileImageTooLarge": "3MB 이하 이미지를 선택해주세요",
+    "profileImageUploadFailed": "프로필 이미지 업로드에 실패했습니다",
     "accountInfo": "계정 정보",
     "joinedWorkspaces": "참여 중인 워크스페이스"
   }
