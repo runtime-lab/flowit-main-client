@@ -28,7 +28,8 @@
   },
   "common": {
     "home": "홈",
-    "cancel": "취소"
+    "cancel": "취소",
+    "save": "저장"
   },
   "workspaces": {
     "myWorkspaces": "나의 워크스페이스",
@@ -52,6 +53,9 @@
     "myPage": "마이페이지"
   },
   "myPage": {
-    "title": "마이페이지"
+    "title": "마이페이지",
+    "profileEdit": "프로필 정보 수정",
+    "profileUpdating": "저장 중...",
+    "profileUpdateFailed": "프로필 수정에 실패했습니다"
   }
 }

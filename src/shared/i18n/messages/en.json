@@ -28,7 +28,8 @@
   },
   "common": {
     "home": "Home",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "save": "Save"
   },
   "workspaces": {
     "myWorkspaces": "My workspaces",
@@ -52,6 +53,9 @@
     "myPage": "My page"
   },
   "myPage": {
-    "title": "My page"
+    "title": "My page",
+    "profileEdit": "Edit profile info",
+    "profileUpdating": "Saving...",
+    "profileUpdateFailed": "Failed to update profile"
   }
 }

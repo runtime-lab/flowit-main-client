@@ -9,7 +9,7 @@ export function WorkspaceMyPagePage() {
         <main className="p-8">
             <h1 className="mb-8 text-2xl font-bold tracking-tight text-slate-900">{t('title')}</h1>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-[300px_1fr]">
-                <Card className="flex flex-col items-center justify-center">
+                <Card className="flex min-w-0 flex-col items-center justify-center">
                     <UserProfile />
                 </Card>
                 <div className="space-y-6">
