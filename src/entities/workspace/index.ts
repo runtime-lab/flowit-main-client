@@ -1,3 +1,10 @@
-export { createWorkspace } from './api';
-export { findWorkspaceById, getWorkspaceDisplayName } from './lib';
-export type { CreateWorkspaceRequest, CreateWorkspaceResponse, WorkspaceMemberRole, Workspace } from './model';
+export { createWorkspace, getWorkspace } from './api';
+export { findWorkspaceById } from './lib';
+export { workspaceQueryKeys, useWorkspaceQuery } from './model';
+export type {
+    CreateWorkspaceRequest,
+    CreateWorkspaceResponse,
+    WorkspaceDetail,
+    WorkspaceMemberRole,
+    Workspace,
+} from './model';

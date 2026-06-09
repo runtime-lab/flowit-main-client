@@ -15,7 +15,7 @@ type Props = { workspaceId: string };
 export function WorkspaceSidebar({ workspaceId }: Props) {
     const pathname = usePathname();
     const t = useTranslations('sidebar');
-    const { displayName: workspaceName } = useWorkspaceById({ workspaceId });
+    const { name: workspaceName } = useWorkspaceById({ workspaceId });
 
     return (
         <aside className="flex h-full min-h-0 w-64 shrink-0 flex-col border-r border-slate-200/80 bg-white">

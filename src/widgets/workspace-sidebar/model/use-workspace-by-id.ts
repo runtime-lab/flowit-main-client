@@ -1,7 +1,6 @@
 'use client';
 
-import { useMeWorkspacesQuery } from '@entities/user';
-import { findWorkspaceById, getWorkspaceDisplayName } from '@entities/workspace';
+import { useWorkspaceQuery } from '@entities/workspace';
 
 type UseWorkspaceByIdProps = {
     workspaceId: string | number;
@@ -9,19 +8,12 @@ type UseWorkspaceByIdProps = {
 };
 
 export function useWorkspaceById({ workspaceId, enabled = true }: UseWorkspaceByIdProps) {
-    const query = useMeWorkspacesQuery({ enabled });
-
-    const workspace = findWorkspaceById(query.data?.items ?? [], workspaceId);
-    const displayName = getWorkspaceDisplayName({
-        workspace,
-        isPending: query.isPending,
-        workspaceId,
-    });
+    const { data: workspace, isPending, isError } = useWorkspaceQuery({ workspaceId, enabled });
 
     return {
         workspace,
-        displayName,
-        isPending: query.isPending,
-        isError: query.isError,
+        name: workspace?.name ?? (isPending ? '…' : undefined),
+        isPending,
+        isError,
     };
 }
