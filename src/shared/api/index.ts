@@ -1,5 +1,6 @@
 export {
     ApiError,
+    apiBlobRequest,
     apiRequest,
     getApiErrorCode,
     getApiErrorMessage,

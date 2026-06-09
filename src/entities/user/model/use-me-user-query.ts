@@ -9,7 +9,7 @@ type UseMeUserQueryProps = {
     enabled?: boolean;
 };
 
-export function useMeUserQuery({ enabled = true }: UseMeUserQueryProps) {
+export function useMeUserQuery({ enabled = true }: UseMeUserQueryProps = {}) {
     return useQuery({
         queryKey: meUserQueryKeys.detail('me'),
         queryFn: meUser,

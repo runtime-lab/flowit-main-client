@@ -25,7 +25,28 @@ function buildAuthHeaders(skipAuth?: boolean): Record<string, string> {
     };
 }
 
-async function executeRequest<TData>(path: string, options: RequestOptions): Promise<TData> {
+function serializeRequestBody(body: RequestOptions['body']): BodyInit | undefined {
+    if (body === undefined) {
+        return undefined;
+    }
+
+    if (body instanceof FormData) {
+        return body;
+    }
+
+    return JSON.stringify(body);
+}
+
+function buildRequestHeaders(body: RequestOptions['body'], skipAuth?: boolean, headers?: HeadersInit) {
+    return {
+        Accept: 'application/json',
+        ...(body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
+        ...buildAuthHeaders(skipAuth),
+        ...headers,
+    };
+}
+
+async function executeBlobRequest(path: string, options: RequestOptions): Promise<Blob> {
     const { body, headers, skipAuth, ...rest } = options;
 
     let response: Response;
@@ -35,12 +56,38 @@ async function executeRequest<TData>(path: string, options: RequestOptions): Pro
             ...rest,
             credentials: 'include',
             headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
                 ...buildAuthHeaders(skipAuth),
                 ...headers,
             },
-            body: body === undefined ? undefined : JSON.stringify(body),
+            body: serializeRequestBody(body),
+        });
+    } catch (cause) {
+        const message = cause instanceof Error ? cause.message : 'Network request failed';
+
+        throw new ApiError(message, 0, null);
+    }
+
+    if (!response.ok) {
+        const responseBody: unknown = await response.json().catch(() => null);
+        const message = isApiErrorResponse(responseBody) ? responseBody.error.message : 'API request failed';
+
+        throw new ApiError(message, response.status, responseBody);
+    }
+
+    return response.blob();
+}
+
+async function executeRequest<TData>(path: string, options: RequestOptions): Promise<TData> {
+    const { body, headers, skipAuth, ...rest } = options;
+
+    let response: Response;
+
+    try {
+        response = await fetch(path, {
+            ...rest,
+            credentials: 'include',
+            headers: buildRequestHeaders(body, skipAuth, headers),
+            body: serializeRequestBody(body),
         });
     } catch (cause) {
         const message = cause instanceof Error ? cause.message : 'Network request failed';
@@ -63,11 +110,15 @@ async function executeRequest<TData>(path: string, options: RequestOptions): Pro
     return responseBody.data;
 }
 
-export async function apiRequest<TData>(path: string, options: RequestOptions = {}): Promise<TData> {
+async function requestWithAuthRetry<TData>(
+    path: string,
+    options: RequestOptions,
+    execute: (path: string, options: RequestOptions) => Promise<TData>,
+): Promise<TData> {
     const { isRetry, skipAuth, ...requestOptions } = options;
 
     try {
-        return await executeRequest<TData>(path, { ...requestOptions, skipAuth, isRetry });
+        return await execute(path, { ...requestOptions, skipAuth, isRetry });
     } catch (error) {
         const shouldRefresh = error instanceof ApiError && error.status === 401 && !skipAuth && !isRetry;
 
@@ -81,10 +132,16 @@ export async function apiRequest<TData>(path: string, options: RequestOptions = 
             throw error;
         }
 
-        return apiRequest<TData>(path, {
-            ...requestOptions,
-            skipAuth,
-            isRetry: true,
-        });
+        return requestWithAuthRetry(path, { ...requestOptions, skipAuth, isRetry: true }, execute);
     }
+}
+
+export async function apiRequest<TData>(path: string, options: RequestOptions = {}): Promise<TData> {
+    return requestWithAuthRetry<TData>(path, options, (requestPath, requestOptions) =>
+        executeRequest<TData>(requestPath, requestOptions),
+    );
+}
+
+export async function apiBlobRequest(path: string, options: RequestOptions = {}): Promise<Blob> {
+    return requestWithAuthRetry(path, options, executeBlobRequest);
 }

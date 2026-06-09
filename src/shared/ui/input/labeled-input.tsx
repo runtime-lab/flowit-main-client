@@ -39,6 +39,7 @@ export function LabeledInput({
             <Input
                 className={cn(success && 'border-emerald-600', error && 'border-red-500')}
                 id={inputId}
+                value={value}
                 {...inputProps}
             />
             {errorMessage && (

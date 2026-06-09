@@ -24,11 +24,15 @@
     "signupSuccessTitle": "Sign up complete",
     "signupSuccessDescription": "Your account has been created. Please log in.",
     "goToLogin": "Go to login",
-    "loginFailed": "Login failed"
+    "loginFailed": "Login failed",
+    "passwordEdit": "Change password",
+    "currentPassword": "Current password",
+    "newPassword": "New password"
   },
   "common": {
     "home": "Home",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "save": "Save"
   },
   "workspaces": {
     "myWorkspaces": "My workspaces",
@@ -50,5 +54,18 @@
     "settings": "Settings",
     "currentWorkspace": "Current workspace",
     "myPage": "My page"
+  },
+  "myPage": {
+    "title": "My page",
+    "profileEdit": "Edit profile info",
+    "profileUpdating": "Saving...",
+    "profileUpdateFailed": "Failed to update profile",
+    "passwordUpdating": "Updating...",
+    "passwordUpdateFailed": "Failed to change password",
+    "profileImageInvalidType": "Only JPEG, PNG, and GIF images can be uploaded",
+    "profileImageTooLarge": "Please choose an image that is 3MB or smaller",
+    "profileImageUploadFailed": "Failed to upload profile image",
+    "accountInfo": "Account info",
+    "joinedWorkspaces": "Joined workspaces"
   }
 }
