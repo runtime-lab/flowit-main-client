@@ -1,11 +1,13 @@
 'use client';
 
+import { MemberActionsMenu } from './member-actions-menu';
 import { MemberAvatar } from './member-avatar';
 import { useTranslations } from 'next-intl';
 
 import { cn } from '@shared/lib';
 
 import type { WorkspaceMember, WorkspaceMemberRole } from '@entities/member';
+import type { MemberActions } from '../lib/get-member-actions';
 
 const ROLE_BADGE_CLASSNAME: Record<WorkspaceMemberRole, string> = {
     OWNER: 'bg-purple-50 text-purple-700 border border-purple-100/50',
@@ -16,10 +18,22 @@ const ROLE_BADGE_CLASSNAME: Record<WorkspaceMemberRole, string> = {
 type WorkspaceMemberRowProps = {
     member: WorkspaceMember;
     isMe: boolean;
+    showActionsColumn: boolean;
+    actions: MemberActions;
+    onChangeRole: () => void;
+    onRemove: () => void;
 };
 
-export function WorkspaceMemberRow({ member, isMe }: WorkspaceMemberRowProps) {
+export function WorkspaceMemberRow({
+    member,
+    isMe,
+    showActionsColumn,
+    actions,
+    onChangeRole,
+    onRemove,
+}: WorkspaceMemberRowProps) {
     const t = useTranslations('members');
+    const hasActions = actions.canChangeRole || actions.canRemove;
 
     return (
         <tr className="group transition-colors hover:bg-slate-50/50">
@@ -42,7 +56,20 @@ export function WorkspaceMemberRow({ member, isMe }: WorkspaceMemberRowProps) {
                     {t(`roles.${member.role}`)}
                 </span>
             </td>
-            <td className="px-6 py-4 text-center" />
+            {showActionsColumn ? (
+                <td className="px-6 py-4 text-center">
+                    {hasActions ? (
+                        <div className="flex justify-center">
+                            <MemberActionsMenu
+                                canChangeRole={actions.canChangeRole}
+                                canRemove={actions.canRemove}
+                                onChangeRole={onChangeRole}
+                                onRemove={onRemove}
+                            />
+                        </div>
+                    ) : null}
+                </td>
+            ) : null}
         </tr>
     );
 }

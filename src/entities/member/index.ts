@@ -1,7 +1,15 @@
-export { getWorkspaceMembers, joinWorkspaceByInviteCode, withdrawMember } from './api';
+export {
+    getWorkspaceMembers,
+    joinWorkspaceByInviteCode,
+    removeWorkspaceMember,
+    updateWorkspaceMemberRole,
+    withdrawMember,
+} from './api';
 export {
     memberMutationKeys,
     memberQueryKeys,
+    useRemoveWorkspaceMemberMutation,
+    useUpdateWorkspaceMemberRoleMutation,
     useWorkspaceMemberProfileImageQuery,
     useWithdrawMemberMutation,
     useWorkspaceMembersQuery,
@@ -9,6 +17,9 @@ export {
 export type {
     JoinWorkspaceByInviteCodeRequest,
     JoinWorkspaceByInviteCodeResponse,
+    RemoveWorkspaceMemberResponse,
+    UpdateWorkspaceMemberRoleRequest,
+    UpdateWorkspaceMemberRoleResponse,
     WorkspaceMember,
     WorkspaceMemberRole,
     WorkspaceMembersResponse,
