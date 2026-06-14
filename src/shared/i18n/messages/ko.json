@@ -96,7 +96,18 @@
   },
   "members": {
     "title": "멤버 관리",
-    "description": "워크스페이스 멤버와 권한을 관리하세요."
+    "description": "워크스페이스 멤버와 권한을 관리하세요.",
+    "name": "이름",
+    "email": "이메일",
+    "role": "역할",
+    "action": "작업",
+    "me": "나",
+    "loadFailed": "멤버 목록을 불러오지 못했습니다",
+    "roles": {
+      "OWNER": "소유자",
+      "ADMIN": "관리자",
+      "MEMBER": "멤버"
+    }
   },
   "settings": {
     "title": "워크스페이스 설정",

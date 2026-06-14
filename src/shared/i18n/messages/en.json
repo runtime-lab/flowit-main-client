@@ -96,7 +96,18 @@
   },
   "members": {
     "title": "Members",
-    "description": "Manage the members and roles of your workspace."
+    "description": "Manage the members and roles of your workspace.",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "action": "Action",
+    "me": "Me",
+    "loadFailed": "Failed to load members",
+    "roles": {
+      "OWNER": "Owner",
+      "ADMIN": "Admin",
+      "MEMBER": "Member"
+    }
   },
   "settings": {
     "title": "Workspace settings",
