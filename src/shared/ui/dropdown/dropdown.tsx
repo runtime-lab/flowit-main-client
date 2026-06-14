@@ -1,6 +1,8 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
+
+import { createPortal } from 'react-dom';
 
 import { cn } from '@shared/lib';
 
@@ -10,24 +12,35 @@ import type { ReactElement } from 'react';
 const DropdownContext = createContext<{
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    containerRef: React.RefObject<HTMLDivElement | null>;
+    menuRef: React.RefObject<HTMLDivElement | null>;
 } | null>(null);
 
 export const Dropdown = ({ children }: { children: React.ReactNode }) => {
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
+    const menuRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const handleOutsideClick = (event: MouseEvent) => {
-            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-                setIsOpen(false);
+            const target = event.target as Node;
+
+            if (containerRef.current?.contains(target) || menuRef.current?.contains(target)) {
+                return;
             }
+
+            setIsOpen(false);
         };
-        if (isOpen) document.addEventListener('mousedown', handleOutsideClick);
+
+        if (isOpen) {
+            document.addEventListener('mousedown', handleOutsideClick);
+        }
+
         return () => document.removeEventListener('mousedown', handleOutsideClick);
     }, [isOpen]);
 
     return (
-        <DropdownContext.Provider value={{ isOpen, setIsOpen }}>
+        <DropdownContext.Provider value={{ isOpen, setIsOpen, containerRef, menuRef }}>
             <div className="relative inline-block text-left" ref={containerRef}>
                 {children}
             </div>
@@ -58,21 +71,65 @@ interface DropdownMenuProps {
     className?: string;
 }
 
-export const DropdownMenu = ({ children, className = 'right-0' }: DropdownMenuProps) => {
+function getMenuPosition(container: HTMLDivElement) {
+    const rect = container.getBoundingClientRect();
+
+    return {
+        top: rect.bottom + 8,
+        right: window.innerWidth - rect.right,
+    };
+}
+
+export const DropdownMenu = ({ children, className }: DropdownMenuProps) => {
     const context = useContext(DropdownContext);
     if (!context) throw new Error('DropdownMenu can only be used inside a Dropdown component.');
 
-    if (!context.isOpen) return null;
+    const { isOpen, menuRef } = context;
+    const [position, setPosition] = useState<{ top: number; right: number } | null>(null);
 
-    return (
+    useLayoutEffect(() => {
+        const { containerRef } = context;
+
+        if (!isOpen || !containerRef.current) {
+            setPosition(null);
+            return;
+        }
+
+        const updatePosition = () => {
+            if (!containerRef.current) {
+                return;
+            }
+
+            setPosition(getMenuPosition(containerRef.current));
+        };
+
+        updatePosition();
+        window.addEventListener('scroll', updatePosition, true);
+        window.addEventListener('resize', updatePosition);
+
+        return () => {
+            window.removeEventListener('scroll', updatePosition, true);
+            window.removeEventListener('resize', updatePosition);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOpen]);
+
+    if (!isOpen || !position) {
+        return null;
+    }
+
+    return createPortal(
         <div
+            ref={menuRef}
+            style={{ position: 'fixed', top: position.top, right: position.right, zIndex: 50 }}
             className={cn(
-                'absolute z-50 mt-2 w-48 rounded-xl border border-gray-100 bg-white p-1 shadow-lg dark:border-gray-800 dark:bg-gray-950',
+                'w-48 rounded-xl border border-gray-100 bg-white p-1 shadow-lg dark:border-gray-800 dark:bg-gray-950',
                 className,
             )}
         >
             {children}
-        </div>
+        </div>,
+        document.body,
     );
 };
 
