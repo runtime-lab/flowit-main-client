@@ -1,11 +1,13 @@
-export { createWorkspace, getWorkspace, joinWorkspaceByInviteCode } from './api';
-export { findWorkspaceById } from './lib';
-export { workspaceQueryKeys, useWorkspaceQuery } from './model';
+export { createWorkspace, getWorkspace, joinWorkspaceByInviteCode, updateWorkspace } from './api';
+export { buildUpdateWorkspaceRequest, findWorkspaceById, isWorkspaceManager } from './lib';
+export { useUpdateWorkspaceMutation, workspaceMutationKeys, workspaceQueryKeys, useWorkspaceQuery } from './model';
 export type {
     CreateWorkspaceRequest,
     CreateWorkspaceResponse,
     JoinWorkspaceByInviteCodeRequest,
     JoinWorkspaceByInviteCodeResponse,
+    UpdateWorkspaceRequest,
+    UpdateWorkspaceResponse,
     WorkspaceDetail,
     WorkspaceMemberRole,
     Workspace,

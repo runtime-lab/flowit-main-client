@@ -97,5 +97,15 @@
   "members": {
     "title": "Members",
     "description": "Manage the members and roles of your workspace."
+  },
+  "settings": {
+    "title": "Workspace settings",
+    "description": "Manage your workspace settings.",
+    "workspaceInfo": "Workspace info",
+    "workspaceName": "Workspace name",
+    "workspaceDescription": "Workspace description",
+    "workspaceEdit": "Edit workspace info",
+    "workspaceUpdating": "Saving...",
+    "workspaceUpdateFailed": "Failed to update workspace"
   }
 }

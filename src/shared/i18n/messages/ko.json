@@ -97,5 +97,15 @@
   "members": {
     "title": "멤버 관리",
     "description": "워크스페이스 멤버와 권한을 관리하세요."
+  },
+  "settings": {
+    "title": "워크스페이스 설정",
+    "description": "워크스페이스 설정을 관리하세요.",
+    "workspaceInfo": "워크스페이스 정보",
+    "workspaceName": "워크스페이스 이름",
+    "workspaceDescription": "워크스페이스 설명",
+    "workspaceEdit": "워크스페이스 정보 수정",
+    "workspaceUpdating": "저장 중...",
+    "workspaceUpdateFailed": "워크스페이스 수정에 실패했습니다"
   }
 }
