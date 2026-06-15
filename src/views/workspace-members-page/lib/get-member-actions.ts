@@ -1,6 +1,7 @@
 import { isWorkspaceManager } from '@entities/workspace';
 
-import type { WorkspaceMember, WorkspaceMemberRole } from '@entities/member';
+import type { WorkspaceMember } from '@entities/member';
+import type { WorkspaceMemberRole } from '@entities/workspace';
 
 export type MemberActions = {
     canChangeRole: boolean;

@@ -5,12 +5,7 @@ export type {
     JoinWorkspaceByInviteCodeResponse,
 } from './join-workspace-by-invite-code.types';
 export type { RemoveWorkspaceMemberResponse } from './remove-workspace-member.types';
-export type {
-    WorkspaceMember,
-    WorkspaceMemberRole,
-    WorkspaceMembersResponse,
-    WorkspaceMemberStatus,
-} from './workspace-members.types';
+export type { WorkspaceMember, WorkspaceMembersResponse, WorkspaceMemberStatus } from './workspace-members.types';
 export type {
     UpdateWorkspaceMemberRoleRequest,
     UpdateWorkspaceMemberRoleResponse,

@@ -21,7 +21,6 @@ export type {
     UpdateWorkspaceMemberRoleRequest,
     UpdateWorkspaceMemberRoleResponse,
     WorkspaceMember,
-    WorkspaceMemberRole,
     WorkspaceMembersResponse,
     WorkspaceMemberStatus,
     WithdrawMemberResponse,

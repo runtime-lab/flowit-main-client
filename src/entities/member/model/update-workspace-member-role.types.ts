@@ -1,4 +1,4 @@
-import type { WorkspaceMemberRole } from './workspace-members.types';
+import type { WorkspaceMemberRole } from '@entities/workspace';
 
 export type UpdateWorkspaceMemberRoleRequest = {
     role: WorkspaceMemberRole;

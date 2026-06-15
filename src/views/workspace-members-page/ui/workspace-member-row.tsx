@@ -6,7 +6,8 @@ import { useTranslations } from 'next-intl';
 
 import { cn } from '@shared/lib';
 
-import type { WorkspaceMember, WorkspaceMemberRole } from '@entities/member';
+import type { WorkspaceMember } from '@entities/member';
+import type { WorkspaceMemberRole } from '@entities/workspace';
 import type { MemberActions } from '../lib/get-member-actions';
 
 const ROLE_BADGE_CLASSNAME: Record<WorkspaceMemberRole, string> = {

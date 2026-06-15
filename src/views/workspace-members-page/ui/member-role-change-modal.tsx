@@ -11,7 +11,8 @@ import { cn } from '@shared/lib';
 
 import { getMemberRoleChangeErrorMessage } from '../lib';
 
-import type { WorkspaceMember, WorkspaceMemberRole } from '@entities/member';
+import type { WorkspaceMember } from '@entities/member';
+import type { WorkspaceMemberRole } from '@entities/workspace';
 
 const ROLE_OPTION_CLASSNAME: Record<WorkspaceMemberRole, string> = {
     OWNER: 'border-purple-100/50 has-[:checked]:bg-purple-50 has-[:checked]:text-purple-700',
