@@ -1,3 +1,4 @@
+import { WorkspaceMembersTable } from './workspace-members-table';
 import { useTranslations } from 'next-intl';
 
 import { InvitationCodeShare } from '@features/invitation-code-share';
@@ -14,7 +15,10 @@ export function WorkspaceMembersPage({ workspaceId }: Props) {
     return (
         <main className="p-8">
             <PageTitle title={t('title')} subtitle={t('description')} />
-            <InvitationCodeShare workspaceId={workspaceId} />
+            <div className="space-y-6">
+                <WorkspaceMembersTable workspaceId={workspaceId} />
+                <InvitationCodeShare workspaceId={workspaceId} />
+            </div>
         </main>
     );
 }
