@@ -128,7 +128,7 @@ export function InviteWorkspaceMemberModal({ workspaceId, open, onClose }: Invit
         <Modal open={open} title={t('title')} onClose={handleClose} className="max-w-md">
             <div className="space-y-6">
                 <div>
-                    <label htmlFor="invite-email" className="mb-2 block text-[13px] font-bold text-slate-800">
+                    <label htmlFor="invite-email" className="mb-2 block text-sm font-bold text-slate-800">
                         {t('emailLabel')}
                     </label>
                     <div className="flex gap-2">
@@ -143,7 +143,7 @@ export function InviteWorkspaceMemberModal({ workspaceId, open, onClose }: Invit
                                 }
                             }}
                             placeholder={t('emailPlaceholder')}
-                            className="flex-1 rounded-lg px-3.5 py-2.5 text-[14px]"
+                            className="flex-1 rounded-lg px-3.5 py-2.5 text-sm"
                         />
                         <Button
                             variant="primary"
@@ -160,24 +160,24 @@ export function InviteWorkspaceMemberModal({ workspaceId, open, onClose }: Invit
                             />
                         </Button>
                     </div>
-                    {isSuccess && <p className="mt-2 text-[12px] font-bold text-emerald-600">{t('sendSuccess')}</p>}
+                    {isSuccess && <p className="mt-2 text-xs font-bold text-emerald-600">{t('sendSuccess')}</p>}
                     {sendErrorMessage ? (
-                        <p className="mt-2 text-[12px] font-bold text-rose-500">{sendErrorMessage}</p>
+                        <p className="mt-2 text-xs font-bold text-rose-500">{sendErrorMessage}</p>
                     ) : null}
                 </div>
 
                 <div className="relative flex items-center py-2">
                     <div className="grow border-t border-slate-100" />
-                    <span className="mx-4 shrink-0 text-[12px] font-bold text-slate-400">{t('or')}</span>
+                    <span className="mx-4 shrink-0 text-xs font-bold text-slate-400">{t('or')}</span>
                     <div className="grow border-t border-slate-100" />
                 </div>
 
                 <div>
-                    <label className="mb-2 block text-[13px] font-bold text-slate-800">
+                    <label className="mb-2 block text-sm font-bold text-slate-800">
                         {tWorkspaces('invitationCodeShare')}
                     </label>
                     <div className="flex items-center gap-2.5">
-                        <div className="flex-1 rounded-lg border border-slate-200/80 bg-slate-50 px-4 py-2.5 text-center font-mono text-[14px] font-bold tracking-widest text-slate-800">
+                        <div className="flex-1 rounded-lg border border-slate-200/80 bg-slate-50 px-4 py-2.5 text-center font-mono text-sm font-bold tracking-widest text-slate-800">
                             {invitationCode}
                         </div>
                         <Button
