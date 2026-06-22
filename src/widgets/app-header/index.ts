@@ -1,1 +1,1 @@
-export { AppHeader, AppHeaderProfileButton } from './ui';
+export { AppHeader, AppHeaderNotificationButton, AppHeaderProfileButton } from './ui';

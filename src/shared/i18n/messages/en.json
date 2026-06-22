@@ -38,6 +38,22 @@
     "copy": "Copy",
     "copied": "Copied"
   },
+  "notification": {
+    "title": "Notifications",
+    "markAllRead": "Mark all as read",
+    "empty": "No new notifications",
+    "openNotifications": "Open notifications",
+    "justNow": "Just now",
+    "unknownActor": "Unknown user",
+    "fallback": "You have a new notification.",
+    "types": {
+      "WORKSPACE_MEMBER_JOINED": "<bold>{actor}</bold> joined {workspace}.",
+      "WORKSPACE_MEMBER_ROLE_CHANGED": "<bold>{actor}</bold> changed <bold>{subject}</bold>'s role in {workspace}.",
+      "WORKSPACE_MEMBER_REMOVED": "<bold>{actor}</bold> removed <bold>{subject}</bold> from {workspace}.",
+      "WORKSPACE_ACCESS_REVOKED": "Your access to {workspace} was revoked.",
+      "WORKSPACE_MEMBER_WITHDRAWN": "<bold>{subject}</bold> left {workspace}."
+    }
+  },
   "notFound": {
     "logoAlt": "Flowit logo",
     "title": "Page not found",

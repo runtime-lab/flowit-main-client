@@ -16,6 +16,16 @@ const DropdownContext = createContext<{
     menuRef: React.RefObject<HTMLDivElement | null>;
 } | null>(null);
 
+export function useDropdown() {
+    const context = useContext(DropdownContext);
+
+    if (!context) {
+        throw new Error('useDropdown can only be used inside a Dropdown component.');
+    }
+
+    return context;
+}
+
 export const Dropdown = ({ children }: { children: React.ReactNode }) => {
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);

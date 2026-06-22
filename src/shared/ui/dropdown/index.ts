@@ -1,1 +1,1 @@
-export { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from './dropdown';
+export { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, useDropdown } from './dropdown';

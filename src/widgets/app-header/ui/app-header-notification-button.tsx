@@ -1,0 +1,64 @@
+'use client';
+
+import { NotificationList } from './notification-list';
+import { Bell } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+
+import { useNotificationsQuery } from '@entities/notification';
+
+import { Button, Dropdown, DropdownMenu, DropdownTrigger, useDropdown } from '@shared/ui';
+
+function NotificationDropdownContent() {
+    const t = useTranslations('notification');
+    const { isOpen } = useDropdown();
+    const { data, isFetching } = useNotificationsQuery({ enabled: isOpen });
+    const hasUnseen = (data?.unseenCount ?? 0) > 0;
+    const hasUnread = (data?.unreadCount ?? 0) > 0;
+
+    return (
+        <>
+            <DropdownTrigger>
+                <Button
+                    iconOnly
+                    icon={
+                        <span className="relative">
+                            <Bell width={22} height={22} />
+                            {hasUnseen ? (
+                                <span className="absolute top-0 right-0 size-2 rounded-full border-2 border-white bg-red-500" />
+                            ) : null}
+                        </span>
+                    }
+                    variant="ghost"
+                    rounded="full"
+                    size="sm"
+                    className="p-2 text-slate-500 hover:text-slate-700"
+                    aria-label={t('openNotifications')}
+                    shadow={false}
+                >
+                    {t('openNotifications')}
+                </Button>
+            </DropdownTrigger>
+            <DropdownMenu className="w-[320px] rounded-2xl border border-slate-200/80 p-5 shadow-xl">
+                <div className="mb-4 flex items-center justify-between border-b border-slate-100 pb-3">
+                    <h3 className="text-[15px] font-bold text-slate-900">{t('title')}</h3>
+                    <button
+                        type="button"
+                        disabled={!hasUnread}
+                        className="text-[13px] font-semibold text-blue-600 hover:underline disabled:cursor-not-allowed disabled:text-slate-300 disabled:no-underline"
+                    >
+                        {t('markAllRead')}
+                    </button>
+                </div>
+                <NotificationList items={data?.items ?? []} isLoading={isFetching && !data} />
+            </DropdownMenu>
+        </>
+    );
+}
+
+export function AppHeaderNotificationButton() {
+    return (
+        <Dropdown>
+            <NotificationDropdownContent />
+        </Dropdown>
+    );
+}
