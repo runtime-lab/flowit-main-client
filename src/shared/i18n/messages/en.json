@@ -205,6 +205,7 @@
         "LOW": "Low"
       },
       "progressLabel": "Progress",
+      "progressInputLabel": "Progress percentage",
       "scheduleLabel": "Schedule",
       "startDateLabel": "Start date",
       "dueDateLabel": "Due date",

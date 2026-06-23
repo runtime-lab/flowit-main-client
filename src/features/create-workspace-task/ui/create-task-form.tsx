@@ -17,6 +17,7 @@ import {
 
 import { Button, Input, MarkdownEditor } from '@shared/ui';
 import { getMappedApiErrorMessage } from '@shared/api';
+import { cn } from '@shared/lib';
 import { isDateRangeValid, isValidDateInput } from '@shared/lib/date';
 
 import { MAX_TASK_TAGS, toCreateWorkspaceTaskRequest, useCreateTaskForm } from '../model';
@@ -31,6 +32,10 @@ const DATE_INPUT_CLASSNAME =
     'w-full cursor-pointer appearance-none rounded-lg border border-slate-200/80 bg-white py-2.5 pl-3.5 pr-10 text-xs font-bold text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20';
 
 const PRIORITY_OPTIONS: TaskPriority[] = ['HIGH', 'MEDIUM', 'LOW'];
+
+function clampProgress(value: number) {
+    return Math.min(100, Math.max(0, Math.round(value)));
+}
 
 type CreateTaskFormProps = {
     workspaceId: string;
@@ -256,14 +261,46 @@ export function CreateTaskForm({ workspaceId, initialStatus, onClose }: CreateTa
                         </div>
 
                         <div>
-                            <label htmlFor="task-progress" className="mb-2 block text-sm font-bold text-slate-800">
-                                {t('progressLabel')}{' '}
-                                <span
-                                    className={
-                                        values.progress === 100 ? 'text-blue-600' : 'font-extrabold text-slate-700'
-                                    }
-                                >
-                                    {values.progress}%
+                            <label
+                                htmlFor="task-progress"
+                                className="mb-2 flex items-center gap-2 text-sm font-bold text-slate-800"
+                            >
+                                <p>{t('progressLabel')}</p>
+                                <span className="text-xs font-semibold text-slate-400">
+                                    <input
+                                        type="number"
+                                        min={0}
+                                        max={100}
+                                        value={values.progress}
+                                        onChange={event => {
+                                            const nextProgress = Number(event.target.value);
+
+                                            if (!Number.isNaN(nextProgress)) {
+                                                updateField('progress', clampProgress(nextProgress));
+                                            }
+                                        }}
+                                        onBlur={event => {
+                                            const nextProgress = Number(event.target.value);
+
+                                            if (!Number.isNaN(nextProgress)) {
+                                                updateField('progress', clampProgress(nextProgress));
+                                            }
+                                        }}
+                                        disabled={isFormLocked}
+                                        className={cn(
+                                            'w-15 rounded border border-slate-200 bg-white px-1.5 py-0.5 text-center text-xs font-extrabold outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:opacity-60',
+                                            values.progress === 100 ? 'text-blue-600' : 'text-slate-700',
+                                        )}
+                                        aria-label={t('progressInputLabel')}
+                                    />
+                                    <span
+                                        className={cn(
+                                            'text-xs font-extrabold',
+                                            values.progress === 100 ? 'text-blue-600' : 'text-slate-700',
+                                        )}
+                                    >
+                                        %
+                                    </span>
                                 </span>
                             </label>
                             <input
