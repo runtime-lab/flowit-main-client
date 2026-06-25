@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 import { Calendar } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
@@ -56,16 +58,30 @@ function formatTaskSchedule(task: Task, startLabel: string, dueLabel: string) {
 
 export function TaskCard({ task, onClick, onDragStart }: TaskCardProps) {
     const t = useTranslations('board');
+    const [isDragging, setIsDragging] = useState(false);
 
     const scheduleLabel = formatTaskSchedule(task, t('taskStartDate'), t('taskDueDate'));
     const scheduleStatus = getTaskScheduleStatus(task.startDate, task.dueDate);
 
+    const handleDragStart = (event: React.DragEvent<HTMLDivElement>) => {
+        setIsDragging(true);
+        onDragStart?.(event);
+    };
+
+    const handleDragEnd = () => {
+        setIsDragging(false);
+    };
+
     return (
         <div
             draggable
-            onDragStart={onDragStart}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
             onClick={onClick}
-            className="group cursor-pointer rounded-xl border border-slate-200/80 bg-white p-5 transition-all hover:border-blue-300 hover:shadow-md"
+            className={cn(
+                'group cursor-pointer rounded-xl border border-slate-200/80 bg-white p-5 transition-all hover:border-blue-300 hover:shadow-md',
+                isDragging && 'opacity-40',
+            )}
         >
             {task.tags.length > 0 ? (
                 <div className="mb-3 flex h-6 flex-nowrap items-center gap-2 overflow-hidden transition-all group-hover:h-auto group-hover:flex-wrap group-hover:overflow-visible">
