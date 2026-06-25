@@ -1,22 +1,39 @@
 'use client';
 
+import { useEffect } from 'react';
+
 import { NotificationList } from './notification-list';
 import { Bell } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import { flattenNotificationsPages, useNotificationsInfiniteQuery } from '@entities/notification';
+import {
+    flattenNotificationsPages,
+    useMarkNotificationsSeenMutation,
+    useNotificationsInfiniteQuery,
+    useNotificationsSummaryQuery,
+} from '@entities/notification';
 
 import { Button, Dropdown, DropdownMenu, DropdownTrigger, useDropdown } from '@shared/ui';
 
 function NotificationDropdownContent() {
     const t = useTranslations('notification');
     const { isOpen } = useDropdown();
+    const { data: summary } = useNotificationsSummaryQuery();
+    const { mutate: markNotificationsSeen } = useMarkNotificationsSeenMutation();
     const { data, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } = useNotificationsInfiniteQuery({
         enabled: isOpen,
     });
-    const { items, unreadCount, unseenCount } = flattenNotificationsPages(data);
-    const hasUnseen = unseenCount > 0;
+    const { items, unreadCount } = flattenNotificationsPages(data);
+    const hasUnseen = (summary?.unseenCount ?? 0) > 0;
     const hasUnread = unreadCount > 0;
+
+    useEffect(() => {
+        if (!isOpen) {
+            return;
+        }
+
+        markNotificationsSeen();
+    }, [isOpen, markNotificationsSeen]);
 
     return (
         <>

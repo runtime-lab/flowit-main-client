@@ -1,8 +1,16 @@
-export { getNotifications } from './api';
+export { getNotifications, markNotificationsSeen } from './api';
 export { flattenNotificationsPages, formatNotificationRelativeTime, getNotificationMessageValues } from './lib';
-export { notificationQueryKeys, useNotificationsInfiniteQuery, useNotificationsQuery } from './model';
+export {
+    notificationMutationKeys,
+    notificationQueryKeys,
+    useMarkNotificationsSeenMutation,
+    useNotificationsInfiniteQuery,
+    useNotificationsQuery,
+    useNotificationsSummaryQuery,
+} from './model';
 export type {
     GetNotificationsParams,
+    MarkNotificationsSeenResponse,
     Notification,
     NotificationActor,
     NotificationAlertType,

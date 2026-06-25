@@ -1,4 +1,6 @@
 export { NOTIFICATIONS_PAGE_SIZE } from './constants';
+export type { MarkNotificationsSeenResponse } from './mark-notifications-seen.types';
+export { notificationMutationKeys } from './notification-mutation-keys';
 export { notificationQueryKeys } from './notification-query-keys';
 export type {
     GetNotificationsParams,
@@ -12,5 +14,7 @@ export type {
     NotificationsResponse,
     NotificationSubject,
 } from './notification.types';
+export { useMarkNotificationsSeenMutation } from './use-mark-notifications-seen-mutation';
 export { useNotificationsInfiniteQuery } from './use-notifications-infinite-query';
 export { useNotificationsQuery } from './use-notifications-query';
+export { useNotificationsSummaryQuery } from './use-notifications-summary-query';
