@@ -16,6 +16,16 @@ type NotificationMessageProps = {
     variant?: 'list' | 'toast';
 };
 
+const MESSAGE_VARIANT_CLASSNAME = {
+    toast: 'mt-0.5 line-clamp-2 text-[13px] leading-snug font-medium text-slate-800',
+    list: 'line-clamp-3 text-[13px] leading-[1.45]',
+} as const;
+
+const MESSAGE_LIST_READ_CLASSNAME = {
+    read: 'font-normal text-slate-500',
+    unread: 'font-medium text-slate-800',
+} as const;
+
 function renderBold(chunks: ReactNode) {
     return <span className="font-semibold text-slate-900">{chunks}</span>;
 }
@@ -27,10 +37,8 @@ export function NotificationMessage({ notification, className, variant = 'list' 
     const values = getNotificationMessageValues(notification, t('unknownActor'));
     const roleChange = getNotificationRoleChange(notification);
     const messageClassName = cn(
-        variant === 'toast'
-            ? 'mt-0.5 line-clamp-2 text-[13px] leading-snug font-medium text-slate-800'
-            : 'line-clamp-3 text-[13px] leading-[1.45]',
-        variant === 'list' && (notification.read ? 'font-normal text-slate-500' : 'font-medium text-slate-800'),
+        MESSAGE_VARIANT_CLASSNAME[variant],
+        variant === 'list' && MESSAGE_LIST_READ_CLASSNAME[notification.read ? 'read' : 'unread'],
         className,
     );
 
