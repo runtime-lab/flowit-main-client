@@ -1,17 +1,13 @@
 'use client';
 
-import { useLocale, useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
 
-import {
-    formatNotificationRelativeTime,
-    NotificationAvatar,
-    NotificationMessage,
-    resolveNotificationLinkHref,
-} from '@entities/notification';
+import { NotificationAvatar, NotificationMessage, resolveNotificationLinkHref } from '@entities/notification';
 
 import { Link } from '@shared/i18n';
 import { useDropdown } from '@shared/ui';
 import { cn } from '@shared/lib';
+import { formatEpochSecondsRelativeTime } from '@shared/lib/date';
 
 import type { Notification } from '@entities/notification';
 
@@ -21,13 +17,10 @@ type NotificationListItemProps = {
 
 export function NotificationListItem({ notification }: NotificationListItemProps) {
     const locale = useLocale();
-    const t = useTranslations('notification');
     const { setIsOpen } = useDropdown();
     const href = resolveNotificationLinkHref(notification.link);
     const isUnread = !notification.read;
-    const relativeTime = formatNotificationRelativeTime(notification.occurredAt, locale, {
-        justNow: t('justNow'),
-    });
+    const relativeTime = formatEpochSecondsRelativeTime(notification.occurredAt, locale);
     const itemClassName = cn(
         'group relative flex items-start gap-3 px-4 py-3 transition-colors hover:bg-slate-50/80',
         isUnread && 'bg-blue-50/30 hover:bg-blue-50/50',

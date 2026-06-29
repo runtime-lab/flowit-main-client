@@ -8,8 +8,8 @@ import { toast } from 'sonner';
 
 import { Link } from '@shared/i18n';
 import { cn } from '@shared/lib';
+import { formatEpochSecondsRelativeTime } from '@shared/lib/date';
 
-import { formatNotificationRelativeTime } from '../lib/format-notification-relative-time';
 import { resolveNotificationLinkHref } from '../lib/resolve-notification-href';
 
 import type { Notification } from '../model/notification.types';
@@ -22,9 +22,7 @@ export function NotificationToastContent({ notification }: NotificationToastCont
     const locale = useLocale();
     const t = useTranslations('notification');
     const href = resolveNotificationLinkHref(notification.link);
-    const relativeTime = formatNotificationRelativeTime(notification.occurredAt, locale, {
-        justNow: t('justNow'),
-    });
+    const relativeTime = formatEpochSecondsRelativeTime(notification.occurredAt, locale);
 
     const dismissToast = () => toast.dismiss(`notification-${notification.id}`);
 
