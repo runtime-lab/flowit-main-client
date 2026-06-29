@@ -1,7 +1,5 @@
 'use client';
 
-import { useMemo } from 'react';
-
 import { useWorkspaceMembersQuery } from './use-workspace-members-query';
 
 type UseWorkspaceMemberNameMapProps = {
@@ -12,13 +10,11 @@ type UseWorkspaceMemberNameMapProps = {
 export function useWorkspaceMemberNameMap({ workspaceId, enabled = true }: UseWorkspaceMemberNameMapProps) {
     const { data } = useWorkspaceMembersQuery({ workspaceId, enabled: enabled && Boolean(workspaceId) });
 
-    return useMemo(() => {
-        const memberNameByMemberId = new Map<number, string>();
+    const memberNameByMemberId = new Map<number, string>();
 
-        for (const member of data?.members ?? []) {
-            memberNameByMemberId.set(member.memberId, member.name);
-        }
+    for (const member of data?.members ?? []) {
+        memberNameByMemberId.set(member.memberId, member.name);
+    }
 
-        return memberNameByMemberId;
-    }, [data?.members]);
+    return memberNameByMemberId;
 }

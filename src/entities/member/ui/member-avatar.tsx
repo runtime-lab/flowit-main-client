@@ -1,6 +1,6 @@
 'use client';
 
-import { useMeProfileImageQuery, useMeUserQuery, useProfileImageObjectUrl } from '@entities/user';
+import { createProfileImageObjectUrl, useMeProfileImageQuery, useMeUserQuery } from '@entities/user';
 
 import { cn } from '@shared/lib';
 
@@ -62,7 +62,7 @@ export function MemberAvatar({
     });
 
     const profileImageBlob = useMeProfile ? meProfileBlob : memberProfileBlob;
-    const profileImageObjectUrl = useProfileImageObjectUrl(profileImageBlob);
+    const profileImageObjectUrl = createProfileImageObjectUrl(profileImageBlob);
     const profileText = name.trim().slice(0, 1) || '?';
 
     return (

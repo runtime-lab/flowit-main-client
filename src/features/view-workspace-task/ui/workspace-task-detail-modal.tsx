@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { TaskDetailHeader } from './task-detail-header';
 import { TaskDetailView } from './task-detail-view';
@@ -42,11 +42,11 @@ export function WorkspaceTaskDetailModal({ workspaceId, taskId, open, onClose }:
         enabled: open && taskId !== null,
     });
 
-    const handleClose = useCallback(() => {
+    const handleClose = () => {
         setViewMode('side');
         setIsEditOpen(false);
         onClose();
-    }, [onClose]);
+    };
 
     useEffect(() => {
         if (!open) {
@@ -58,7 +58,9 @@ export function WorkspaceTaskDetailModal({ workspaceId, taskId, open, onClose }:
 
         const handleEscape = (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
-                handleClose();
+                setViewMode('side');
+                setIsEditOpen(false);
+                onClose();
             }
         };
 
@@ -68,7 +70,7 @@ export function WorkspaceTaskDetailModal({ workspaceId, taskId, open, onClose }:
             document.body.style.overflow = previousOverflow;
             document.removeEventListener('keydown', handleEscape);
         };
-    }, [open, handleClose]);
+    }, [open, onClose]);
 
     const errorMessage = isError
         ? getTaskDetailErrorMessage({

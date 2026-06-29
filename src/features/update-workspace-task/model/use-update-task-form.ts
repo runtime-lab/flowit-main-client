@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 
 import { MAX_TASK_TAGS } from './update-task-form.constants';
 import { taskDetailToUpdateTaskFormState } from './update-task-form.types';
@@ -15,26 +15,23 @@ function normalizeTag(tag: string) {
 export function useUpdateTaskForm(task: TaskDetail) {
     const [form, setForm] = useState<UpdateTaskFormState>(() => taskDetailToUpdateTaskFormState(task));
 
-    const updateField = useCallback(
-        <TField extends UpdateTaskFormField>(field: TField, value: UpdateTaskFormValues[TField]) => {
-            setForm(previous => ({ ...previous, [field]: value }));
-        },
-        [],
-    );
+    const updateField = <TField extends UpdateTaskFormField>(field: TField, value: UpdateTaskFormValues[TField]) => {
+        setForm(previous => ({ ...previous, [field]: value }));
+    };
 
-    const updateDateField = useCallback((field: 'startDate' | 'dueDate', value: string) => {
+    const updateDateField = (field: 'startDate' | 'dueDate', value: string) => {
         if (!isValidDateInput(value)) {
             return;
         }
 
         setForm(previous => ({ ...previous, [field]: value }));
-    }, []);
+    };
 
-    const setTagInput = useCallback((tagInput: string) => {
+    const setTagInput = (tagInput: string) => {
         setForm(previous => ({ ...previous, tagInput }));
-    }, []);
+    };
 
-    const addTag = useCallback(() => {
+    const addTag = () => {
         setForm(previous => {
             const tag = normalizeTag(previous.tagInput);
 
@@ -48,14 +45,14 @@ export function useUpdateTaskForm(task: TaskDetail) {
                 tagInput: '',
             };
         });
-    }, []);
+    };
 
-    const removeTag = useCallback((tag: string) => {
+    const removeTag = (tag: string) => {
         setForm(previous => ({
             ...previous,
             tags: previous.tags.filter(currentTag => currentTag !== tag),
         }));
-    }, []);
+    };
 
     const isTagLimitReached = form.tags.length >= MAX_TASK_TAGS;
 
