@@ -10,7 +10,8 @@ import { useWebSocketClient, useWebSocketSubscription } from '@shared/api/ws';
 import { useDocumentVisibleEffect } from '@shared/lib/hooks';
 
 import { parseNotificationWsMessage } from '../lib/parse-notification-ws-message';
-import { upsertNotificationInCache } from '../lib/upsert-notification-in-cache';
+import { isNotificationInCache, upsertNotificationInCache } from '../lib/upsert-notification-in-cache';
+import { showNotificationToast } from '../ui/show-notification-toast';
 
 import type { WebSocketConnectionState, WebSocketMessage } from '@shared/api/ws';
 
@@ -42,7 +43,13 @@ export function useNotificationRealtime() {
                 return;
             }
 
+            const isNew = !isNotificationInCache(queryClient, notification.id);
+
             upsertNotificationInCache(queryClient, notification);
+
+            if (isNew) {
+                showNotificationToast(notification);
+            }
         },
         [queryClient],
     );

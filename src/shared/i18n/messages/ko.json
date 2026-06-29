@@ -48,6 +48,7 @@
     "justNow": "방금 전",
     "unknownActor": "알 수 없는 사용자",
     "fallback": "새 알림이 도착했습니다.",
+    "dismiss": "닫기",
     "types": {
       "WORKSPACE_MEMBER_JOINED": "<bold>{actor}</bold>님이 {workspace} 워크스페이스에 가입했습니다.",
       "WORKSPACE_MEMBER_ROLE_CHANGED": "<bold>{actor}</bold>님이 {workspace}에서 {subject}님의 역할을 변경했습니다.",

@@ -62,3 +62,21 @@ export function upsertNotificationInCache(queryClient: QueryClient, notification
         old => (old ? upsertNotificationInInfiniteData(old, notification) : old),
     );
 }
+
+export function isNotificationInCache(queryClient: QueryClient, notificationId: number) {
+    const listQueries = queryClient.getQueriesData<NotificationsResponse>({
+        queryKey: notificationQueryKeys.lists(),
+    });
+
+    if (listQueries.some(([, data]) => data?.items.some(item => item.id === notificationId))) {
+        return true;
+    }
+
+    const infiniteQueries = queryClient.getQueriesData<InfiniteData<NotificationsResponse>>({
+        queryKey: notificationQueryKeys.infiniteLists(),
+    });
+
+    return infiniteQueries.some(([, data]) =>
+        data?.pages.some(page => page.items.some(item => item.id === notificationId)),
+    );
+}

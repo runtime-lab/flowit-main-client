@@ -3,43 +3,15 @@
 import { useLocale, useTranslations } from 'next-intl';
 
 import { MemberAvatar } from '@entities/member';
-import { formatNotificationRelativeTime, getNotificationMessageValues } from '@entities/notification';
+import { formatNotificationRelativeTime, NotificationMessage } from '@entities/notification';
 
 import { cn } from '@shared/lib';
 
 import type { Notification } from '@entities/notification';
-import type { ReactNode } from 'react';
 
 type NotificationListItemProps = {
     notification: Notification;
 };
-
-function renderBold(chunks: ReactNode) {
-    return <span className="font-semibold text-slate-900">{chunks}</span>;
-}
-
-function NotificationMessage({ notification }: NotificationListItemProps) {
-    const t = useTranslations('notification');
-    const tTypes = useTranslations('notification.types');
-    const values = getNotificationMessageValues(notification, t('unknownActor'));
-    const messageClassName = cn(
-        'line-clamp-3 text-[13px] leading-[1.45]',
-        notification.read ? 'font-normal text-slate-500' : 'font-medium text-slate-800',
-    );
-
-    if (!tTypes.has(notification.type)) {
-        return <p className={messageClassName}>{t('fallback')}</p>;
-    }
-
-    return (
-        <p className={messageClassName}>
-            {tTypes.rich(notification.type, {
-                ...values,
-                bold: renderBold,
-            })}
-        </p>
-    );
-}
 
 export function NotificationListItem({ notification }: NotificationListItemProps) {
     const locale = useLocale();
