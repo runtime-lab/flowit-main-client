@@ -4,16 +4,9 @@ import { LayoutDashboardIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { useMeWorkspacesQuery } from '@entities/user';
-import { WorkspaceRoleBadge } from '@entities/workspace';
+import { isWorkspaceMemberRole, WorkspaceRoleBadge } from '@entities/workspace';
 
 import { Card } from '@shared/ui';
-
-const WORKSPACE_ROLES = ['OWNER', 'ADMIN', 'MEMBER'] as const;
-type WorkspaceRole = (typeof WORKSPACE_ROLES)[number];
-
-function isWorkspaceRole(role: string): role is WorkspaceRole {
-    return WORKSPACE_ROLES.includes(role as WorkspaceRole);
-}
 
 export function JoinedWorkspaces() {
     const t = useTranslations('myPage');
@@ -33,7 +26,7 @@ export function JoinedWorkspaces() {
             }
         >
             {meWorkspaces?.items.map(workspace => {
-                const role = isWorkspaceRole(workspace.role) ? workspace.role : 'MEMBER';
+                const role = isWorkspaceMemberRole(workspace.role) ? workspace.role : 'MEMBER';
 
                 return (
                     <div
