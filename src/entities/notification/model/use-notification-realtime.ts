@@ -7,6 +7,7 @@ import { notificationQueryKeys } from './notification-query-keys';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useWebSocketClient, useWebSocketSubscription } from '@shared/api/ws';
+import { useDocumentVisibleEffect } from '@shared/lib/hooks';
 
 import { parseNotificationWsMessage } from '../lib/parse-notification-ws-message';
 import { upsertNotificationInCache } from '../lib/upsert-notification-in-cache';
@@ -18,14 +19,20 @@ export function useNotificationRealtime() {
     const { connectionState } = useWebSocketClient();
     const previousConnectionStateRef = useRef<WebSocketConnectionState>('idle');
 
+    const syncWithServer = useCallback(() => {
+        queryClient.invalidateQueries({ queryKey: notificationQueryKeys.all }).catch(() => undefined);
+    }, [queryClient]);
+
     useEffect(() => {
         const previousConnectionState = previousConnectionStateRef.current;
         previousConnectionStateRef.current = connectionState;
 
         if (connectionState === 'connected' && previousConnectionState === 'disconnected') {
-            queryClient.invalidateQueries({ queryKey: notificationQueryKeys.all }).catch(() => undefined);
+            syncWithServer();
         }
-    }, [connectionState, queryClient]);
+    }, [connectionState, syncWithServer]);
+
+    useDocumentVisibleEffect(syncWithServer);
 
     const handleNotificationMessage = useCallback(
         (message: WebSocketMessage) => {
