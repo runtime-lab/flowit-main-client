@@ -259,10 +259,19 @@
       "commentSubmit": "Post comment",
       "commentMarkdownExpandedTitle": "Write comment",
       "commentLength": "{count}/{max}",
+      "relativeTime": {
+        "justNow": "Just now",
+        "minutesAgo": "{count}m ago",
+        "hoursAgo": "{count}h ago",
+        "daysAgo": "{count}d ago"
+      },
       "markdownWrite": "Write",
       "markdownPreview": "Preview",
       "markdownPreviewEmpty": "Nothing to preview yet",
-      "markdownExpand": "Expand"
+      "markdownExpand": "Expand",
+      "activityLoadFailed": "Failed to load activity log",
+      "noActivity": "No activity yet",
+      "activityTruncated": "Showing {shown} of {total} activities"
     },
     "taskDetailErrors": {
       "AUTH_401_001": "You need to sign in or your session has expired",
@@ -330,6 +339,32 @@
     },
     "taskCommentErrors": {
       "VALIDATION_400_001": "Comment content is invalid",
+      "AUTH_401_001": "You need to sign in or your session has expired",
+      "AUTH_403_001": "You are not an active member of this workspace",
+      "WORKSPACE_404_001": "This workspace does not exist",
+      "TASK_404_001": "This task does not exist",
+      "INTERNAL_500_001": "A server error occurred. Please try again later"
+    },
+    "taskHistory": {
+      "created": "{actor} created this task",
+      "change": {
+        "STATUS": "{actor} changed status from {from} to {to}",
+        "ASSIGNEE": "{actor} changed assignee from {from} to {to}",
+        "PRIORITY": "{actor} changed priority from {from} to {to}",
+        "TITLE": "{actor} changed the title ({from} → {to})",
+        "DESCRIPTION": "{actor} updated the description",
+        "PROGRESS": "{actor} changed progress from {from} to {to}",
+        "START_DATE": "{actor} changed start date from {from} to {to}",
+        "DUE_DATE": "{actor} changed due date from {from} to {to}",
+        "TAGS": "{actor} changed tags ({from} → {to})",
+        "fallback": "{actor} changed {element} from {from} to {to}"
+      },
+      "actionFallback": "{actor} updated this task ({action})",
+      "empty": "None",
+      "unassigned": "Unassigned"
+    },
+    "taskHistoryErrors": {
+      "VALIDATION_400_001": "The request value is invalid",
       "AUTH_401_001": "You need to sign in or your session has expired",
       "AUTH_403_001": "You are not an active member of this workspace",
       "WORKSPACE_404_001": "This workspace does not exist",

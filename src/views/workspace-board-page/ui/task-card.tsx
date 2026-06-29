@@ -91,7 +91,12 @@ export function TaskCard({ task, onClick, onDragStart }: TaskCardProps) {
             <div className="mt-auto flex items-center justify-between gap-3">
                 {task.assignee ? (
                     <div className="flex min-w-0 items-center gap-2">
-                        <MemberAvatar name={task.assignee.name} size="sm" />
+                        <MemberAvatar
+                            name={task.assignee.name}
+                            workspaceId={task.workspaceId}
+                            memberId={task.assignee.memberId}
+                            size="sm"
+                        />
                         <span className="truncate text-sm font-bold text-slate-500">{task.assignee.name}</span>
                     </div>
                 ) : (

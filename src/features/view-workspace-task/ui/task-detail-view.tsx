@@ -19,16 +19,17 @@ export type TaskDetailViewMode = 'center' | 'side';
 type TaskDetailTab = 'comments' | 'activity';
 
 type TaskDetailViewProps = {
+    workspaceId: string;
     task: TaskDetail;
     viewMode: TaskDetailViewMode;
 };
 
-export function TaskDetailView({ task, viewMode }: TaskDetailViewProps) {
+export function TaskDetailView({ workspaceId, task, viewMode }: TaskDetailViewProps) {
     const t = useTranslations('board.taskDetail');
     const [activeTab, setActiveTab] = useState<TaskDetailTab>('comments');
 
     const { data: commentPage } = useWorkspaceTaskCommentsQuery({
-        workspaceId: task.workspaceId,
+        workspaceId,
         taskId: task.id,
     });
 
@@ -78,9 +79,9 @@ export function TaskDetailView({ task, viewMode }: TaskDetailViewProps) {
             </div>
 
             {activeTab === 'comments' ? (
-                <TaskDetailComments workspaceId={task.workspaceId} taskId={task.id} />
+                <TaskDetailComments workspaceId={workspaceId} taskId={task.id} />
             ) : (
-                <TaskDetailActivity task={task} />
+                <TaskDetailActivity workspaceId={workspaceId} taskId={task.id} />
             )}
         </div>
     );
@@ -92,14 +93,14 @@ export function TaskDetailView({ task, viewMode }: TaskDetailViewProps) {
                     {descriptionSection}
                     {tabsSection}
                 </div>
-                <TaskDetailMeta task={task} className="w-[360px] shrink-0 bg-slate-50/50" />
+                <TaskDetailMeta workspaceId={workspaceId} task={task} className="w-[360px] shrink-0 bg-slate-50/50" />
             </div>
         );
     }
 
     return (
         <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
-            <TaskDetailMeta task={task} className="border-b border-slate-100" />
+            <TaskDetailMeta workspaceId={workspaceId} task={task} className="border-b border-slate-100" />
             {descriptionSection}
             {tabsSection}
         </div>

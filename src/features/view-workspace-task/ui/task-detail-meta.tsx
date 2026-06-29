@@ -10,6 +10,7 @@ import { cn } from '@shared/lib';
 import type { TaskDetail, TaskPriority } from '@entities/task';
 
 type TaskDetailMetaProps = {
+    workspaceId: string;
     task: TaskDetail;
     className?: string;
 };
@@ -20,7 +21,7 @@ const PRIORITY_CLASSNAME: Record<TaskPriority, string> = {
     LOW: 'border-slate-100 bg-slate-50 text-slate-600',
 };
 
-export function TaskDetailMeta({ task, className }: TaskDetailMetaProps) {
+export function TaskDetailMeta({ workspaceId, task, className }: TaskDetailMetaProps) {
     const t = useTranslations('board');
     const tDetail = useTranslations('board.taskDetail');
 
@@ -31,7 +32,12 @@ export function TaskDetailMeta({ task, className }: TaskDetailMetaProps) {
                 <div className="flex items-center gap-2.5 font-bold text-slate-800">
                     {task.assignee ? (
                         <>
-                            <MemberAvatar name={task.assignee.name} size="sm" />
+                            <MemberAvatar
+                                name={task.assignee.name}
+                                workspaceId={workspaceId}
+                                memberId={task.assignee.memberId}
+                                size="sm"
+                            />
                             {task.assignee.name}
                         </>
                     ) : (

@@ -259,10 +259,19 @@
       "commentSubmit": "댓글 등록",
       "commentMarkdownExpandedTitle": "댓글 작성",
       "commentLength": "{count}/{max}",
+      "relativeTime": {
+        "justNow": "방금",
+        "minutesAgo": "{count}분 전",
+        "hoursAgo": "{count}시간 전",
+        "daysAgo": "{count}일 전"
+      },
       "markdownWrite": "작성",
       "markdownPreview": "미리보기",
       "markdownPreviewEmpty": "미리볼 내용이 없습니다",
-      "markdownExpand": "확대"
+      "markdownExpand": "확대",
+      "activityLoadFailed": "활동 로그를 불러오지 못했습니다",
+      "noActivity": "활동 로그가 없습니다",
+      "activityTruncated": "전체 {total}개 중 {shown}개 표시"
     },
     "taskDetailErrors": {
       "AUTH_401_001": "로그인이 필요하거나 인증이 만료되었습니다",
@@ -330,6 +339,32 @@
     },
     "taskCommentErrors": {
       "VALIDATION_400_001": "댓글 내용이 올바르지 않습니다",
+      "AUTH_401_001": "로그인이 필요하거나 인증이 만료되었습니다",
+      "AUTH_403_001": "해당 워크스페이스의 활성 멤버가 아닙니다",
+      "WORKSPACE_404_001": "워크스페이스가 존재하지 않습니다",
+      "TASK_404_001": "작업이 존재하지 않습니다",
+      "INTERNAL_500_001": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
+    },
+    "taskHistory": {
+      "created": "{actor}님이 작업을 생성했습니다",
+      "change": {
+        "STATUS": "{actor}님이 상태를 {from}에서 {to}(으)로 변경했습니다",
+        "ASSIGNEE": "{actor}님이 담당자를 {from}에서 {to}(으)로 변경했습니다",
+        "PRIORITY": "{actor}님이 우선순위를 {from}에서 {to}(으)로 변경했습니다",
+        "TITLE": "{actor}님이 제목을 변경했습니다 ({from} → {to})",
+        "DESCRIPTION": "{actor}님이 설명을 수정했습니다",
+        "PROGRESS": "{actor}님이 진행도를 {from}에서 {to}(으)로 변경했습니다",
+        "START_DATE": "{actor}님이 시작일을 {from}에서 {to}(으)로 변경했습니다",
+        "DUE_DATE": "{actor}님이 종료일을 {from}에서 {to}(으)로 변경했습니다",
+        "TAGS": "{actor}님이 태그를 변경했습니다 ({from} → {to})",
+        "fallback": "{actor}님이 {element}을(를) {from}에서 {to}(으)로 변경했습니다"
+      },
+      "actionFallback": "{actor}님이 작업을 변경했습니다 ({action})",
+      "empty": "없음",
+      "unassigned": "미할당"
+    },
+    "taskHistoryErrors": {
+      "VALIDATION_400_001": "요청 값이 올바르지 않습니다",
       "AUTH_401_001": "로그인이 필요하거나 인증이 만료되었습니다",
       "AUTH_403_001": "해당 워크스페이스의 활성 멤버가 아닙니다",
       "WORKSPACE_404_001": "워크스페이스가 존재하지 않습니다",

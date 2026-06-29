@@ -17,7 +17,7 @@ import {
 import { Button, MarkdownEditor } from '@shared/ui';
 import { MarkdownPreview } from '@shared/ui/markdown-editor/markdown-preview';
 import { getMappedApiErrorMessage } from '@shared/api';
-import { formatEpochSeconds } from '@shared/lib/date';
+import { formatRelativeEpochSeconds } from '@shared/lib/date';
 
 type TaskDetailCommentsProps = {
     workspaceId: string | number;
@@ -108,14 +108,24 @@ export function TaskDetailComments({ workspaceId, taskId }: TaskDetailCommentsPr
                 {!isCommentsPending && !commentsErrorMessage && comments.length > 0
                     ? comments.map(comment => (
                           <div key={comment.id} className="flex gap-4">
-                              <MemberAvatar name={comment.author.displayName} size="md" />
+                              <MemberAvatar
+                                  name={comment.author.displayName}
+                                  workspaceId={workspaceId}
+                                  memberId={comment.author.memberId}
+                                  size="md"
+                              />
                               <div className="flex-1 rounded-2xl rounded-tl-none border border-slate-100 bg-slate-50/80 p-4">
                                   <div className="mb-1.5 flex items-center gap-2">
                                       <span className="text-[15px] font-bold text-slate-900">
                                           {comment.author.displayName}
                                       </span>
                                       <span className="text-xs font-medium text-slate-400">
-                                          {formatEpochSeconds(comment.createdAt, 'YYYY.MM.DD HH:mm')}
+                                          {formatRelativeEpochSeconds(comment.createdAt, {
+                                              justNow: t('relativeTime.justNow'),
+                                              minutesAgo: count => t('relativeTime.minutesAgo', { count }),
+                                              hoursAgo: count => t('relativeTime.hoursAgo', { count }),
+                                              daysAgo: count => t('relativeTime.daysAgo', { count }),
+                                          })}
                                       </span>
                                       {comment.edited ? (
                                           <span className="text-xs font-medium text-slate-400">{t('edited')}</span>

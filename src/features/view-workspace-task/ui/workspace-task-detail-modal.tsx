@@ -137,7 +137,7 @@ export function WorkspaceTaskDetailModal({ workspaceId, taskId, open, onClose }:
                             onEdit={() => setIsEditOpen(true)}
                             onClose={handleClose}
                         />
-                        <TaskDetailView task={task} viewMode={viewMode} />
+                        <TaskDetailView workspaceId={workspaceId} task={task} viewMode={viewMode} />
                         <UpdateWorkspaceTaskModal
                             workspaceId={workspaceId}
                             task={task}
