@@ -1,13 +1,13 @@
 'use client';
 
 import { Loader2 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 import { MemberAvatar, useWorkspaceMemberNameMap } from '@entities/member';
 import { isGetWorkspaceTaskHistoriesErrorCode, useWorkspaceTaskHistoriesQuery } from '@entities/task';
 
 import { getMappedApiErrorMessage } from '@shared/api';
-import { formatRelativeEpochSeconds } from '@shared/lib/date';
+import { formatEpochSecondsRelativeTime } from '@shared/lib/date';
 
 import { formatTaskHistoryMessage } from '../lib/format-task-history-message';
 
@@ -31,6 +31,7 @@ type TaskDetailActivityProps = {
 };
 
 export function TaskDetailActivity({ workspaceId, taskId }: TaskDetailActivityProps) {
+    const locale = useLocale();
     const t = useTranslations('board.taskDetail');
     const tBoard = useTranslations('board');
     const tHistory = useTranslations('board.taskHistory');
@@ -137,12 +138,7 @@ export function TaskDetailActivity({ workspaceId, taskId }: TaskDetailActivityPr
                             ))}
                         </div>
                         <p className="mt-1 text-xs font-medium text-slate-400">
-                            {formatRelativeEpochSeconds(item.occurredAt, {
-                                justNow: t('relativeTime.justNow'),
-                                minutesAgo: count => t('relativeTime.minutesAgo', { count }),
-                                hoursAgo: count => t('relativeTime.hoursAgo', { count }),
-                                daysAgo: count => t('relativeTime.daysAgo', { count }),
-                            })}
+                            {formatEpochSecondsRelativeTime(item.occurredAt, locale)}
                         </p>
                     </div>
                 </div>

@@ -277,12 +277,6 @@
       "commentSubmit": "댓글 등록",
       "commentMarkdownExpandedTitle": "댓글 작성",
       "commentLength": "{count}/{max}",
-      "relativeTime": {
-        "justNow": "방금",
-        "minutesAgo": "{count}분 전",
-        "hoursAgo": "{count}시간 전",
-        "daysAgo": "{count}일 전"
-      },
       "markdownWrite": "작성",
       "markdownPreview": "미리보기",
       "markdownPreviewEmpty": "미리볼 내용이 없습니다",

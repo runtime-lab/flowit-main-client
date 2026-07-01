@@ -277,12 +277,6 @@
       "commentSubmit": "Post comment",
       "commentMarkdownExpandedTitle": "Write comment",
       "commentLength": "{count}/{max}",
-      "relativeTime": {
-        "justNow": "Just now",
-        "minutesAgo": "{count}m ago",
-        "hoursAgo": "{count}h ago",
-        "daysAgo": "{count}d ago"
-      },
       "markdownWrite": "Write",
       "markdownPreview": "Preview",
       "markdownPreviewEmpty": "Nothing to preview yet",
