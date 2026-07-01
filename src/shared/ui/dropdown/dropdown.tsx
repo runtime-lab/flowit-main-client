@@ -16,6 +16,16 @@ const DropdownContext = createContext<{
     menuRef: React.RefObject<HTMLDivElement | null>;
 } | null>(null);
 
+export function useDropdown() {
+    const context = useContext(DropdownContext);
+
+    if (!context) {
+        throw new Error('useDropdown can only be used inside a Dropdown component.');
+    }
+
+    return context;
+}
+
 export const Dropdown = ({ children }: { children: React.ReactNode }) => {
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -122,10 +132,7 @@ export const DropdownMenu = ({ children, className }: DropdownMenuProps) => {
         <div
             ref={menuRef}
             style={{ position: 'fixed', top: position.top, right: position.right, zIndex: 50 }}
-            className={cn(
-                'w-48 rounded-xl border border-gray-100 bg-white p-1 shadow-lg dark:border-gray-800 dark:bg-gray-950',
-                className,
-            )}
+            className={cn('w-48 rounded-xl border border-gray-100 bg-white p-1 shadow-lg', className)}
         >
             {children}
         </div>,
@@ -151,7 +158,7 @@ export const DropdownItem = ({ children, className, onClick, ...props }: Dropdow
             {...props}
             onClick={handleClick}
             className={cn(
-                'flex w-full items-center rounded-lg px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-900',
+                'flex w-full items-center rounded-lg px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50',
                 onClick && 'cursor-pointer',
                 className,
             )}

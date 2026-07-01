@@ -24,6 +24,7 @@ export {
     dateInputToEpochSeconds,
     epochSecondsToDateInput,
     formatEpochSeconds,
+    formatEpochSecondsRelativeTime,
     isDateRangeValid,
     isValidDateInput,
     parseDateInput,

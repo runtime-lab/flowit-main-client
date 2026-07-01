@@ -5,6 +5,8 @@ import { useEffect } from 'react';
 import { QueryProvider } from './query-provider';
 import { NextIntlClientProvider } from 'next-intl';
 
+import { AppToaster } from '@shared/ui';
+
 import type { AbstractIntlMessages } from 'next-intl';
 
 type AppProvidersProps = {
@@ -22,6 +24,7 @@ export function AppProviders({ children, messages, locale }: AppProvidersProps) 
         <QueryProvider>
             <NextIntlClientProvider messages={messages} locale={locale}>
                 {children}
+                <AppToaster />
             </NextIntlClientProvider>
         </QueryProvider>
     );

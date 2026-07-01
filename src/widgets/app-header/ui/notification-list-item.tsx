@@ -1,0 +1,60 @@
+'use client';
+
+import { useLocale } from 'next-intl';
+
+import { NotificationAvatar, NotificationMessage, resolveNotificationLinkHref } from '@entities/notification';
+
+import { Link } from '@shared/i18n';
+import { useDropdown } from '@shared/ui';
+import { cn } from '@shared/lib';
+import { formatEpochSecondsRelativeTime } from '@shared/lib/date';
+
+import type { Notification } from '@entities/notification';
+
+type NotificationListItemProps = {
+    notification: Notification;
+};
+
+export function NotificationListItem({ notification }: NotificationListItemProps) {
+    const locale = useLocale();
+    const { setIsOpen } = useDropdown();
+    const href = resolveNotificationLinkHref(notification.link);
+    const isUnread = !notification.read;
+    const relativeTime = formatEpochSecondsRelativeTime(notification.occurredAt, locale);
+    const itemClassName = cn(
+        'group relative flex items-start gap-3 px-4 py-3 transition-colors hover:bg-slate-50/80',
+        isUnread && 'bg-blue-50/30 hover:bg-blue-50/50',
+    );
+
+    const content = (
+        <>
+            {isUnread ? <span className="absolute top-2 left-2 size-1.5 rounded-full bg-blue-500" aria-hidden /> : null}
+            <NotificationAvatar
+                notification={notification}
+                size="md"
+                className={cn(isUnread && 'ring-2 ring-blue-400/60 ring-offset-2 ring-offset-white')}
+            />
+            <div className="min-w-0 flex-1 pt-0.5">
+                <NotificationMessage notification={notification} />
+                <span
+                    className={cn(
+                        'mt-1.5 block text-[11px] tracking-wide',
+                        isUnread ? 'font-medium text-slate-500' : 'font-normal text-slate-400',
+                    )}
+                >
+                    {relativeTime}
+                </span>
+            </div>
+        </>
+    );
+
+    if (!href) {
+        return <div className={itemClassName}>{content}</div>;
+    }
+
+    return (
+        <Link href={href} className={cn('block', itemClassName)} onClick={() => setIsOpen(false)}>
+            {content}
+        </Link>
+    );
+}

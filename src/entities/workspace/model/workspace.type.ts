@@ -3,7 +3,8 @@
  * - ADMIN: 워크스페이스를 관리할 수 있는 관리자 권한입니다.
  * - MEMBER: 워크스페이스에 참여한 일반 멤버 권한입니다.
  */
-export type WorkspaceMemberRole = 'OWNER' | 'ADMIN' | 'MEMBER';
+export const WORKSPACE_MEMBER_ROLES = ['OWNER', 'ADMIN', 'MEMBER'] as const;
+export type WorkspaceMemberRole = (typeof WORKSPACE_MEMBER_ROLES)[number];
 
 export type Workspace = {
     id: number;

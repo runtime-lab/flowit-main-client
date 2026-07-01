@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { Loader2 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 import { MemberAvatar } from '@entities/member';
 import {
@@ -17,7 +17,7 @@ import {
 import { Button, MarkdownEditor } from '@shared/ui';
 import { MarkdownPreview } from '@shared/ui/markdown-editor/markdown-preview';
 import { getMappedApiErrorMessage } from '@shared/api';
-import { formatRelativeEpochSeconds } from '@shared/lib/date';
+import { formatEpochSecondsRelativeTime } from '@shared/lib/date';
 
 type TaskDetailCommentsProps = {
     workspaceId: string | number;
@@ -25,6 +25,7 @@ type TaskDetailCommentsProps = {
 };
 
 export function TaskDetailComments({ workspaceId, taskId }: TaskDetailCommentsProps) {
+    const locale = useLocale();
     const t = useTranslations('board.taskDetail');
     const tBoard = useTranslations('board');
     const tErrors = useTranslations('board.taskCommentErrors');
@@ -120,12 +121,7 @@ export function TaskDetailComments({ workspaceId, taskId }: TaskDetailCommentsPr
                                           {comment.author.displayName}
                                       </span>
                                       <span className="text-xs font-medium text-slate-400">
-                                          {formatRelativeEpochSeconds(comment.createdAt, {
-                                              justNow: t('relativeTime.justNow'),
-                                              minutesAgo: count => t('relativeTime.minutesAgo', { count }),
-                                              hoursAgo: count => t('relativeTime.hoursAgo', { count }),
-                                              daysAgo: count => t('relativeTime.daysAgo', { count }),
-                                          })}
+                                          {formatEpochSecondsRelativeTime(comment.createdAt, locale)}
                                       </span>
                                       {comment.edited ? (
                                           <span className="text-xs font-medium text-slate-400">{t('edited')}</span>

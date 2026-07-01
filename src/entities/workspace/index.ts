@@ -1,5 +1,11 @@
 export { createWorkspace, getWorkspace, updateWorkspace } from './api';
-export { buildUpdateWorkspaceRequest, findWorkspaceById, isWorkspaceManager, isWorkspaceOwner } from './lib';
+export {
+    buildUpdateWorkspaceRequest,
+    findWorkspaceById,
+    isWorkspaceManager,
+    isWorkspaceMemberRole,
+    isWorkspaceOwner,
+} from './lib';
 export {
     useDeleteWorkspaceMutation,
     useUpdateWorkspaceMutation,
@@ -8,6 +14,7 @@ export {
     useWorkspaceQuery,
 } from './model';
 export { WorkspaceRoleBadge } from './ui';
+export { WORKSPACE_MEMBER_ROLES } from './model';
 export type {
     CreateWorkspaceRequest,
     CreateWorkspaceResponse,
