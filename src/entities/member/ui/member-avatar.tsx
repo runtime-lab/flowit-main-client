@@ -46,7 +46,6 @@ export function MemberAvatar({
         ? findMemberProfileImageUrl({
               members: membersData?.members,
               memberId,
-              displayName: name,
           })
         : (profileImageUrl ?? null);
 
