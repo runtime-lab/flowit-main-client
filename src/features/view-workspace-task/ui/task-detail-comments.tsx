@@ -2,10 +2,13 @@
 
 import { useState } from 'react';
 
+import { ListPagination } from './list-pagination';
+import { TaskCommentDeleteModal } from './task-comment-delete-modal';
+import { TaskCommentItem } from './task-comment-item';
 import { Loader2 } from 'lucide-react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 
-import { MemberAvatar } from '@entities/member';
+import { useWorkspaceMembersQuery } from '@entities/member';
 import {
     isCreateWorkspaceTaskCommentErrorCode,
     isGetWorkspaceTaskCommentsErrorCode,
@@ -13,11 +16,16 @@ import {
     useCreateWorkspaceTaskCommentMutation,
     useWorkspaceTaskCommentsQuery,
 } from '@entities/task';
+import { useMeUserQuery } from '@entities/user';
 
 import { Button, MarkdownEditor } from '@shared/ui';
-import { MarkdownPreview } from '@shared/ui/markdown-editor/markdown-preview';
 import { getMappedApiErrorMessage } from '@shared/api';
-import { formatEpochSecondsRelativeTime } from '@shared/lib/date';
+
+import { getLastPageIndex, getLastPageIndexAfterItemAdded } from '../lib/get-last-page-index';
+
+import type { TaskComment } from '@entities/task';
+
+const TASK_DETAIL_COMMENTS_PAGE_SIZE = 20;
 
 type TaskDetailCommentsProps = {
     workspaceId: string | number;
@@ -25,20 +33,31 @@ type TaskDetailCommentsProps = {
 };
 
 export function TaskDetailComments({ workspaceId, taskId }: TaskDetailCommentsProps) {
-    const locale = useLocale();
     const t = useTranslations('board.taskDetail');
     const tBoard = useTranslations('board');
     const tErrors = useTranslations('board.taskCommentErrors');
     const tCreateErrors = useTranslations('board.createCommentErrors');
 
     const [commentInput, setCommentInput] = useState('');
+    const [page, setPage] = useState(0);
+    const [deletingComment, setDeletingComment] = useState<TaskComment | null>(null);
+
+    const { data: meUser } = useMeUserQuery();
+    const { data: membersData } = useWorkspaceMembersQuery({ workspaceId });
+
+    const myMemberId = membersData?.members.find(member => member.email === meUser?.email)?.memberId;
 
     const {
         data: commentPage,
         isPending: isCommentsPending,
         isError: isCommentsError,
         error: commentsError,
-    } = useWorkspaceTaskCommentsQuery({ workspaceId, taskId });
+    } = useWorkspaceTaskCommentsQuery({
+        workspaceId,
+        taskId,
+        page,
+        size: TASK_DETAIL_COMMENTS_PAGE_SIZE,
+    });
 
     const {
         mutateAsync: createCommentAsync,
@@ -88,107 +107,117 @@ export function TaskDetailComments({ workspaceId, taskId }: TaskDetailCommentsPr
         try {
             await createCommentAsync({ contentMarkdown: trimmedComment });
             setCommentInput('');
+            setPage(getLastPageIndexAfterItemAdded(totalCount, TASK_DETAIL_COMMENTS_PAGE_SIZE));
         } catch {
             // surfaced via mutation state
         }
     };
 
+    const handleCommentDeleted = () => {
+        const remainingCount = Math.max(0, totalCount - 1);
+        const lastPage = getLastPageIndex(remainingCount, TASK_DETAIL_COMMENTS_PAGE_SIZE);
+
+        if (page > lastPage) {
+            setPage(lastPage);
+        }
+    };
+
     return (
-        <div className="flex flex-1 flex-col justify-between">
-            <div className="mb-8 space-y-6">
-                {isCommentsPending ? (
-                    <div className="flex justify-center py-8">
-                        <Loader2 className="size-5 animate-spin text-slate-400" />
-                    </div>
-                ) : null}
+        <>
+            <div className="flex flex-1 flex-col justify-between">
+                <div className="mb-8 space-y-6">
+                    {isCommentsPending ? (
+                        <div className="flex justify-center py-8">
+                            <Loader2 className="size-5 animate-spin text-slate-400" />
+                        </div>
+                    ) : null}
 
-                {commentsErrorMessage ? (
-                    <p className="py-8 text-center text-sm font-medium text-rose-500">{commentsErrorMessage}</p>
-                ) : null}
+                    {commentsErrorMessage ? (
+                        <p className="py-8 text-center text-sm font-medium text-rose-500">{commentsErrorMessage}</p>
+                    ) : null}
 
-                {!isCommentsPending && !commentsErrorMessage && comments.length > 0
-                    ? comments.map(comment => (
-                          <div key={comment.id} className="flex gap-4">
-                              <MemberAvatar
-                                  name={comment.author.displayName}
+                    {!isCommentsPending && !commentsErrorMessage && comments.length > 0
+                        ? comments.map(comment => (
+                              <TaskCommentItem
+                                  key={comment.id}
+                                  comment={comment}
                                   workspaceId={workspaceId}
-                                  memberId={comment.author.memberId}
-                                  size="md"
+                                  taskId={taskId}
+                                  myMemberId={myMemberId}
+                                  onDelete={setDeletingComment}
                               />
-                              <div className="flex-1 rounded-2xl rounded-tl-none border border-slate-100 bg-slate-50/80 p-4">
-                                  <div className="mb-1.5 flex items-center gap-2">
-                                      <span className="text-[15px] font-bold text-slate-900">
-                                          {comment.author.displayName}
-                                      </span>
-                                      <span className="text-xs font-medium text-slate-400">
-                                          {formatEpochSecondsRelativeTime(comment.createdAt, locale)}
-                                      </span>
-                                      {comment.edited ? (
-                                          <span className="text-xs font-medium text-slate-400">{t('edited')}</span>
-                                      ) : null}
-                                  </div>
-                                  <MarkdownPreview
-                                      value={comment.contentMarkdown}
-                                      emptyLabel=""
-                                      className="text-[15px] leading-relaxed text-slate-700"
-                                  />
-                              </div>
-                          </div>
-                      ))
-                    : null}
+                          ))
+                        : null}
 
-                {!isCommentsPending && !commentsErrorMessage && comments.length === 0 ? (
-                    <p className="py-8 text-center text-sm font-medium text-slate-400">{t('noComments')}</p>
-                ) : null}
+                    {!isCommentsPending && !commentsErrorMessage && comments.length === 0 ? (
+                        <p className="py-8 text-center text-sm font-medium text-slate-400">{t('noComments')}</p>
+                    ) : null}
 
-                {!isCommentsPending && !commentsErrorMessage && totalCount > comments.length ? (
-                    <p className="text-center text-xs font-medium text-slate-400">
-                        {t('commentsTruncated', { shown: comments.length, total: totalCount })}
-                    </p>
-                ) : null}
-            </div>
+                    {!isCommentsPending && !commentsErrorMessage ? (
+                        <ListPagination
+                            page={page}
+                            pageSize={TASK_DETAIL_COMMENTS_PAGE_SIZE}
+                            totalCount={totalCount}
+                            onPageChange={setPage}
+                        />
+                    ) : null}
+                </div>
 
-            <div className="mt-auto mb-6 space-y-3 pb-2">
-                {createErrorMessage ? <p className="text-sm font-bold text-rose-500">{createErrorMessage}</p> : null}
-                <MarkdownEditor
-                    size="compact"
-                    value={commentInput}
-                    onChange={handleCommentChange}
-                    placeholder={t('commentPlaceholder')}
-                    maxLength={MAX_WORKSPACE_TASK_COMMENT_LENGTH}
-                    disabled={isInputDisabled}
-                    writeLabel={t('markdownWrite')}
-                    previewLabel={t('markdownPreview')}
-                    emptyPreviewLabel={t('markdownPreviewEmpty')}
-                    expandLabel={t('markdownExpand')}
-                    expandedTitle={t('commentMarkdownExpandedTitle')}
-                />
-                <div className="flex items-center justify-end gap-3">
-                    <span className="text-xs font-medium text-slate-400">
-                        {t('commentLength', {
-                            count: commentInput.length,
-                            max: MAX_WORKSPACE_TASK_COMMENT_LENGTH,
-                        })}
-                    </span>
-                    <Button
-                        type="button"
-                        variant="primary"
-                        size="sm"
-                        onClick={() => void handleSubmitComment()}
-                        disabled={isSubmitDisabled}
-                        className="min-w-[96px]"
-                    >
-                        {isCreatePending ? (
-                            <span className="inline-flex items-center gap-2">
-                                <Loader2 className="size-4 animate-spin" />
-                                {t('commentSubmitting')}
-                            </span>
-                        ) : (
-                            t('commentSubmit')
-                        )}
-                    </Button>
+                <div className="mt-auto mb-6 space-y-3 pb-2">
+                    {createErrorMessage ? (
+                        <p className="text-sm font-bold text-rose-500">{createErrorMessage}</p>
+                    ) : null}
+                    <MarkdownEditor
+                        size="compact"
+                        value={commentInput}
+                        onChange={handleCommentChange}
+                        placeholder={t('commentPlaceholder')}
+                        maxLength={MAX_WORKSPACE_TASK_COMMENT_LENGTH}
+                        disabled={isInputDisabled}
+                        writeLabel={t('markdownWrite')}
+                        previewLabel={t('markdownPreview')}
+                        emptyPreviewLabel={t('markdownPreviewEmpty')}
+                        expandLabel={t('markdownExpand')}
+                        expandedTitle={t('commentMarkdownExpandedTitle')}
+                    />
+                    <div className="flex items-center justify-end gap-3">
+                        <span className="text-xs font-medium text-slate-400">
+                            {t('commentLength', {
+                                count: commentInput.length,
+                                max: MAX_WORKSPACE_TASK_COMMENT_LENGTH,
+                            })}
+                        </span>
+                        <Button
+                            type="button"
+                            variant="primary"
+                            size="sm"
+                            onClick={() => void handleSubmitComment()}
+                            disabled={isSubmitDisabled}
+                            className="min-w-[96px]"
+                        >
+                            {isCreatePending ? (
+                                <span className="inline-flex items-center gap-2">
+                                    <Loader2 className="size-4 animate-spin" />
+                                    {t('commentSubmitting')}
+                                </span>
+                            ) : (
+                                t('commentSubmit')
+                            )}
+                        </Button>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            {deletingComment ? (
+                <TaskCommentDeleteModal
+                    open
+                    workspaceId={workspaceId}
+                    taskId={taskId}
+                    comment={deletingComment}
+                    onClose={() => setDeletingComment(null)}
+                    onDeleted={handleCommentDeleted}
+                />
+            ) : null}
+        </>
     );
 }
