@@ -53,7 +53,13 @@
       "WORKSPACE_MEMBER_ROLE_CHANGED": "<bold>{actor}</bold> changed <bold>{subject}</bold>'s role in {workspace} from {roleFrom} to {roleTo}.",
       "WORKSPACE_MEMBER_REMOVED": "<bold>{actor}</bold> removed <bold>{subject}</bold> from {workspace}.",
       "WORKSPACE_ACCESS_REVOKED": "Your access to {workspace} was revoked.",
-      "WORKSPACE_MEMBER_WITHDRAWN": "<bold>{subject}</bold> left {workspace}."
+      "WORKSPACE_MEMBER_WITHDRAWN": "<bold>{subject}</bold> left {workspace}.",
+      "TASK_CREATED": "<bold>{actor}</bold> created task <bold>{subject}</bold>.",
+      "TASK_DATE_CHANGED": "The schedule for task <bold>{subject}</bold> was changed.",
+      "TASK_STATUS_CHANGED": "<bold>{actor}</bold> changed <bold>{subject}</bold> status from {statusFrom} to {statusTo}.",
+      "TASK_PROGRESS_CHANGED": "The progress of task <bold>{subject}</bold> was changed.",
+      "TASK_ASSIGNED": "You were assigned to task <bold>{subject}</bold>.",
+      "TASK_UNASSIGNED": "You were unassigned from task <bold>{subject}</bold>."
     }
   },
   "notFound": {

@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import { WorkspaceBoardPage } from '@views/workspace-board-page';
 
 type PageProps = {
@@ -6,5 +8,9 @@ type PageProps = {
 
 export default async function Board({ params }: PageProps) {
     const { workspaceId } = await params;
-    return <WorkspaceBoardPage workspaceId={workspaceId} />;
+    return (
+        <Suspense>
+            <WorkspaceBoardPage workspaceId={workspaceId} />
+        </Suspense>
+    );
 }

@@ -21,7 +21,7 @@ type NotificationToastContentProps = {
 export function NotificationToastContent({ notification }: NotificationToastContentProps) {
     const locale = useLocale();
     const t = useTranslations('notification');
-    const href = resolveNotificationLinkHref(notification.link);
+    const href = resolveNotificationLinkHref(notification);
     const relativeTime = formatEpochSecondsRelativeTime(notification.occurredAt, locale);
 
     const dismissToast = () => toast.dismiss(`notification-${notification.id}`);

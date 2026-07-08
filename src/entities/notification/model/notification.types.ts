@@ -1,4 +1,10 @@
 export type NotificationAlertType =
+    | 'TASK_CREATED'
+    | 'TASK_DATE_CHANGED'
+    | 'TASK_STATUS_CHANGED'
+    | 'TASK_PROGRESS_CHANGED'
+    | 'TASK_ASSIGNED'
+    | 'TASK_UNASSIGNED'
     | 'WORKSPACE_MEMBER_JOINED'
     | 'WORKSPACE_MEMBER_ROLE_CHANGED'
     | 'WORKSPACE_MEMBER_REMOVED'
@@ -9,9 +15,9 @@ export type NotificationScopeType = 'WORKSPACE';
 
 export type NotificationActorType = 'USER';
 
-export type NotificationSubjectType = 'WORKSPACE_MEMBER';
+export type NotificationSubjectType = 'TASK' | 'WORKSPACE_MEMBER';
 
-export type NotificationLinkType = 'NONE' | 'WORKSPACE_MEMBERS';
+export type NotificationLinkType = 'NONE' | 'TASK_DETAIL' | 'WORKSPACE_MEMBERS';
 
 export type NotificationScope = {
     type: NotificationScopeType;
