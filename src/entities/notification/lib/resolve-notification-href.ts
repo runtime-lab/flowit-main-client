@@ -5,7 +5,7 @@ import type { Notification } from '../model/notification.types';
 export function resolveNotificationLinkHref(notification: Notification): string | null {
     const { link, subject } = notification;
 
-    if (link.workspaceId === null) {
+    if (link.workspaceId === null || link.workspaceId === undefined) {
         return null;
     }
 
