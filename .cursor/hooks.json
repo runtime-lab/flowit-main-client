@@ -20,7 +20,7 @@
     "preToolUse": [
       {
         "command": "python3 .cursor/hooks/handler.py guard",
-        "matcher": "Write|StrReplace|Delete|EditNotebook|ApplyPatch"
+        "matcher": "Write|StrReplace|Delete|EditNotebook|ApplyPatch|Shell"
       }
     ],
     "postToolUse": [

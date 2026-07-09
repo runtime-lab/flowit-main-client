@@ -37,6 +37,23 @@ APPROVAL_PATTERNS = [
 NEGATION_PATTERN = re.compile(r"승인\s*(?:없이|전\s*에|하지\s*말|하지\s*않)", re.IGNORECASE)
 PLAN_ONLY_PATTERN = re.compile(r"계획\s*만|plan\s*only|설계\s*만", re.IGNORECASE)
 
+SHELL_FILE_MUTATION_PATTERNS = [
+    re.compile(r">\s*[^\s&|]+"),
+    re.compile(r">>\s*[^\s&|]+"),
+    re.compile(r"<<-?\s*"),
+    re.compile(r"\btee\b"),
+    re.compile(r"\bsed\s+-i"),
+    re.compile(r"\bperl\s+-pi"),
+    re.compile(r"\bpatch\b"),
+    re.compile(r"\brm\b"),
+    re.compile(r"\bmv\b"),
+    re.compile(r"\bcp\b"),
+    re.compile(r"\btruncate\b"),
+    re.compile(r"\bcurl\b.*\s-o\b"),
+    re.compile(r"\bwget\b"),
+    re.compile(r"\bgit\s+(add|commit|checkout|restore|apply|reset)\b", re.IGNORECASE),
+]
+
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -115,6 +132,51 @@ def extract_prompt(data: dict) -> str:
     return ""
 
 
+def extract_shell_command(data: dict) -> str:
+    tool_input = data.get("tool_input") or data.get("input") or {}
+    if isinstance(tool_input, dict):
+        command = tool_input.get("command")
+        if isinstance(command, str):
+            return command
+    return ""
+
+
+def is_shell_file_mutation(command: str) -> bool:
+    normalized = command.strip()
+    if not normalized:
+        return False
+    return any(pattern.search(normalized) for pattern in SHELL_FILE_MUTATION_PATTERNS)
+
+
+def deny_mutation(role: str | None, *, shell_bypass: bool = False) -> dict:
+    if role == "reviewer":
+        return {
+            "permission": "deny",
+            "user_message": "Reviewer 역할에서는 코드 수정이 차단됩니다.",
+            "agent_message": "Reviewer는 Read/Grep만 사용하고 리뷰 텍스트만 출력하세요.",
+        }
+
+    if role == "planner":
+        return {
+            "permission": "deny",
+            "user_message": "Planner 역할에서는 코드 수정이 차단됩니다. 승인 후 @implementer 로 구현하세요.",
+            "agent_message": "Planner는 계획만 작성하세요. 파일 수정 도구를 사용하지 마세요.",
+        }
+
+    if shell_bypass:
+        return {
+            "permission": "deny",
+            "user_message": "구현 전 승인이 필요합니다. Shell로 파일 수정 우회도 차단됩니다.",
+            "agent_message": "승인 없이 Shell 파일 수정이 차단되었습니다. Write/StrReplace 우회를 시도하지 말고 계획을 제시하세요.",
+        }
+
+    return {
+        "permission": "deny",
+        "user_message": "구현 전 승인이 필요합니다. 계획 확인 후 '승인' 또는 '진행해'라고 답해 주세요.",
+        "agent_message": "사용자 승인 없이 수정 도구가 차단되었습니다. 계획을 제시하고 승인을 기다리세요.",
+    }
+
+
 def handle_session_start(data: dict) -> dict:
     state = {
         "session_id": str(uuid.uuid4()),
@@ -175,29 +237,20 @@ def handle_guard(data: dict) -> dict:
         },
     )
 
-    if tool_name not in MUTATION_TOOLS:
+    if tool_name == "Shell":
+        if not is_shell_file_mutation(extract_shell_command(data)):
+            return {"permission": "allow"}
+    elif tool_name not in MUTATION_TOOLS:
         return {"permission": "allow"}
 
     if role == "reviewer":
-        return {
-            "permission": "deny",
-            "user_message": "Reviewer 역할에서는 코드 수정이 차단됩니다.",
-            "agent_message": "Reviewer는 Read/Grep만 사용하고 리뷰 텍스트만 출력하세요.",
-        }
+        return deny_mutation(role)
 
     if role == "planner":
-        return {
-            "permission": "deny",
-            "user_message": "Planner 역할에서는 코드 수정이 차단됩니다. 승인 후 @implementer 로 구현하세요.",
-            "agent_message": "Planner는 계획만 작성하세요. 파일 수정 도구를 사용하지 마세요.",
-        }
+        return deny_mutation(role)
 
     if not state.get("approved", False):
-        return {
-            "permission": "deny",
-            "user_message": "구현 전 승인이 필요합니다. 계획 확인 후 '승인' 또는 '진행해'라고 답해 주세요.",
-            "agent_message": "사용자 승인 없이 수정 도구가 차단되었습니다. 계획을 제시하고 승인을 기다리세요.",
-        }
+        return deny_mutation(role, shell_bypass=tool_name == "Shell")
 
     return {"permission": "allow"}
 

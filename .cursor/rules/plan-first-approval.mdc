@@ -8,8 +8,44 @@ alwaysApply: true
 ## 기본 원칙
 
 - 사용자가 **명시적으로 승인**하기 전까지 `Write`, `StrReplace`, `Delete`, `EditNotebook` 등 **파일 수정 도구를 사용하지 않는다**.
-- 코드 탐색(`Read`, `Grep`, `SemanticSearch`, `Glob`)은 계획 수립을 위해 **허용**한다.
+- `Shell`로 파일을 바꾸는 명령(`sed -i`, `tee`, `echo >`, `mv`, `rm`, heredoc 리다이렉트 등)으로 **우회 수정하지 않는다**.
+- 코드 탐색(`Read`, `Grep`, `SemanticSearch`, `Glob`)과 읽기 전용 Shell(`git status`, `pnpm test`, `tsc` 등)은 계획 수립·검증을 위해 **허용**한다.
 - 사용자가 `@implementer`를 호출했거나 "승인", "진행해", "구현해", "적용해" 등으로 승인한 경우에만 구현을 시작한다.
+
+## 승인 상태 확인 (필수)
+
+파일 수정 도구(`Write`, `StrReplace`, `Delete`, `EditNotebook` 등)를 쓰기 **직전**, 반드시 다음 파일을 읽는다:
+
+- `.cursor/ai-logs/.session-state.json`
+
+판단 기준:
+
+- `approved: true` → 구현(수정 도구 사용) 가능
+- `approved: false` → **계획만** 제시하고 수정 도구 사용 금지
+
+주의:
+
+- 이전 턴에서 승인했어도, **현재 턴 기준**으로 JSON을 다시 확인한다.
+- `.cursor/hooks/handler.py`는 승인 키워드가 없는 사용자 메시지마다 `approved`를 `false`로 리셋할 수 있다.
+- 수정 도구가 훅에 의해 차단되면, 재시도하지 말고 계획을 제시한 뒤 승인을 기다린다.
+- **Shell 우회 금지**: `Write`/`StrReplace`가 막혔을 때 `Shell`로 같은 수정을 시도하지 않는다.
+
+## Shell 사용 기준
+
+`approved: false`일 때 **차단** (파일 변경 우회 가능):
+
+- 리다이렉트: `>`, `>>`, heredoc(`<<`)
+- `tee`, `sed -i`, `perl -pi`, `patch`
+- `mv`, `cp`, `rm`, `truncate`
+- `git add`, `git commit`, `git checkout`, `git restore`, `git apply`, `git reset`
+
+`approved: false`일 때 **허용** (읽기·검증):
+
+- `git status`, `git diff`, `git log`
+- `pnpm test`, `pnpm exec tsc`, `eslint`, `prettier --check`
+- `cat`, `head`, `ls`, `curl` (파일 저장 없이)
+
+`approved: true`여도 Shell로 수정할 때는 **가능하면 `Write`/`StrReplace`를 우선**한다.
 
 ## 계획 제시 형식
 
@@ -17,19 +53,24 @@ alwaysApply: true
 
 ```markdown
 ## 목표
+
 (한 줄 요약)
 
 ## 변경 파일
+
 - path/to/file.ts — 변경 내용
 
 ## 작업 단계
+
 1. ...
 2. ...
 
 ## 리스크 / 대안
+
 - ...
 
 ## 확인 사항
+
 - ...
 ```
 
