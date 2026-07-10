@@ -33,11 +33,11 @@ export function WorkspaceDashboardPage({ workspaceId }: Props) {
     const activities = (activitiesData?.items ?? []).slice(0, ACTIVITY_RECORDS_SIZE);
 
     return (
-        <div className="animate-in fade-in relative flex h-full min-h-0 flex-col overflow-hidden px-8 pt-8 pb-12 duration-500">
+        <div className="animate-in fade-in relative flex min-h-full flex-col px-8 pt-8 pb-12 duration-500 xl:h-full xl:min-h-0 xl:overflow-hidden">
             <DashboardBackground />
             <DashboardHeader userName={userName} isPending={isMeUserPending} />
             <DashboardIndicatorCards indicators={indicators} isPending={isIndicatorsPending} />
-            <div className="relative z-10 grid grid-cols-1 gap-6 lg:min-h-0 lg:flex-1 lg:grid-cols-12 lg:grid-rows-1">
+            <div className="relative z-10 grid grid-cols-1 gap-6 xl:min-h-0 xl:flex-1 xl:grid-cols-12 xl:grid-rows-1">
                 <DashboardMyTasks workspaceId={workspaceId} tasks={tasks} isPending={isTasksPending} />
                 <DashboardRecentActivities
                     workspaceId={workspaceId}

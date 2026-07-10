@@ -70,7 +70,7 @@ export function DashboardMyTasks({ workspaceId, tasks, isPending }: DashboardMyT
     const boardHref = WORKSPACE_ROUTES.board(workspaceId);
 
     return (
-        <div className="flex flex-col rounded-2xl border border-slate-200/60 bg-white p-7 shadow-sm lg:col-span-7 lg:h-full lg:min-h-0">
+        <div className="flex flex-col rounded-2xl border border-slate-200/60 bg-white p-7 shadow-sm xl:col-span-7 xl:h-full xl:min-h-0">
             <div className="mb-4 flex shrink-0 items-center justify-between border-b border-slate-100 pb-4">
                 <h2 className="text-[17px] font-bold text-slate-900">{t('myTasks')}</h2>
                 <Link
@@ -81,7 +81,7 @@ export function DashboardMyTasks({ workspaceId, tasks, isPending }: DashboardMyT
                 </Link>
             </div>
 
-            <div className="lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
+            <div className="xl:min-h-0 xl:flex-1 xl:overflow-y-auto">
                 <DashboardMyTasksBody workspaceId={workspaceId} tasks={tasks} isPending={isPending} />
             </div>
         </div>
