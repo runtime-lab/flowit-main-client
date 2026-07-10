@@ -7,6 +7,7 @@ const baseKeys = createQueryKeys('task');
 
 export const taskQueryKeys = {
     ...baseKeys,
+    indicators: (workspaceId: string | number) => [...baseKeys.all, 'indicators', { workspaceId }] as const,
     commentsRoot: (workspaceId: string | number, taskId: number) =>
         [...baseKeys.all, 'comments', { workspaceId, taskId }] as const,
     comments: (params: GetWorkspaceTaskCommentsParams) =>

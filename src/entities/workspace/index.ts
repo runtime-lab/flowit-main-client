@@ -1,7 +1,9 @@
-export { createWorkspace, getWorkspace, updateWorkspace } from './api';
+export { createWorkspace, getWorkspace, getWorkspaceActivityRecords, updateWorkspace } from './api';
 export {
     buildUpdateWorkspaceRequest,
     findWorkspaceById,
+    formatActivityRecordMessage,
+    getActivityRecordActorName,
     isWorkspaceManager,
     isWorkspaceMemberRole,
     isWorkspaceOwner,
@@ -9,9 +11,10 @@ export {
 export {
     useDeleteWorkspaceMutation,
     useUpdateWorkspaceMutation,
+    useWorkspaceActivityRecordsQuery,
+    useWorkspaceQuery,
     workspaceMutationKeys,
     workspaceQueryKeys,
-    useWorkspaceQuery,
 } from './model';
 export { WorkspaceRoleBadge } from './ui';
 export { WORKSPACE_MEMBER_ROLES } from './model';
@@ -20,6 +23,17 @@ export type {
     CreateWorkspaceResponse,
     UpdateWorkspaceRequest,
     UpdateWorkspaceResponse,
+    ActivityChangeElement,
+    ActivityRecord,
+    ActivityRecordAction,
+    ActivityRecordActor,
+    ActivityRecordChange,
+    ActivityRecordDomain,
+    ActivityRecordTarget,
+    ActivityTargetType,
+    ActivityRecordTopic,
+    GetWorkspaceActivityRecordsParams,
+    WorkspaceActivityRecordsResponse,
     WorkspaceDetail,
     WorkspaceMemberRole,
     Workspace,

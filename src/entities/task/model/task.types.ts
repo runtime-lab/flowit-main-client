@@ -32,6 +32,7 @@ export type WorkspaceTasksResponse = {
 export type GetWorkspaceTasksParams = {
     status?: TaskStatus;
     assigneeMemberId?: number;
+    mine?: boolean;
     tag?: string;
     keyword?: string;
     dueFrom?: number;

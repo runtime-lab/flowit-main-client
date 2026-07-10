@@ -1,5 +1,10 @@
 export { getNotifications, markNotificationsReadAll, markNotificationsSeen } from './api';
-export { flattenNotificationsPages, getNotificationMessageValues, resolveNotificationLinkHref } from './lib';
+export {
+    flattenNotificationsPages,
+    getNotificationMessageValues,
+    resetNotificationsInfiniteQuery,
+    resolveNotificationLinkHref,
+} from './lib';
 export {
     notificationMutationKeys,
     notificationQueryKeys,
@@ -22,6 +27,8 @@ export type {
     NotificationChange,
     NotificationLink,
     NotificationLinkType,
+    NotificationProfile,
+    NotificationProfileSourceType,
     NotificationScope,
     NotificationsResponse,
     NotificationSubject,

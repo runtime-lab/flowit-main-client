@@ -18,7 +18,7 @@ type NotificationListItemProps = {
 export function NotificationListItem({ notification }: NotificationListItemProps) {
     const locale = useLocale();
     const { setIsOpen } = useDropdown();
-    const href = resolveNotificationLinkHref(notification.link);
+    const href = resolveNotificationLinkHref(notification);
     const isUnread = !notification.read;
     const relativeTime = formatEpochSecondsRelativeTime(notification.occurredAt, locale);
     const itemClassName = cn(

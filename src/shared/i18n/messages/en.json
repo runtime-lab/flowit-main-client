@@ -56,7 +56,13 @@
       "WORKSPACE_MEMBER_ROLE_CHANGED": "<bold>{actor}</bold> changed <bold>{subject}</bold>'s role in {workspace} from {roleFrom} to {roleTo}.",
       "WORKSPACE_MEMBER_REMOVED": "<bold>{actor}</bold> removed <bold>{subject}</bold> from {workspace}.",
       "WORKSPACE_ACCESS_REVOKED": "Your access to {workspace} was revoked.",
-      "WORKSPACE_MEMBER_WITHDRAWN": "<bold>{subject}</bold> left {workspace}."
+      "WORKSPACE_MEMBER_WITHDRAWN": "<bold>{subject}</bold> left {workspace}.",
+      "TASK_CREATED": "<bold>{actor}</bold> created task <bold>{subject}</bold>.",
+      "TASK_DATE_CHANGED": "The schedule for task <bold>{subject}</bold> was changed.",
+      "TASK_STATUS_CHANGED": "<bold>{actor}</bold> changed <bold>{subject}</bold> status from {statusFrom} to {statusTo}.",
+      "TASK_PROGRESS_CHANGED": "The progress of task <bold>{subject}</bold> was changed.",
+      "TASK_ASSIGNED": "You were assigned to task <bold>{subject}</bold>.",
+      "TASK_UNASSIGNED": "You were unassigned from task <bold>{subject}</bold>."
     }
   },
   "notFound": {
@@ -101,6 +107,51 @@
     "settings": "Settings",
     "currentWorkspace": "Current workspace",
     "myPage": "My page"
+  },
+  "dashboard": {
+    "greeting": "Hello, <highlight>{name}</highlight>!",
+    "subtitle": "Have a productive day.",
+    "indicators": {
+      "total": "All tasks",
+      "totalDescription": "All active tasks",
+      "inProgress": "In progress",
+      "inProgressDescription": "Tasks currently in progress",
+      "dueToday": "Due today",
+      "dueTodayDescription": "Tasks due today",
+      "expired": "Overdue",
+      "expiredDescription": "Incomplete tasks past the due date"
+    },
+    "myTasks": "My tasks",
+    "recentActivities": "Recent activity",
+    "viewAll": "View all",
+    "columns": {
+      "task": "Task",
+      "progress": "Progress",
+      "status": "Status",
+      "due": "Due"
+    },
+    "progress": "Progress",
+    "dueToday": "Today",
+    "dueTomorrow": "Tomorrow",
+    "noDueDate": "—",
+    "noTasks": "No tasks to show",
+    "noActivities": "No recent activity",
+    "unknownActor": "Unknown user",
+    "taskStatus": {
+      "TODO": "To do",
+      "IN_PROGRESS": "In progress",
+      "DONE": "Done"
+    },
+    "activityActions": {
+      "CREATED": "<bold>{actor}</bold> created <bold>{target}</bold>.",
+      "MODIFIED": "<bold>{actor}</bold> updated <bold>{target}</bold>.",
+      "STATUS_CHANGED": "<bold>{actor}</bold> changed the status of <bold>{target}</bold>.",
+      "PROGRESS_CHANGED": "<bold>{actor}</bold> updated the progress of <bold>{target}</bold>.",
+      "ROLE_CHANGED": "<bold>{actor}</bold> changed the role of <bold>{target}</bold>.",
+      "REMOVED": "<bold>{actor}</bold> removed <bold>{target}</bold> from the workspace.",
+      "WITHDRAWN": "<bold>{target}</bold> left the workspace.",
+      "JOINED": "<bold>{actor}</bold> joined the workspace."
+    }
   },
   "myPage": {
     "title": "My page",
