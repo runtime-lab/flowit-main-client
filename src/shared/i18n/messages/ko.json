@@ -108,6 +108,51 @@
     "currentWorkspace": "현재 워크스페이스",
     "myPage": "마이페이지"
   },
+  "dashboard": {
+    "greeting": "{name}님, 안녕하세요!",
+    "subtitle": "오늘도 생산적인 하루 보내세요.",
+    "indicators": {
+      "total": "전체 업무",
+      "totalDescription": "전체 진행 중인 업무",
+      "inProgress": "진행 중",
+      "inProgressDescription": "현재 진행 중인 업무",
+      "dueToday": "오늘 마감",
+      "dueTodayDescription": "오늘 마감 예정 업무",
+      "pendingReview": "리뷰 대기",
+      "pendingReviewDescription": "리뷰 대기 중인 업무"
+    },
+    "myTasks": "내 작업",
+    "recentActivities": "최근 활동",
+    "viewAll": "전체 보기",
+    "columns": {
+      "task": "작업",
+      "progress": "진행",
+      "status": "상태",
+      "due": "마감"
+    },
+    "progress": "진행도",
+    "dueToday": "오늘",
+    "dueTomorrow": "내일",
+    "noDueDate": "—",
+    "noTasks": "표시할 작업이 없습니다",
+    "noActivities": "최근 활동이 없습니다",
+    "unknownActor": "알 수 없는 사용자",
+    "taskStatus": {
+      "TODO": "할 일",
+      "IN_PROGRESS": "진행 중",
+      "DONE": "완료"
+    },
+    "activityActions": {
+      "CREATED": "<bold>{actor}</bold>님이 <bold>{target}</bold> 작업을 만들었습니다.",
+      "MODIFIED": "<bold>{actor}</bold>님이 <bold>{target}</bold> 작업을 수정했습니다.",
+      "STATUS_CHANGED": "<bold>{actor}</bold>님이 <bold>{target}</bold>의 상태를 변경했습니다.",
+      "PROGRESS_CHANGED": "<bold>{actor}</bold>님이 <bold>{target}</bold> 작업의 진행도를 변경했습니다.",
+      "ROLE_CHANGED": "<bold>{actor}</bold>님이 <bold>{target}</bold>님의 역할을 변경했습니다.",
+      "REMOVED": "<bold>{actor}</bold>님이 <bold>{target}</bold>님을 워크스페이스에서 제거했습니다.",
+      "WITHDRAWN": "<bold>{target}</bold>님이 워크스페이스에서 탈퇴했습니다.",
+      "JOINED": "<bold>{actor}</bold>님이 워크스페이스에 가입했습니다."
+    }
+  },
   "myPage": {
     "title": "마이페이지",
     "profileEdit": "프로필 정보 수정",

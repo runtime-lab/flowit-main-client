@@ -108,6 +108,51 @@
     "currentWorkspace": "Current workspace",
     "myPage": "My page"
   },
+  "dashboard": {
+    "greeting": "Hello, {name}!",
+    "subtitle": "Have a productive day.",
+    "indicators": {
+      "total": "All tasks",
+      "totalDescription": "All active tasks",
+      "inProgress": "In progress",
+      "inProgressDescription": "Tasks currently in progress",
+      "dueToday": "Due today",
+      "dueTodayDescription": "Tasks due today",
+      "pendingReview": "Pending review",
+      "pendingReviewDescription": "Tasks waiting for review"
+    },
+    "myTasks": "My tasks",
+    "recentActivities": "Recent activity",
+    "viewAll": "View all",
+    "columns": {
+      "task": "Task",
+      "progress": "Progress",
+      "status": "Status",
+      "due": "Due"
+    },
+    "progress": "Progress",
+    "dueToday": "Today",
+    "dueTomorrow": "Tomorrow",
+    "noDueDate": "—",
+    "noTasks": "No tasks to show",
+    "noActivities": "No recent activity",
+    "unknownActor": "Unknown user",
+    "taskStatus": {
+      "TODO": "To do",
+      "IN_PROGRESS": "In progress",
+      "DONE": "Done"
+    },
+    "activityActions": {
+      "CREATED": "<bold>{actor}</bold> created <bold>{target}</bold>.",
+      "MODIFIED": "<bold>{actor}</bold> updated <bold>{target}</bold>.",
+      "STATUS_CHANGED": "<bold>{actor}</bold> changed the status of <bold>{target}</bold>.",
+      "PROGRESS_CHANGED": "<bold>{actor}</bold> updated the progress of <bold>{target}</bold>.",
+      "ROLE_CHANGED": "<bold>{actor}</bold> changed the role of <bold>{target}</bold>.",
+      "REMOVED": "<bold>{actor}</bold> removed <bold>{target}</bold> from the workspace.",
+      "WITHDRAWN": "<bold>{target}</bold> left the workspace.",
+      "JOINED": "<bold>{actor}</bold> joined the workspace."
+    }
+  },
   "myPage": {
     "title": "My page",
     "profileEdit": "Edit profile info",

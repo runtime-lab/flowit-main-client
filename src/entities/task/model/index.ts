@@ -50,6 +50,7 @@ export { useCreateWorkspaceTaskMutation } from './use-create-workspace-task-muta
 export { useUpdateWorkspaceTaskProgressMutation } from './use-update-workspace-task-progress-mutation';
 export { useUpdateWorkspaceTaskMutation } from './use-update-workspace-task-mutation';
 export { useUpdateWorkspaceTaskStatusMutation } from './use-update-workspace-task-status-mutation';
+export { useWorkspaceTaskIndicatorsQuery } from './use-workspace-task-indicators-query';
 export { useWorkspaceTaskQuery } from './use-workspace-task-query';
 export { useWorkspaceTasksQuery } from './use-workspace-tasks-query';
 export type {
@@ -108,3 +109,4 @@ export type {
     TaskStatus,
     WorkspaceTasksResponse,
 } from './task.types';
+export type { WorkspaceTaskIndicatorsResponse } from './workspace-task-indicators.types';

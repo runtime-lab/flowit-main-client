@@ -5,6 +5,7 @@ export {
     getWorkspaceTask,
     getWorkspaceTaskComments,
     getWorkspaceTaskHistories,
+    getWorkspaceTaskIndicators,
     getWorkspaceTasks,
     updateWorkspaceTask,
     updateWorkspaceTaskComment,
@@ -48,6 +49,7 @@ export {
     useUpdateWorkspaceTaskStatusMutation,
     useWorkspaceTaskCommentsQuery,
     useWorkspaceTaskHistoriesQuery,
+    useWorkspaceTaskIndicatorsQuery,
     useWorkspaceTaskQuery,
     useWorkspaceTasksQuery,
 } from './model';
@@ -93,4 +95,5 @@ export type {
     UpdateWorkspaceTaskProgressParams,
     UpdateWorkspaceTaskStatusParams,
     WorkspaceTasksResponse,
+    WorkspaceTaskIndicatorsResponse,
 } from './model';
