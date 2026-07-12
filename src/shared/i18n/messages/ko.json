@@ -53,6 +53,18 @@
     "paginationNext": "다음",
     "paginationPage": "{current} / {total}"
   },
+  "toast": {
+    "workspaceCreateSuccess": "워크스페이스를 생성했습니다",
+    "workspaceUpdateSuccess": "워크스페이스 정보를 수정했습니다",
+    "workspaceDeleteSuccess": "워크스페이스를 삭제했습니다",
+    "commentCreateSuccess": "댓글을 등록했습니다",
+    "commentUpdateSuccess": "댓글을 수정했습니다",
+    "commentDeleteSuccess": "댓글을 삭제했습니다",
+    "profileUpdateSuccess": "프로필을 수정했습니다",
+    "passwordUpdateSuccess": "비밀번호를 변경했습니다",
+    "profileImageUploadSuccess": "프로필 이미지를 변경했습니다",
+    "inviteEmailSuccess": "초대 메일을 발송했습니다"
+  },
   "notification": {
     "title": "알림",
     "markAllRead": "모두 읽음",

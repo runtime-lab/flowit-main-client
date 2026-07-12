@@ -12,7 +12,13 @@ import {
 
 import { Button, LabeledInput, LabeledTextarea, Modal } from '@shared/ui';
 import { getMappedApiErrorMessage } from '@shared/api';
-import { isValidWorkspaceName, MAX_DEFAULT_LENGTH, MAX_TEXT_AREA_LENGTH } from '@shared/lib';
+import {
+    isValidWorkspaceName,
+    MAX_DEFAULT_LENGTH,
+    MAX_TEXT_AREA_LENGTH,
+    showErrorToast,
+    showSuccessToast,
+} from '@shared/lib';
 
 import type { FormEvent } from 'react';
 
@@ -35,6 +41,7 @@ export function WorkspaceEditModal({
 }: WorkspaceEditModalProps) {
     const t = useTranslations('settings');
     const tErrors = useTranslations('settings.workspaceUpdateErrors');
+    const tToast = useTranslations('toast');
     const tWorkspaces = useTranslations('workspaces');
     const tCommon = useTranslations('common');
 
@@ -80,7 +87,19 @@ export function WorkspaceEditModal({
 
         updateWorkspaceMutate(updateBody, {
             onSuccess: () => {
+                showSuccessToast(tToast('workspaceUpdateSuccess'));
                 handleClose();
+            },
+            onError: mutationError => {
+                showErrorToast(
+                    getMappedApiErrorMessage({
+                        error: mutationError,
+                        fallback: t('workspaceUpdateFailed'),
+                        unknownError: t('workspaceUpdateUnknownError'),
+                        isKnownErrorCode: isUpdateWorkspaceErrorCode,
+                        getKnownErrorMessage: errorCode => tErrors(errorCode),
+                    }),
+                );
             },
         });
     };

@@ -11,7 +11,13 @@ import { createWorkspace, isCreateWorkspaceErrorCode } from '@entities/workspace
 
 import { Button, LabeledInput, LabeledTextarea, Modal } from '@shared/ui';
 import { getMappedApiErrorMessage } from '@shared/api';
-import { isValidWorkspaceName, MAX_DEFAULT_LENGTH, MAX_TEXT_AREA_LENGTH } from '@shared/lib';
+import {
+    isValidWorkspaceName,
+    MAX_DEFAULT_LENGTH,
+    MAX_TEXT_AREA_LENGTH,
+    showErrorToast,
+    showSuccessToast,
+} from '@shared/lib';
 import { useModal } from '@shared/lib/hooks';
 
 import {
@@ -26,6 +32,7 @@ import type { ChangeEvent, FormEvent } from 'react';
 export function CreateWorkspace() {
     const t = useTranslations('workspaces');
     const tErrors = useTranslations('workspaces.createWorkspaceErrors');
+    const tToast = useTranslations('toast');
     const tCommon = useTranslations('common');
     const queryClient = useQueryClient();
 
@@ -50,7 +57,19 @@ export function CreateWorkspace() {
         mutationFn: createWorkspace,
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: meWorkspacesQueryKeys.all });
+            showSuccessToast(tToast('workspaceCreateSuccess'));
             handleClose();
+        },
+        onError: mutationError => {
+            showErrorToast(
+                getMappedApiErrorMessage({
+                    error: mutationError,
+                    fallback: t('createWorkspaceFailed'),
+                    unknownError: t('createWorkspaceUnknownError'),
+                    isKnownErrorCode: isCreateWorkspaceErrorCode,
+                    getKnownErrorMessage: errorCode => tErrors(errorCode),
+                }),
+            );
         },
     });
 

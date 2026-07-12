@@ -8,7 +8,13 @@ import { isUpdateMePasswordErrorCode, useUpdateMePasswordMutation } from '@entit
 
 import { Button, LabeledInput, Modal } from '@shared/ui';
 import { getMappedApiErrorMessage } from '@shared/api';
-import { isPasswordConfirmed, isValidPassword, PASSWORD_MAX_LENGTH } from '@shared/lib';
+import {
+    isPasswordConfirmed,
+    isValidPassword,
+    PASSWORD_MAX_LENGTH,
+    showErrorToast,
+    showSuccessToast,
+} from '@shared/lib';
 
 import type { ChangeEvent, FormEvent } from 'react';
 
@@ -29,6 +35,7 @@ type PasswordEditModalProps = {
 export function PasswordEditModal({ open, onClose }: PasswordEditModalProps) {
     const t = useTranslations('myPage');
     const tErrors = useTranslations('myPage.passwordUpdateErrors');
+    const tToast = useTranslations('toast');
     const tAuth = useTranslations('auth');
     const tCommon = useTranslations('common');
 
@@ -63,7 +70,19 @@ export function PasswordEditModal({ open, onClose }: PasswordEditModalProps) {
             { currentPassword, newPassword },
             {
                 onSuccess: () => {
+                    showSuccessToast(tToast('passwordUpdateSuccess'));
                     handleClose();
+                },
+                onError: mutationError => {
+                    showErrorToast(
+                        getMappedApiErrorMessage({
+                            error: mutationError,
+                            fallback: t('passwordUpdateFailed'),
+                            unknownError: t('passwordUpdateUnknownError'),
+                            isKnownErrorCode: isUpdateMePasswordErrorCode,
+                            getKnownErrorMessage: errorCode => tErrors(errorCode),
+                        }),
+                    );
                 },
             },
         );

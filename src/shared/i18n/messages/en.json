@@ -53,6 +53,18 @@
     "paginationNext": "Next",
     "paginationPage": "{current} / {total}"
   },
+  "toast": {
+    "workspaceCreateSuccess": "Workspace created",
+    "workspaceUpdateSuccess": "Workspace updated",
+    "workspaceDeleteSuccess": "Workspace deleted",
+    "commentCreateSuccess": "Comment posted",
+    "commentUpdateSuccess": "Comment updated",
+    "commentDeleteSuccess": "Comment deleted",
+    "profileUpdateSuccess": "Profile updated",
+    "passwordUpdateSuccess": "Password changed",
+    "profileImageUploadSuccess": "Profile image updated",
+    "inviteEmailSuccess": "Invitation email sent"
+  },
   "notification": {
     "title": "Notifications",
     "markAllRead": "Mark all as read",

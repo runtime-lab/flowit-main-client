@@ -20,6 +20,7 @@ import { useMeUserQuery } from '@entities/user';
 
 import { Button, MarkdownEditor } from '@shared/ui';
 import { getMappedApiErrorMessage } from '@shared/api';
+import { showErrorToast, showSuccessToast } from '@shared/lib';
 
 import { getLastPageIndex, getLastPageIndexAfterItemAdded } from '../lib/get-last-page-index';
 
@@ -35,6 +36,7 @@ type TaskDetailCommentsProps = {
 export function TaskDetailComments({ workspaceId, taskId }: TaskDetailCommentsProps) {
     const t = useTranslations('board.taskDetail');
     const tBoard = useTranslations('board');
+    const tToast = useTranslations('toast');
     const tErrors = useTranslations('board.taskCommentErrors');
     const tCreateErrors = useTranslations('board.createCommentErrors');
 
@@ -108,8 +110,17 @@ export function TaskDetailComments({ workspaceId, taskId }: TaskDetailCommentsPr
             await createCommentAsync({ contentMarkdown: trimmedComment });
             setCommentInput('');
             setPage(getLastPageIndexAfterItemAdded(totalCount, TASK_DETAIL_COMMENTS_PAGE_SIZE));
-        } catch {
-            // surfaced via mutation state
+            showSuccessToast(tToast('commentCreateSuccess'));
+        } catch (createCommentError) {
+            showErrorToast(
+                getMappedApiErrorMessage({
+                    error: createCommentError,
+                    fallback: tBoard('createCommentFailed'),
+                    unknownError: tBoard('createCommentUnknownError'),
+                    isKnownErrorCode: isCreateWorkspaceTaskCommentErrorCode,
+                    getKnownErrorMessage: errorCode => tCreateErrors(errorCode),
+                }),
+            );
         }
     };
 

@@ -21,12 +21,15 @@ import {
     compressProfileImage,
     ProfileImageSizeError,
     ProfileImageTypeError,
+    showErrorToast,
+    showSuccessToast,
 } from '@shared/lib';
 import { useModal } from '@shared/lib/hooks';
 
 export function UserProfile() {
     const t = useTranslations('myPage');
     const tErrors = useTranslations('myPage.profileImageUploadErrors');
+    const tToast = useTranslations('toast');
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const { data: meUser } = useMeUserQuery();
@@ -64,30 +67,36 @@ export function UserProfile() {
             const compressedFile = await compressProfileImage(file);
 
             updateProfileImageMutate(compressedFile, {
+                onSuccess: () => {
+                    showSuccessToast(tToast('profileImageUploadSuccess'));
+                },
                 onError: mutationError => {
-                    setUploadErrorMessage(
-                        getMappedApiErrorMessage({
-                            error: mutationError,
-                            fallback: t('profileImageUploadFailed'),
-                            unknownError: t('profileImageUploadUnknownError'),
-                            isKnownErrorCode: isUpdateMeProfileImageErrorCode,
-                            getKnownErrorMessage: errorCode => tErrors(errorCode),
-                        }),
-                    );
+                    const message = getMappedApiErrorMessage({
+                        error: mutationError,
+                        fallback: t('profileImageUploadFailed'),
+                        unknownError: t('profileImageUploadUnknownError'),
+                        isKnownErrorCode: isUpdateMeProfileImageErrorCode,
+                        getKnownErrorMessage: errorCode => tErrors(errorCode),
+                    });
+                    setUploadErrorMessage(message);
+                    showErrorToast(message);
                 },
             });
         } catch (uploadError) {
             if (uploadError instanceof ProfileImageTypeError) {
                 setUploadErrorMessage(t('profileImageInvalidType'));
+                showErrorToast(t('profileImageInvalidType'));
                 return;
             }
 
             if (uploadError instanceof ProfileImageSizeError) {
                 setUploadErrorMessage(t('profileImageTooLarge'));
+                showErrorToast(t('profileImageTooLarge'));
                 return;
             }
 
             setUploadErrorMessage(t('profileImageUploadFailed'));
+            showErrorToast(t('profileImageUploadFailed'));
         }
     };
 

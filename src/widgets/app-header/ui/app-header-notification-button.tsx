@@ -18,7 +18,7 @@ import {
 
 import { Button, Dropdown, DropdownMenu, DropdownTrigger, useDropdown } from '@shared/ui';
 import { getMappedApiErrorMessage } from '@shared/api';
-import { cn } from '@shared/lib';
+import { cn, showErrorToast } from '@shared/lib';
 
 function NotificationDropdownContent() {
     const t = useTranslations('notification');
@@ -107,7 +107,21 @@ function NotificationDropdownContent() {
                     <button
                         type="button"
                         disabled={!hasUnread || isMarkingAllRead}
-                        onClick={() => markAllRead()}
+                        onClick={() =>
+                            markAllRead(undefined, {
+                                onError: mutationError => {
+                                    showErrorToast(
+                                        getMappedApiErrorMessage({
+                                            error: mutationError,
+                                            fallback: t('markAllReadFailed'),
+                                            unknownError: t('markAllReadUnknownError'),
+                                            isKnownErrorCode: isMarkNotificationsReadAllErrorCode,
+                                            getKnownErrorMessage: errorCode => tMarkAllReadErrors(errorCode),
+                                        }),
+                                    );
+                                },
+                            })
+                        }
                         className={cn(
                             'rounded-lg px-2.5 py-1 text-[12px] font-semibold transition-colors',
                             'text-blue-600 hover:bg-blue-50',

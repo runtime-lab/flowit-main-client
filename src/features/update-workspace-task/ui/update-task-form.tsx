@@ -16,7 +16,7 @@ import {
 
 import { Button, Input, MarkdownEditor, TaskTagInput } from '@shared/ui';
 import { getMappedApiErrorMessage } from '@shared/api';
-import { cn } from '@shared/lib';
+import { cn, showErrorToast } from '@shared/lib';
 import { isDateRangeValid, isValidDateInput } from '@shared/lib/date';
 
 import { MAX_TASK_TAGS, toUpdateWorkspaceTaskRequest, useUpdateTaskForm } from '../model';
@@ -136,15 +136,32 @@ export function UpdateTaskForm({ workspaceId, task, onClose }: UpdateTaskFormPro
             if (values.progress !== task.progress) {
                 try {
                     await updateProgressAsync({ taskId: task.id, progress: values.progress });
-                } catch {
+                } catch (progressUpdateError) {
                     setIsProgressUpdateFailed(true);
+                    showErrorToast(
+                        getMappedApiErrorMessage({
+                            error: progressUpdateError,
+                            fallback: tBoard('updateTaskProgressFailed'),
+                            unknownError: tBoard('updateTaskUnknownError'),
+                            isKnownErrorCode: isUpdateWorkspaceTaskProgressErrorCode,
+                            getKnownErrorMessage: errorCode => tProgressErrors(errorCode),
+                        }),
+                    );
                     return;
                 }
             }
 
             onClose();
-        } catch {
-            // surfaced via mutation state
+        } catch (updateTaskError) {
+            showErrorToast(
+                getMappedApiErrorMessage({
+                    error: updateTaskError,
+                    fallback: tBoard('updateTaskFailed'),
+                    unknownError: tBoard('updateTaskUnknownError'),
+                    isKnownErrorCode: isUpdateWorkspaceTaskErrorCode,
+                    getKnownErrorMessage: errorCode => tErrors(errorCode),
+                }),
+            );
         }
     };
 
