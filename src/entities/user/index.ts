@@ -8,6 +8,14 @@ export {
     updateMeUser,
 } from './api';
 export {
+    JOIN_USER_ERROR_CODES,
+    UPDATE_ME_PASSWORD_ERROR_CODES,
+    UPDATE_ME_PROFILE_IMAGE_ERROR_CODES,
+    UPDATE_ME_USER_ERROR_CODES,
+    isJoinUserErrorCode,
+    isUpdateMePasswordErrorCode,
+    isUpdateMeProfileImageErrorCode,
+    isUpdateMeUserErrorCode,
     mePasswordMutationKeys,
     meProfileImageMutationKeys,
     meProfileImageQueryKeys,
@@ -24,13 +32,17 @@ export {
 export { createProfileImageObjectUrl } from './lib/create-profile-image-object-url';
 export type {
     JoinUserData,
+    JoinUserErrorCode,
     JoinUserRequest,
     MeWorkspaceItem,
     MeWorkspacesResponse,
     MeUserResponse,
+    UpdateMePasswordErrorCode,
     UpdateMePasswordRequest,
     UpdateMePasswordResponse,
+    UpdateMeProfileImageErrorCode,
     UpdateMeProfileImageResponse,
+    UpdateMeUserErrorCode,
     UpdateMeUserRequest,
     UpdateMeUserResponse,
     UserStatus,

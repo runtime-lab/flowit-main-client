@@ -8,13 +8,14 @@ import { useTranslations } from 'next-intl';
 
 import {
     createProfileImageObjectUrl,
+    isUpdateMeProfileImageErrorCode,
     useMeProfileImageQuery,
     useMeUserQuery,
     useUpdateMeProfileImageMutation,
 } from '@entities/user';
 
 import { Button, Card } from '@shared/ui';
-import { getApiErrorMessage } from '@shared/api';
+import { getMappedApiErrorMessage } from '@shared/api';
 import {
     ALLOWED_PROFILE_IMAGE_MIME_TYPES,
     compressProfileImage,
@@ -25,6 +26,7 @@ import { useModal } from '@shared/lib/hooks';
 
 export function UserProfile() {
     const t = useTranslations('myPage');
+    const tErrors = useTranslations('myPage.profileImageUploadErrors');
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const { data: meUser } = useMeUserQuery();
@@ -63,7 +65,15 @@ export function UserProfile() {
 
             updateProfileImageMutate(compressedFile, {
                 onError: mutationError => {
-                    setUploadErrorMessage(getApiErrorMessage(mutationError, t('profileImageUploadFailed')));
+                    setUploadErrorMessage(
+                        getMappedApiErrorMessage({
+                            error: mutationError,
+                            fallback: t('profileImageUploadFailed'),
+                            unknownError: t('profileImageUploadUnknownError'),
+                            isKnownErrorCode: isUpdateMeProfileImageErrorCode,
+                            getKnownErrorMessage: errorCode => tErrors(errorCode),
+                        }),
+                    );
                 },
             });
         } catch (uploadError) {
@@ -82,7 +92,16 @@ export function UserProfile() {
     };
 
     const submitErrorMessage =
-        uploadErrorMessage ?? (error ? getApiErrorMessage(error, t('profileImageUploadFailed')) : null);
+        uploadErrorMessage ??
+        (error
+            ? getMappedApiErrorMessage({
+                  error,
+                  fallback: t('profileImageUploadFailed'),
+                  unknownError: t('profileImageUploadUnknownError'),
+                  isKnownErrorCode: isUpdateMeProfileImageErrorCode,
+                  getKnownErrorMessage: errorCode => tErrors(errorCode),
+              })
+            : null);
 
     return (
         <Card className="flex h-fit min-w-0 flex-col items-center justify-center">

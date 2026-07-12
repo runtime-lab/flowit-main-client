@@ -6,14 +6,20 @@ import { useSearchParams } from 'next/navigation';
 
 import { BoardContent } from './board-content';
 import { BoardHeader } from './board-header';
+import { useTranslations } from 'next-intl';
 
 import { CreateWorkspaceTaskModal } from '@features/create-workspace-task';
 import { InviteWorkspaceMemberModal } from '@features/invite-workspace-member';
 import { WorkspaceTaskDetailModal } from '@features/view-workspace-task';
-import { useUpdateWorkspaceTaskStatusMutation, useWorkspaceTasksQuery } from '@entities/task';
+import {
+    isUpdateWorkspaceTaskStatusErrorCode,
+    useUpdateWorkspaceTaskStatusMutation,
+    useWorkspaceTasksQuery,
+} from '@entities/task';
 import { useWorkspaceQuery } from '@entities/workspace';
 
 import { usePathname, useRouter } from '@shared/i18n';
+import { getMappedApiErrorMessage } from '@shared/api';
 import { useModal } from '@shared/lib/hooks';
 
 import type { TaskStatus } from '@entities/task';
@@ -34,6 +40,8 @@ function parseTaskIdFromSearchParams(searchParams: ReadonlyURLSearchParams): num
 }
 
 export function WorkspaceBoardPage({ workspaceId }: Props) {
+    const tBoard = useTranslations('board');
+    const tErrors = useTranslations('board.updateTaskStatusErrors');
     const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();
@@ -42,7 +50,11 @@ export function WorkspaceBoardPage({ workspaceId }: Props) {
     const [clickedTaskId, setClickedTaskId] = useState<number | null>(null);
     const urlTaskId = parseTaskIdFromSearchParams(searchParams);
     const selectedTaskId = clickedTaskId ?? urlTaskId;
-    const { mutate: updateTaskStatus } = useUpdateWorkspaceTaskStatusMutation({ workspaceId });
+    const {
+        mutate: updateTaskStatus,
+        error: statusError,
+        reset: resetStatusError,
+    } = useUpdateWorkspaceTaskStatusMutation({ workspaceId });
 
     const { data: workspace, isPending: isWorkspacePending } = useWorkspaceQuery({ workspaceId });
     const {
@@ -58,6 +70,7 @@ export function WorkspaceBoardPage({ workspaceId }: Props) {
     const isCreateTaskModalOpen = createTaskStatus !== null;
 
     const handleTaskStatusChange = (taskId: number, status: TaskStatus) => {
+        resetStatusError();
         updateTaskStatus({ taskId, status });
     };
 
@@ -82,6 +95,16 @@ export function WorkspaceBoardPage({ workspaceId }: Props) {
         router.replace(query ? `${pathname}?${query}` : pathname);
     };
 
+    const statusErrorMessage = statusError
+        ? getMappedApiErrorMessage({
+              error: statusError,
+              fallback: tBoard('updateTaskStatusFailed'),
+              unknownError: tBoard('updateTaskStatusUnknownError'),
+              isKnownErrorCode: isUpdateWorkspaceTaskStatusErrorCode,
+              getKnownErrorMessage: errorCode => tErrors(errorCode),
+          })
+        : null;
+
     return (
         <div className="flex h-full min-h-0 flex-col overflow-hidden p-8">
             <BoardHeader
@@ -90,6 +113,7 @@ export function WorkspaceBoardPage({ workspaceId }: Props) {
                 onCreateTask={() => openCreateTaskModal()}
                 onInviteMembers={openInviteModal}
             />
+            {statusErrorMessage ? <p className="mb-3 text-sm font-bold text-rose-500">{statusErrorMessage}</p> : null}
             <BoardContent
                 isPending={isTasksPending}
                 isError={isTasksError}
