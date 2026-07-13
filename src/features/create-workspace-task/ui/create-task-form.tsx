@@ -16,7 +16,7 @@ import {
 
 import { Button, Input, MarkdownEditor, TaskTagInput } from '@shared/ui';
 import { getMappedApiErrorMessage } from '@shared/api';
-import { cn } from '@shared/lib';
+import { cn, showErrorToast } from '@shared/lib';
 import { isDateRangeValid, isValidDateInput } from '@shared/lib/date';
 
 import { MAX_TASK_TAGS, toCreateWorkspaceTaskRequest, useCreateTaskForm } from '../model';
@@ -128,15 +128,32 @@ export function CreateTaskForm({ workspaceId, initialStatus, onClose }: CreateTa
             if (values.progress > 0) {
                 try {
                     await updateProgressAsync({ taskId: createdId, progress: values.progress });
-                } catch {
+                } catch (progressUpdateError) {
                     setIsProgressUpdateFailed(true);
+                    showErrorToast(
+                        getMappedApiErrorMessage({
+                            error: progressUpdateError,
+                            fallback: tBoard('updateTaskProgressFailed'),
+                            unknownError: tBoard('createTaskUnknownError'),
+                            isKnownErrorCode: isUpdateWorkspaceTaskProgressErrorCode,
+                            getKnownErrorMessage: errorCode => tProgressErrors(errorCode),
+                        }),
+                    );
                     return;
                 }
             }
 
             onClose();
-        } catch {
-            // createError is surfaced via mutation state
+        } catch (createTaskError) {
+            showErrorToast(
+                getMappedApiErrorMessage({
+                    error: createTaskError,
+                    fallback: tBoard('createTaskFailed'),
+                    unknownError: tBoard('createTaskUnknownError'),
+                    isKnownErrorCode: isCreateWorkspaceTaskErrorCode,
+                    getKnownErrorMessage: errorCode => tErrors(errorCode),
+                }),
+            );
         }
     };
 

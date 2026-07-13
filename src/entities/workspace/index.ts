@@ -9,18 +9,33 @@ export {
     isWorkspaceOwner,
 } from './lib';
 export {
+    CREATE_WORKSPACE_ERROR_CODES,
+    DELETE_WORKSPACE_ERROR_CODES,
+    GET_WORKSPACE_ACTIVITY_RECORDS_ERROR_CODES,
+    GET_WORKSPACE_ERROR_CODES,
+    UPDATE_WORKSPACE_ERROR_CODES,
+    isCreateWorkspaceErrorCode,
+    isDeleteWorkspaceErrorCode,
+    isGetWorkspaceActivityRecordsErrorCode,
+    isGetWorkspaceErrorCode,
+    isUpdateWorkspaceErrorCode,
     useDeleteWorkspaceMutation,
     useUpdateWorkspaceMutation,
     useWorkspaceActivityRecordsQuery,
     useWorkspaceQuery,
     workspaceMutationKeys,
     workspaceQueryKeys,
+    WORKSPACE_MEMBER_ROLES,
 } from './model';
 export { WorkspaceRoleBadge } from './ui';
-export { WORKSPACE_MEMBER_ROLES } from './model';
 export type {
+    CreateWorkspaceErrorCode,
     CreateWorkspaceRequest,
     CreateWorkspaceResponse,
+    DeleteWorkspaceErrorCode,
+    GetWorkspaceActivityRecordsErrorCode,
+    GetWorkspaceErrorCode,
+    UpdateWorkspaceErrorCode,
     UpdateWorkspaceRequest,
     UpdateWorkspaceResponse,
     ActivityChangeElement,

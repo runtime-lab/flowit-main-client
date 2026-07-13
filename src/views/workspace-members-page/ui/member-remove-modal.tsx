@@ -6,6 +6,7 @@ import { useRemoveWorkspaceMemberMutation } from '@entities/member';
 
 import { Button, Modal } from '@shared/ui';
 import { getMappedApiErrorMessage } from '@shared/api';
+import { showErrorToast } from '@shared/lib';
 
 import { isMemberRemoveErrorCode } from '../model';
 
@@ -41,6 +42,17 @@ export function MemberRemoveModal({ open, workspaceId, member, onClose }: Member
         removeMemberMutate(undefined, {
             onSuccess: () => {
                 handleClose();
+            },
+            onError: mutationError => {
+                showErrorToast(
+                    getMappedApiErrorMessage({
+                        error: mutationError,
+                        fallback: t('removeMemberFailed'),
+                        unknownError: t('removeMemberUnknownError'),
+                        isKnownErrorCode: isMemberRemoveErrorCode,
+                        getKnownErrorMessage: errorCode => t(`removeMemberErrors.${errorCode}`),
+                    }),
+                );
             },
         });
     };

@@ -4,11 +4,17 @@ import { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { useUpdateMePasswordMutation } from '@entities/user';
+import { isUpdateMePasswordErrorCode, useUpdateMePasswordMutation } from '@entities/user';
 
 import { Button, LabeledInput, Modal } from '@shared/ui';
-import { getApiErrorMessage } from '@shared/api';
-import { isPasswordConfirmed, isValidPassword, PASSWORD_MAX_LENGTH } from '@shared/lib';
+import { getMappedApiErrorMessage } from '@shared/api';
+import {
+    isPasswordConfirmed,
+    isValidPassword,
+    PASSWORD_MAX_LENGTH,
+    showErrorToast,
+    showSuccessToast,
+} from '@shared/lib';
 
 import type { ChangeEvent, FormEvent } from 'react';
 
@@ -28,6 +34,8 @@ type PasswordEditModalProps = {
 
 export function PasswordEditModal({ open, onClose }: PasswordEditModalProps) {
     const t = useTranslations('myPage');
+    const tErrors = useTranslations('myPage.passwordUpdateErrors');
+    const tToast = useTranslations('toast');
     const tAuth = useTranslations('auth');
     const tCommon = useTranslations('common');
 
@@ -62,7 +70,19 @@ export function PasswordEditModal({ open, onClose }: PasswordEditModalProps) {
             { currentPassword, newPassword },
             {
                 onSuccess: () => {
+                    showSuccessToast(tToast('passwordUpdateSuccess'));
                     handleClose();
+                },
+                onError: mutationError => {
+                    showErrorToast(
+                        getMappedApiErrorMessage({
+                            error: mutationError,
+                            fallback: t('passwordUpdateFailed'),
+                            unknownError: t('passwordUpdateUnknownError'),
+                            isKnownErrorCode: isUpdateMePasswordErrorCode,
+                            getKnownErrorMessage: errorCode => tErrors(errorCode),
+                        }),
+                    );
                 },
             },
         );
@@ -76,7 +96,15 @@ export function PasswordEditModal({ open, onClose }: PasswordEditModalProps) {
         currentPassword.length === 0 ||
         !isValidPassword(newPassword) ||
         !isPasswordConfirmed(newPassword, confirmNewPassword);
-    const submitErrorMessage = error ? getApiErrorMessage(error, t('passwordUpdateFailed')) : null;
+    const submitErrorMessage = error
+        ? getMappedApiErrorMessage({
+              error,
+              fallback: t('passwordUpdateFailed'),
+              unknownError: t('passwordUpdateUnknownError'),
+              isKnownErrorCode: isUpdateMePasswordErrorCode,
+              getKnownErrorMessage: errorCode => tErrors(errorCode),
+          })
+        : null;
 
     return (
         <Modal

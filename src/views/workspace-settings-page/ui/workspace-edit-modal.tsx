@@ -4,11 +4,21 @@ import { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { buildUpdateWorkspaceRequest, useUpdateWorkspaceMutation } from '@entities/workspace';
+import {
+    buildUpdateWorkspaceRequest,
+    isUpdateWorkspaceErrorCode,
+    useUpdateWorkspaceMutation,
+} from '@entities/workspace';
 
 import { Button, LabeledInput, LabeledTextarea, Modal } from '@shared/ui';
-import { getApiErrorMessage } from '@shared/api';
-import { isValidWorkspaceName, MAX_DEFAULT_LENGTH, MAX_TEXT_AREA_LENGTH } from '@shared/lib';
+import { getMappedApiErrorMessage } from '@shared/api';
+import {
+    isValidWorkspaceName,
+    MAX_DEFAULT_LENGTH,
+    MAX_TEXT_AREA_LENGTH,
+    showErrorToast,
+    showSuccessToast,
+} from '@shared/lib';
 
 import type { FormEvent } from 'react';
 
@@ -30,6 +40,8 @@ export function WorkspaceEditModal({
     onClose,
 }: WorkspaceEditModalProps) {
     const t = useTranslations('settings');
+    const tErrors = useTranslations('settings.workspaceUpdateErrors');
+    const tToast = useTranslations('toast');
     const tWorkspaces = useTranslations('workspaces');
     const tCommon = useTranslations('common');
 
@@ -75,14 +87,34 @@ export function WorkspaceEditModal({
 
         updateWorkspaceMutate(updateBody, {
             onSuccess: () => {
+                showSuccessToast(tToast('workspaceUpdateSuccess'));
                 handleClose();
+            },
+            onError: mutationError => {
+                showErrorToast(
+                    getMappedApiErrorMessage({
+                        error: mutationError,
+                        fallback: t('workspaceUpdateFailed'),
+                        unknownError: t('workspaceUpdateUnknownError'),
+                        isKnownErrorCode: isUpdateWorkspaceErrorCode,
+                        getKnownErrorMessage: errorCode => tErrors(errorCode),
+                    }),
+                );
             },
         });
     };
 
     const isNameError = nameInputValue.length > 0 && !isValidWorkspaceName(nameInputValue);
     const isSaveDisabled = isUpdatingWorkspace || !isValidWorkspaceName(nameInputValue) || !hasChanges;
-    const submitErrorMessage = error ? getApiErrorMessage(error, t('workspaceUpdateFailed')) : null;
+    const submitErrorMessage = error
+        ? getMappedApiErrorMessage({
+              error,
+              fallback: t('workspaceUpdateFailed'),
+              unknownError: t('workspaceUpdateUnknownError'),
+              isKnownErrorCode: isUpdateWorkspaceErrorCode,
+              getKnownErrorMessage: errorCode => tErrors(errorCode),
+          })
+        : null;
 
     return (
         <Modal

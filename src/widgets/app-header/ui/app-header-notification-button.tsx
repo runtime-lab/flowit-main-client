@@ -7,6 +7,8 @@ import { useTranslations } from 'next-intl';
 
 import {
     flattenNotificationsPages,
+    isGetNotificationsErrorCode,
+    isMarkNotificationsReadAllErrorCode,
     resetNotificationsInfiniteQuery,
     useMarkNotificationsReadAllMutation,
     useMarkNotificationsSeenMutation,
@@ -15,18 +17,27 @@ import {
 } from '@entities/notification';
 
 import { Button, Dropdown, DropdownMenu, DropdownTrigger, useDropdown } from '@shared/ui';
-import { cn } from '@shared/lib';
+import { getMappedApiErrorMessage } from '@shared/api';
+import { cn, showErrorToast } from '@shared/lib';
 
 function NotificationDropdownContent() {
     const t = useTranslations('notification');
+    const tLoadErrors = useTranslations('notification.loadErrors');
+    const tMarkAllReadErrors = useTranslations('notification.markAllReadErrors');
     const queryClient = useQueryClient();
     const { isOpen } = useDropdown();
     const { data: summary } = useNotificationsSummaryQuery();
     const { mutate: markNotificationsSeen } = useMarkNotificationsSeenMutation();
-    const { mutate: markAllRead, isPending: isMarkingAllRead } = useMarkNotificationsReadAllMutation();
-    const { data, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } = useNotificationsInfiniteQuery({
-        enabled: isOpen,
-    });
+    const {
+        mutate: markAllRead,
+        isPending: isMarkingAllRead,
+        error: markAllReadError,
+        reset: resetMarkAllReadError,
+    } = useMarkNotificationsReadAllMutation();
+    const { data, isFetching, isFetchingNextPage, isError, error, fetchNextPage, hasNextPage } =
+        useNotificationsInfiniteQuery({
+            enabled: isOpen,
+        });
     const { items, unreadCount } = flattenNotificationsPages(data);
     const hasUnseen = (summary?.unseenCount ?? 0) > 0;
     const hasUnread = unreadCount > 0;
@@ -34,9 +45,30 @@ function NotificationDropdownContent() {
     const handleOpenNotifications = () => {
         if (!isOpen) {
             resetNotificationsInfiniteQuery(queryClient);
+            resetMarkAllReadError();
             markNotificationsSeen();
         }
     };
+
+    const loadErrorMessage = isError
+        ? getMappedApiErrorMessage({
+              error,
+              fallback: t('loadFailed'),
+              unknownError: t('loadUnknownError'),
+              isKnownErrorCode: isGetNotificationsErrorCode,
+              getKnownErrorMessage: errorCode => tLoadErrors(errorCode),
+          })
+        : null;
+
+    const markAllReadErrorMessage = markAllReadError
+        ? getMappedApiErrorMessage({
+              error: markAllReadError,
+              fallback: t('markAllReadFailed'),
+              unknownError: t('markAllReadUnknownError'),
+              isKnownErrorCode: isMarkNotificationsReadAllErrorCode,
+              getKnownErrorMessage: errorCode => tMarkAllReadErrors(errorCode),
+          })
+        : null;
 
     return (
         <>
@@ -75,7 +107,21 @@ function NotificationDropdownContent() {
                     <button
                         type="button"
                         disabled={!hasUnread || isMarkingAllRead}
-                        onClick={() => markAllRead()}
+                        onClick={() =>
+                            markAllRead(undefined, {
+                                onError: mutationError => {
+                                    showErrorToast(
+                                        getMappedApiErrorMessage({
+                                            error: mutationError,
+                                            fallback: t('markAllReadFailed'),
+                                            unknownError: t('markAllReadUnknownError'),
+                                            isKnownErrorCode: isMarkNotificationsReadAllErrorCode,
+                                            getKnownErrorMessage: errorCode => tMarkAllReadErrors(errorCode),
+                                        }),
+                                    );
+                                },
+                            })
+                        }
                         className={cn(
                             'rounded-lg px-2.5 py-1 text-[12px] font-semibold transition-colors',
                             'text-blue-600 hover:bg-blue-50',
@@ -85,9 +131,16 @@ function NotificationDropdownContent() {
                         {t('markAllRead')}
                     </button>
                 </div>
+                {markAllReadErrorMessage ? (
+                    <p className="border-b border-slate-100 px-4 py-2 text-[12px] font-medium text-rose-500">
+                        {markAllReadErrorMessage}
+                    </p>
+                ) : null}
                 <NotificationList
                     items={items}
                     isLoading={isFetching && !data}
+                    isError={isError}
+                    errorMessage={loadErrorMessage}
                     hasMore={hasNextPage}
                     isLoadingMore={isFetchingNextPage}
                     onLoadMore={() => void fetchNextPage()}

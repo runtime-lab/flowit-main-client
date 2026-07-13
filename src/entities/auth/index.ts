@@ -1,2 +1,3 @@
 export { login, logout } from './api';
-export type { AuthTokenData, LoginRequest, LoginResponse } from './model';
+export { LOGIN_ERROR_CODES, isLoginErrorCode } from './model';
+export type { AuthTokenData, LoginErrorCode, LoginRequest, LoginResponse } from './model';

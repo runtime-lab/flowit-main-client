@@ -25,6 +25,18 @@
     "signupSuccessDescription": "회원가입이 완료되었습니다. 로그인해 주세요.",
     "goToLogin": "로그인하기",
     "loginFailed": "로그인에 실패했습니다",
+    "loginUnknownError": "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요",
+    "loginErrors": {
+      "VALIDATION_400_001": "이메일 또는 비밀번호 형식이 올바르지 않습니다",
+      "AUTH_401_001": "이메일 또는 비밀번호가 올바르지 않습니다",
+      "INTERNAL_500_001": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
+    },
+    "signupUnknownError": "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요",
+    "signupErrors": {
+      "VALIDATION_400_001": "입력값이 올바르지 않습니다",
+      "USER_409_001": "이미 가입된 이메일입니다",
+      "INTERNAL_500_001": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
+    },
     "passwordEdit": "비밀번호 변경",
     "currentPassword": "현재 비밀번호",
     "newPassword": "새 비밀번호"
@@ -41,6 +53,18 @@
     "paginationNext": "다음",
     "paginationPage": "{current} / {total}"
   },
+  "toast": {
+    "workspaceCreateSuccess": "워크스페이스를 생성했습니다",
+    "workspaceUpdateSuccess": "워크스페이스 정보를 수정했습니다",
+    "workspaceDeleteSuccess": "워크스페이스를 삭제했습니다",
+    "commentCreateSuccess": "댓글을 등록했습니다",
+    "commentUpdateSuccess": "댓글을 수정했습니다",
+    "commentDeleteSuccess": "댓글을 삭제했습니다",
+    "profileUpdateSuccess": "프로필을 수정했습니다",
+    "passwordUpdateSuccess": "비밀번호를 변경했습니다",
+    "profileImageUploadSuccess": "프로필 이미지를 변경했습니다",
+    "inviteEmailSuccess": "초대 메일을 발송했습니다"
+  },
   "notification": {
     "title": "알림",
     "markAllRead": "모두 읽음",
@@ -51,6 +75,18 @@
     "unknownActor": "알 수 없는 사용자",
     "fallback": "새 알림이 도착했습니다.",
     "dismiss": "닫기",
+    "loadFailed": "알림을 불러오지 못했습니다",
+    "loadUnknownError": "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요",
+    "loadErrors": {
+      "AUTH_401_001": "로그인이 필요하거나 인증이 만료되었습니다",
+      "INTERNAL_500_001": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
+    },
+    "markAllReadFailed": "모두 읽음 처리에 실패했습니다",
+    "markAllReadUnknownError": "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요",
+    "markAllReadErrors": {
+      "AUTH_401_001": "로그인이 필요하거나 인증이 만료되었습니다",
+      "INTERNAL_500_001": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
+    },
     "types": {
       "WORKSPACE_MEMBER_JOINED": "<bold>{actor}</bold>님이 {workspace} 워크스페이스에 가입했습니다.",
       "WORKSPACE_MEMBER_ROLE_CHANGED": "<bold>{actor}</bold>님이 {workspace}에서 <bold>{subject}</bold>님의 역할을 {roleFrom}에서 {roleTo}로 변경했습니다.",
@@ -76,10 +112,24 @@
     "createWorkspace": "새 워크스페이스 생성",
     "enter": "입장하기",
     "activeUsers": "{count}명 참여 중",
+    "loadFailed": "워크스페이스 목록을 불러오지 못했습니다",
+    "loadUnknownError": "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요",
+    "loadErrors": {
+      "AUTH_401_001": "로그인이 필요하거나 인증이 만료되었습니다",
+      "INTERNAL_500_001": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
+    },
     "workspaceName": "워크스페이스 이름",
     "descriptionOptional": "설명 (선택)",
     "createWorkspaceButton": "생성하기",
     "creatingWorkspace": "생성 중...",
+    "createWorkspaceFailed": "워크스페이스 생성에 실패했습니다",
+    "createWorkspaceUnknownError": "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요",
+    "createWorkspaceErrors": {
+      "VALIDATION_400_001": "입력값이 올바르지 않습니다",
+      "AUTH_401_001": "로그인이 필요하거나 인증이 만료되었습니다",
+      "WORKSPACE_500_001": "워크스페이스 생성에 실패했습니다. 잠시 후 다시 시도해주세요",
+      "INTERNAL_500_001": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
+    },
     "workspaceNameRequired": "워크스페이스 이름을 입력해주세요",
     "workspaceNamePlaceholder": "예: App 개발팀",
     "descriptionPlaceholder": "어떤 프로젝트를 위한 공간인가요?",
@@ -136,6 +186,31 @@
     "noDueDate": "—",
     "noTasks": "표시할 작업이 없습니다",
     "noActivities": "최근 활동이 없습니다",
+    "indicatorsLoadFailed": "지표를 불러오지 못했습니다",
+    "indicatorsLoadUnknownError": "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요",
+    "indicatorsLoadErrors": {
+      "AUTH_401_001": "로그인이 필요하거나 인증이 만료되었습니다",
+      "AUTH_403_001": "해당 워크스페이스의 활성 멤버가 아닙니다",
+      "WORKSPACE_404_001": "워크스페이스가 존재하지 않습니다",
+      "INTERNAL_500_001": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
+    },
+    "tasksLoadFailed": "내 작업을 불러오지 못했습니다",
+    "tasksLoadUnknownError": "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요",
+    "tasksLoadErrors": {
+      "VALIDATION_400_001": "요청 값이 올바르지 않습니다",
+      "AUTH_401_001": "로그인이 필요하거나 인증이 만료되었습니다",
+      "AUTH_403_001": "해당 워크스페이스의 활성 멤버가 아닙니다",
+      "WORKSPACE_404_001": "워크스페이스가 존재하지 않습니다",
+      "INTERNAL_500_001": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
+    },
+    "activitiesLoadFailed": "최근 활동을 불러오지 못했습니다",
+    "activitiesLoadUnknownError": "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요",
+    "activitiesLoadErrors": {
+      "AUTH_401_001": "로그인이 필요하거나 인증이 만료되었습니다",
+      "AUTH_403_001": "해당 워크스페이스의 활성 멤버가 아닙니다",
+      "WORKSPACE_404_001": "워크스페이스가 존재하지 않습니다",
+      "INTERNAL_500_001": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
+    },
     "unknownActor": "알 수 없는 사용자",
     "taskStatus": {
       "TODO": "할 일",
@@ -158,11 +233,30 @@
     "profileEdit": "프로필 정보 수정",
     "profileUpdating": "저장 중...",
     "profileUpdateFailed": "프로필 수정에 실패했습니다",
+    "profileUpdateUnknownError": "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요",
+    "profileUpdateErrors": {
+      "VALIDATION_400_001": "입력값이 올바르지 않습니다",
+      "AUTH_401_001": "로그인이 필요하거나 인증이 만료되었습니다",
+      "INTERNAL_500_001": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
+    },
     "passwordUpdating": "변경 중...",
     "passwordUpdateFailed": "비밀번호 변경에 실패했습니다",
+    "passwordUpdateUnknownError": "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요",
+    "passwordUpdateErrors": {
+      "VALIDATION_400_001": "새 비밀번호 형식이 올바르지 않습니다",
+      "AUTH_401_001": "현재 비밀번호가 올바르지 않거나 인증이 만료되었습니다",
+      "INTERNAL_500_001": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
+    },
     "profileImageInvalidType": "JPEG, PNG, GIF 이미지만 업로드할 수 있습니다",
     "profileImageTooLarge": "3MB 이하 이미지를 선택해주세요",
     "profileImageUploadFailed": "프로필 이미지 업로드에 실패했습니다",
+    "profileImageUploadUnknownError": "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요",
+    "profileImageUploadErrors": {
+      "AUTH_401_001": "로그인이 필요하거나 인증이 만료되었습니다",
+      "FILE_400_001": "프로필 이미지 파일이 올바르지 않습니다",
+      "FILE_500_001": "프로필 이미지 처리에 실패했습니다. 잠시 후 다시 시도해주세요",
+      "INTERNAL_500_001": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
+    },
     "accountInfo": "계정 정보",
     "joinedWorkspaces": "참여 중인 워크스페이스"
   },
@@ -175,6 +269,13 @@
     "action": "작업",
     "me": "나",
     "loadFailed": "멤버 목록을 불러오지 못했습니다",
+    "loadUnknownError": "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요",
+    "loadErrors": {
+      "AUTH_401_001": "로그인이 필요하거나 인증이 만료되었습니다",
+      "AUTH_403_001": "해당 워크스페이스의 활성 멤버가 아닙니다",
+      "WORKSPACE_404_001": "워크스페이스가 존재하지 않습니다",
+      "INTERNAL_500_001": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
+    },
     "memberActions": "멤버 작업",
     "changeRole": "권한 변경",
     "removeMember": "멤버 강퇴",
@@ -229,10 +330,28 @@
     "addTask": "업무 추가",
     "progress": "진행도",
     "loadFailed": "작업 목록을 불러오지 못했습니다",
+    "loadUnknownError": "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요",
+    "loadErrors": {
+      "VALIDATION_400_001": "요청 값이 올바르지 않습니다",
+      "AUTH_401_001": "로그인이 필요하거나 인증이 만료되었습니다",
+      "AUTH_403_001": "해당 워크스페이스의 활성 멤버가 아닙니다",
+      "WORKSPACE_404_001": "워크스페이스가 존재하지 않습니다",
+      "INTERNAL_500_001": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
+    },
     "createTaskFailed": "작업 생성에 실패했습니다",
     "createTaskProgressFailed": "작업은 생성되었으나 진행도 설정에 실패했습니다",
     "createTaskUnknownError": "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요",
     "updateTaskProgressFailed": "작업 진행도 변경에 실패했습니다",
+    "updateTaskStatusFailed": "작업 상태 변경에 실패했습니다",
+    "updateTaskStatusUnknownError": "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요",
+    "updateTaskStatusErrors": {
+      "VALIDATION_400_001": "요청 값이 유효하지 않습니다",
+      "AUTH_401_001": "로그인이 필요하거나 인증이 만료되었습니다",
+      "AUTH_403_001": "해당 워크스페이스의 활성 멤버가 아닙니다",
+      "WORKSPACE_404_001": "워크스페이스가 존재하지 않습니다",
+      "TASK_404_001": "작업이 존재하지 않습니다",
+      "INTERNAL_500_001": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
+    },
     "createTaskErrors": {
       "VALIDATION_400_001": "요청 값이 유효하지 않습니다",
       "AUTH_401_001": "로그인이 필요하거나 인증이 만료되었습니다",
@@ -476,6 +595,15 @@
     "workspaceEdit": "워크스페이스 정보 수정",
     "workspaceUpdating": "저장 중...",
     "workspaceUpdateFailed": "워크스페이스 수정에 실패했습니다",
+    "workspaceUpdateUnknownError": "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요",
+    "workspaceUpdateErrors": {
+      "VALIDATION_400_001": "입력값이 올바르지 않습니다",
+      "AUTH_401_001": "로그인이 필요하거나 인증이 만료되었습니다",
+      "AUTH_403_001": "워크스페이스를 수정할 권한이 없습니다",
+      "WORKSPACE_400_001": "잘못된 워크스페이스 수정 요청입니다",
+      "WORKSPACE_404_001": "워크스페이스가 존재하지 않습니다",
+      "INTERNAL_500_001": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
+    },
     "workspaceDelete": "워크스페이스 삭제",
     "workspaceDeleteDescription": "워크스페이스를 삭제하면 모든 Task, 댓글 및 설정 데이터가 영구적으로 삭제되며 복구할 수 없습니다.",
     "workspaceDeleteButton": "워크스페이스 삭제하기",
@@ -483,6 +611,13 @@
     "workspaceDeleteConfirmDescription": "\"{workspaceName}\" 워크스페이스를 삭제하면 모든 데이터가 영구적으로 삭제되며 복구할 수 없습니다.",
     "workspaceDeleting": "삭제 중...",
     "workspaceDeleteFailed": "워크스페이스 삭제에 실패했습니다",
+    "workspaceDeleteUnknownError": "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요",
+    "workspaceDeleteErrors": {
+      "AUTH_401_001": "로그인이 필요하거나 인증이 만료되었습니다",
+      "AUTH_403_001": "워크스페이스를 삭제할 권한이 없습니다",
+      "WORKSPACE_404_001": "워크스페이스가 존재하지 않습니다",
+      "INTERNAL_500_001": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
+    },
     "workspaceWithdraw": "워크스페이스 탈퇴",
     "workspaceWithdrawDescription": "워크스페이스에서 탈퇴하면 더 이상 Task, 댓글 및 설정에 접근할 수 없습니다.",
     "workspaceWithdrawButton": "워크스페이스 탈퇴하기",

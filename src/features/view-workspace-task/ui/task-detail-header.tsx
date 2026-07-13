@@ -3,9 +3,10 @@
 import { ChevronDown, Loader2, Maximize2, Minimize2, Pencil, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import { useUpdateWorkspaceTaskStatusMutation } from '@entities/task';
+import { isUpdateWorkspaceTaskStatusErrorCode, useUpdateWorkspaceTaskStatusMutation } from '@entities/task';
 
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@shared/ui';
+import { getMappedApiErrorMessage } from '@shared/api';
 import { cn } from '@shared/lib';
 
 import type { TaskDetail, TaskStatus } from '@entities/task';
@@ -36,8 +37,14 @@ export function TaskDetailHeader({
 }: TaskDetailHeaderProps) {
     const tColumns = useTranslations('board.columns');
     const tDetail = useTranslations('board.taskDetail');
+    const tBoard = useTranslations('board');
+    const tErrors = useTranslations('board.updateTaskStatusErrors');
 
-    const { mutate: updateStatus, isPending: isStatusUpdating } = useUpdateWorkspaceTaskStatusMutation({ workspaceId });
+    const {
+        mutate: updateStatus,
+        isPending: isStatusUpdating,
+        error: statusError,
+    } = useUpdateWorkspaceTaskStatusMutation({ workspaceId });
 
     const currentStatus = TASK_STATUS_OPTIONS.find(option => option.id === task.status) ?? TASK_STATUS_OPTIONS[0];
 
@@ -50,6 +57,15 @@ export function TaskDetailHeader({
     };
 
     const isCenter = viewMode === 'center';
+    const statusErrorMessage = statusError
+        ? getMappedApiErrorMessage({
+              error: statusError,
+              fallback: tBoard('updateTaskStatusFailed'),
+              unknownError: tBoard('updateTaskStatusUnknownError'),
+              isKnownErrorCode: isUpdateWorkspaceTaskStatusErrorCode,
+              getKnownErrorMessage: errorCode => tErrors(errorCode),
+          })
+        : null;
 
     return (
         <div className="shrink-0 border-b border-slate-100 px-6 py-5">
@@ -99,6 +115,9 @@ export function TaskDetailHeader({
                             ))}
                         </DropdownMenu>
                     </Dropdown>
+                    {statusErrorMessage ? (
+                        <p className="mt-2 text-xs font-bold text-rose-500">{statusErrorMessage}</p>
+                    ) : null}
                 </div>
 
                 <div className="flex shrink-0 items-center gap-1">

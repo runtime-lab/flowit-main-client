@@ -6,6 +6,7 @@ import { isDeleteWorkspaceTaskCommentErrorCode, useDeleteWorkspaceTaskCommentMut
 
 import { Button, Modal } from '@shared/ui';
 import { getMappedApiErrorMessage } from '@shared/api';
+import { showErrorToast, showSuccessToast } from '@shared/lib';
 
 import type { TaskComment } from '@entities/task';
 
@@ -28,6 +29,7 @@ export function TaskCommentDeleteModal({
 }: TaskCommentDeleteModalProps) {
     const t = useTranslations('board.taskDetail');
     const tBoard = useTranslations('board');
+    const tToast = useTranslations('toast');
     const tDeleteErrors = useTranslations('board.deleteCommentErrors');
     const tCommon = useTranslations('common');
 
@@ -48,8 +50,20 @@ export function TaskCommentDeleteModal({
             { commentId: comment.id },
             {
                 onSuccess: () => {
+                    showSuccessToast(tToast('commentDeleteSuccess'));
                     onDeleted?.();
                     handleClose();
+                },
+                onError: mutationError => {
+                    showErrorToast(
+                        getMappedApiErrorMessage({
+                            error: mutationError,
+                            fallback: tBoard('deleteCommentFailed'),
+                            unknownError: tBoard('deleteCommentUnknownError'),
+                            isKnownErrorCode: isDeleteWorkspaceTaskCommentErrorCode,
+                            getKnownErrorMessage: errorCode => tDeleteErrors(errorCode),
+                        }),
+                    );
                 },
             },
         );

@@ -25,6 +25,18 @@
     "signupSuccessDescription": "Your account has been created. Please log in.",
     "goToLogin": "Go to login",
     "loginFailed": "Login failed",
+    "loginUnknownError": "An unknown error occurred. Please try again later",
+    "loginErrors": {
+      "VALIDATION_400_001": "Email or password format is invalid",
+      "AUTH_401_001": "Email or password is incorrect",
+      "INTERNAL_500_001": "A server error occurred. Please try again later"
+    },
+    "signupUnknownError": "An unknown error occurred. Please try again later",
+    "signupErrors": {
+      "VALIDATION_400_001": "The input value is invalid",
+      "USER_409_001": "This email is already registered",
+      "INTERNAL_500_001": "A server error occurred. Please try again later"
+    },
     "passwordEdit": "Change password",
     "currentPassword": "Current password",
     "newPassword": "New password"
@@ -41,6 +53,18 @@
     "paginationNext": "Next",
     "paginationPage": "{current} / {total}"
   },
+  "toast": {
+    "workspaceCreateSuccess": "Workspace created",
+    "workspaceUpdateSuccess": "Workspace updated",
+    "workspaceDeleteSuccess": "Workspace deleted",
+    "commentCreateSuccess": "Comment posted",
+    "commentUpdateSuccess": "Comment updated",
+    "commentDeleteSuccess": "Comment deleted",
+    "profileUpdateSuccess": "Profile updated",
+    "passwordUpdateSuccess": "Password changed",
+    "profileImageUploadSuccess": "Profile image updated",
+    "inviteEmailSuccess": "Invitation email sent"
+  },
   "notification": {
     "title": "Notifications",
     "markAllRead": "Mark all as read",
@@ -51,6 +75,18 @@
     "unknownActor": "Unknown user",
     "fallback": "You have a new notification.",
     "dismiss": "Dismiss",
+    "loadFailed": "Failed to load notifications",
+    "loadUnknownError": "An unknown error occurred. Please try again later",
+    "loadErrors": {
+      "AUTH_401_001": "Login is required or your session has expired",
+      "INTERNAL_500_001": "A server error occurred. Please try again later"
+    },
+    "markAllReadFailed": "Failed to mark all as read",
+    "markAllReadUnknownError": "An unknown error occurred. Please try again later",
+    "markAllReadErrors": {
+      "AUTH_401_001": "Login is required or your session has expired",
+      "INTERNAL_500_001": "A server error occurred. Please try again later"
+    },
     "types": {
       "WORKSPACE_MEMBER_JOINED": "<bold>{actor}</bold> joined {workspace}.",
       "WORKSPACE_MEMBER_ROLE_CHANGED": "<bold>{actor}</bold> changed <bold>{subject}</bold>'s role in {workspace} from {roleFrom} to {roleTo}.",
@@ -76,10 +112,24 @@
     "createWorkspace": "Create new workspace",
     "enter": "Enter",
     "activeUsers": "{count} active users",
+    "loadFailed": "Failed to load workspaces",
+    "loadUnknownError": "An unknown error occurred. Please try again later",
+    "loadErrors": {
+      "AUTH_401_001": "Login is required or your session has expired",
+      "INTERNAL_500_001": "A server error occurred. Please try again later"
+    },
     "workspaceName": "Workspace name",
     "descriptionOptional": "Description (optional)",
     "createWorkspaceButton": "Create workspace",
     "creatingWorkspace": "Creating...",
+    "createWorkspaceFailed": "Failed to create workspace",
+    "createWorkspaceUnknownError": "An unknown error occurred. Please try again later",
+    "createWorkspaceErrors": {
+      "VALIDATION_400_001": "The input value is invalid",
+      "AUTH_401_001": "Login is required or your session has expired",
+      "WORKSPACE_500_001": "Failed to create workspace. Please try again later",
+      "INTERNAL_500_001": "A server error occurred. Please try again later"
+    },
     "workspaceNameRequired": "Please enter a workspace name",
     "workspaceNamePlaceholder": "Example: App development team",
     "descriptionPlaceholder": "What is the space for?",
@@ -136,6 +186,31 @@
     "noDueDate": "—",
     "noTasks": "No tasks to show",
     "noActivities": "No recent activity",
+    "indicatorsLoadFailed": "Failed to load indicators",
+    "indicatorsLoadUnknownError": "An unknown error occurred. Please try again later",
+    "indicatorsLoadErrors": {
+      "AUTH_401_001": "Login is required or your session has expired",
+      "AUTH_403_001": "You are not an active member of this workspace",
+      "WORKSPACE_404_001": "Workspace not found",
+      "INTERNAL_500_001": "A server error occurred. Please try again later"
+    },
+    "tasksLoadFailed": "Failed to load your tasks",
+    "tasksLoadUnknownError": "An unknown error occurred. Please try again later",
+    "tasksLoadErrors": {
+      "VALIDATION_400_001": "The request value is invalid",
+      "AUTH_401_001": "Login is required or your session has expired",
+      "AUTH_403_001": "You are not an active member of this workspace",
+      "WORKSPACE_404_001": "Workspace not found",
+      "INTERNAL_500_001": "A server error occurred. Please try again later"
+    },
+    "activitiesLoadFailed": "Failed to load recent activity",
+    "activitiesLoadUnknownError": "An unknown error occurred. Please try again later",
+    "activitiesLoadErrors": {
+      "AUTH_401_001": "Login is required or your session has expired",
+      "AUTH_403_001": "You are not an active member of this workspace",
+      "WORKSPACE_404_001": "Workspace not found",
+      "INTERNAL_500_001": "A server error occurred. Please try again later"
+    },
     "unknownActor": "Unknown user",
     "taskStatus": {
       "TODO": "To do",
@@ -158,11 +233,30 @@
     "profileEdit": "Edit profile info",
     "profileUpdating": "Saving...",
     "profileUpdateFailed": "Failed to update profile",
+    "profileUpdateUnknownError": "An unknown error occurred. Please try again later",
+    "profileUpdateErrors": {
+      "VALIDATION_400_001": "The input value is invalid",
+      "AUTH_401_001": "Login is required or your session has expired",
+      "INTERNAL_500_001": "A server error occurred. Please try again later"
+    },
     "passwordUpdating": "Updating...",
     "passwordUpdateFailed": "Failed to change password",
+    "passwordUpdateUnknownError": "An unknown error occurred. Please try again later",
+    "passwordUpdateErrors": {
+      "VALIDATION_400_001": "The new password format is invalid",
+      "AUTH_401_001": "Current password is incorrect or your session has expired",
+      "INTERNAL_500_001": "A server error occurred. Please try again later"
+    },
     "profileImageInvalidType": "Only JPEG, PNG, and GIF images can be uploaded",
     "profileImageTooLarge": "Please choose an image that is 3MB or smaller",
     "profileImageUploadFailed": "Failed to upload profile image",
+    "profileImageUploadUnknownError": "An unknown error occurred. Please try again later",
+    "profileImageUploadErrors": {
+      "AUTH_401_001": "Login is required or your session has expired",
+      "FILE_400_001": "The profile image file is invalid",
+      "FILE_500_001": "Failed to process the profile image. Please try again later",
+      "INTERNAL_500_001": "A server error occurred. Please try again later"
+    },
     "accountInfo": "Account info",
     "joinedWorkspaces": "Joined workspaces"
   },
@@ -175,6 +269,13 @@
     "action": "Action",
     "me": "Me",
     "loadFailed": "Failed to load members",
+    "loadUnknownError": "An unknown error occurred. Please try again later",
+    "loadErrors": {
+      "AUTH_401_001": "Login is required or your session has expired",
+      "AUTH_403_001": "You are not an active member of this workspace",
+      "WORKSPACE_404_001": "Workspace not found",
+      "INTERNAL_500_001": "A server error occurred. Please try again later"
+    },
     "memberActions": "Member actions",
     "changeRole": "Change role",
     "removeMember": "Remove member",
@@ -229,10 +330,28 @@
     "addTask": "Add task",
     "progress": "Progress",
     "loadFailed": "Failed to load tasks",
+    "loadUnknownError": "An unknown error occurred. Please try again later",
+    "loadErrors": {
+      "VALIDATION_400_001": "The request value is invalid",
+      "AUTH_401_001": "You need to sign in or your session has expired",
+      "AUTH_403_001": "You are not an active member of this workspace",
+      "WORKSPACE_404_001": "This workspace does not exist",
+      "INTERNAL_500_001": "A server error occurred. Please try again later"
+    },
     "createTaskFailed": "Failed to create task",
     "createTaskProgressFailed": "The task was created, but setting progress failed",
     "createTaskUnknownError": "An unknown error occurred. Please try again later",
     "updateTaskProgressFailed": "Failed to update task progress",
+    "updateTaskStatusFailed": "Failed to update task status",
+    "updateTaskStatusUnknownError": "An unknown error occurred. Please try again later",
+    "updateTaskStatusErrors": {
+      "VALIDATION_400_001": "The request value is invalid",
+      "AUTH_401_001": "You need to sign in or your session has expired",
+      "AUTH_403_001": "You are not an active member of this workspace",
+      "WORKSPACE_404_001": "This workspace does not exist",
+      "TASK_404_001": "This task does not exist",
+      "INTERNAL_500_001": "A server error occurred. Please try again later"
+    },
     "createTaskErrors": {
       "VALIDATION_400_001": "The request value is invalid",
       "AUTH_401_001": "You need to sign in or your session has expired",
@@ -476,6 +595,15 @@
     "workspaceEdit": "Edit workspace info",
     "workspaceUpdating": "Saving...",
     "workspaceUpdateFailed": "Failed to update workspace",
+    "workspaceUpdateUnknownError": "An unknown error occurred. Please try again later",
+    "workspaceUpdateErrors": {
+      "VALIDATION_400_001": "The input value is invalid",
+      "AUTH_401_001": "Login is required or your session has expired",
+      "AUTH_403_001": "You do not have permission to update this workspace",
+      "WORKSPACE_400_001": "Invalid workspace update request",
+      "WORKSPACE_404_001": "Workspace not found",
+      "INTERNAL_500_001": "A server error occurred. Please try again later"
+    },
     "workspaceDelete": "Delete workspace",
     "workspaceDeleteDescription": "Deleting this workspace will permanently remove all tasks, comments, and settings. This action cannot be undone.",
     "workspaceDeleteButton": "Delete workspace",
@@ -483,6 +611,13 @@
     "workspaceDeleteConfirmDescription": "Deleting \"{workspaceName}\" will permanently remove all data. This action cannot be undone.",
     "workspaceDeleting": "Deleting...",
     "workspaceDeleteFailed": "Failed to delete workspace",
+    "workspaceDeleteUnknownError": "An unknown error occurred. Please try again later",
+    "workspaceDeleteErrors": {
+      "AUTH_401_001": "Login is required or your session has expired",
+      "AUTH_403_001": "You do not have permission to delete this workspace",
+      "WORKSPACE_404_001": "Workspace not found",
+      "INTERNAL_500_001": "A server error occurred. Please try again later"
+    },
     "workspaceWithdraw": "Leave workspace",
     "workspaceWithdrawDescription": "If you leave this workspace, you will no longer have access to its tasks, comments, or settings.",
     "workspaceWithdrawButton": "Leave workspace",

@@ -8,7 +8,7 @@ import { useUpdateWorkspaceMemberRoleMutation } from '@entities/member';
 
 import { Button, Modal } from '@shared/ui';
 import { getMappedApiErrorMessage } from '@shared/api';
-import { cn } from '@shared/lib';
+import { cn, showErrorToast } from '@shared/lib';
 
 import { isMemberRoleChangeErrorCode } from '../model';
 
@@ -66,6 +66,17 @@ export function MemberRoleChangeModal({
             {
                 onSuccess: () => {
                     handleClose();
+                },
+                onError: mutationError => {
+                    showErrorToast(
+                        getMappedApiErrorMessage({
+                            error: mutationError,
+                            fallback: t('changeRoleFailed'),
+                            unknownError: t('changeRoleUnknownError'),
+                            isKnownErrorCode: isMemberRoleChangeErrorCode,
+                            getKnownErrorMessage: errorCode => t(`changeRoleErrors.${errorCode}`),
+                        }),
+                    );
                 },
             },
         );

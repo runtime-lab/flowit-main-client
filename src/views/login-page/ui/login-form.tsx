@@ -3,16 +3,18 @@
 import { useTranslations } from 'next-intl';
 
 import { LOGIN_FORM_FIELDS, useLoginForm, useLoginMutation } from '@features/login';
+import { isLoginErrorCode } from '@entities/auth';
 
 import { useRouter } from '@shared/i18n';
 import { Button, LabeledInput } from '@shared/ui';
-import { getApiErrorMessage } from '@shared/api';
+import { getMappedApiErrorMessage } from '@shared/api';
 import { AUTH_ROUTES, MAX_DEFAULT_LENGTH, PASSWORD_MAX_LENGTH } from '@shared/lib';
 
 import type { FormEvent } from 'react';
 
 export function LoginForm() {
     const t = useTranslations('auth');
+    const tErrors = useTranslations('auth.loginErrors');
     const router = useRouter();
     const { mutate, isPending, error } = useLoginMutation();
     const { loginFormValues, handleChange } = useLoginForm();
@@ -31,7 +33,15 @@ export function LoginForm() {
         );
     };
 
-    const submitErrorMessage = error ? getApiErrorMessage(error, t('loginFailed')) : null;
+    const submitErrorMessage = error
+        ? getMappedApiErrorMessage({
+              error,
+              fallback: t('loginFailed'),
+              unknownError: t('loginUnknownError'),
+              isKnownErrorCode: isLoginErrorCode,
+              getKnownErrorMessage: errorCode => tErrors(errorCode),
+          })
+        : null;
 
     return (
         <form className="flex w-full flex-col gap-1" onSubmit={handleSubmit}>
