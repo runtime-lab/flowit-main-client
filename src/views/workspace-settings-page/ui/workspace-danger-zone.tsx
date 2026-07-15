@@ -9,6 +9,7 @@ import { useWithdrawMemberMutation } from '@entities/member';
 import { useMeWorkspacesQuery } from '@entities/user';
 import {
     findWorkspaceById,
+    isDeleteWorkspaceErrorCode,
     isWorkspaceOwner,
     useDeleteWorkspaceMutation,
     useWorkspaceQuery,
@@ -16,8 +17,11 @@ import {
 
 import { useRouter } from '@shared/i18n';
 import { Button, Card } from '@shared/ui';
-import { WORKSPACE_ROUTES } from '@shared/lib';
+import { getMappedApiErrorMessage } from '@shared/api';
+import { showErrorToast, showSuccessToast, WORKSPACE_ROUTES } from '@shared/lib';
 import { useModal } from '@shared/lib/hooks';
+
+import { isWorkspaceWithdrawErrorCode } from '../model';
 
 type Props = {
     workspaceId: string;
@@ -25,6 +29,7 @@ type Props = {
 
 export function WorkspaceDangerZone({ workspaceId }: Props) {
     const t = useTranslations('settings');
+    const tToast = useTranslations('toast');
     const router = useRouter();
 
     const { data: workspace } = useWorkspaceQuery({ workspaceId, enabled: !!workspaceId });
@@ -62,14 +67,37 @@ export function WorkspaceDangerZone({ workspaceId }: Props) {
                 closeWithdrawModal();
                 await navigateToWorkspaceList();
             },
+            onError: mutationError => {
+                showErrorToast(
+                    getMappedApiErrorMessage({
+                        error: mutationError,
+                        fallback: t('workspaceWithdrawFailed'),
+                        unknownError: t('workspaceWithdrawUnknownError'),
+                        isKnownErrorCode: isWorkspaceWithdrawErrorCode,
+                        getKnownErrorMessage: errorCode => t(`workspaceWithdrawErrors.${errorCode}`),
+                    }),
+                );
+            },
         });
     };
 
     const handleConfirmDelete = () => {
         deleteWorkspaceMutate(undefined, {
             onSuccess: async () => {
+                showSuccessToast(tToast('workspaceDeleteSuccess'));
                 closeDeleteModal();
                 await navigateToWorkspaceList();
+            },
+            onError: mutationError => {
+                showErrorToast(
+                    getMappedApiErrorMessage({
+                        error: mutationError,
+                        fallback: t('workspaceDeleteFailed'),
+                        unknownError: t('workspaceDeleteUnknownError'),
+                        isKnownErrorCode: isDeleteWorkspaceErrorCode,
+                        getKnownErrorMessage: errorCode => t(`workspaceDeleteErrors.${errorCode}`),
+                    }),
+                );
             },
         });
     };

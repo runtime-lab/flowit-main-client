@@ -15,6 +15,7 @@ import {
 import { Button, MarkdownEditor } from '@shared/ui';
 import { MarkdownPreview } from '@shared/ui/markdown-editor/markdown-preview';
 import { getMappedApiErrorMessage } from '@shared/api';
+import { showErrorToast, showSuccessToast } from '@shared/lib';
 import { formatEpochSecondsRelativeTime } from '@shared/lib/date';
 
 import { isTaskCommentOwnedByMember } from '../lib/is-task-comment-owned-by-member';
@@ -33,6 +34,7 @@ export function TaskCommentItem({ comment, workspaceId, taskId, myMemberId, onDe
     const locale = useLocale();
     const t = useTranslations('board.taskDetail');
     const tBoard = useTranslations('board');
+    const tToast = useTranslations('toast');
     const tUpdateErrors = useTranslations('board.updateCommentErrors');
     const tCommon = useTranslations('common');
 
@@ -85,8 +87,17 @@ export function TaskCommentItem({ comment, workspaceId, taskId, myMemberId, onDe
                 body: { contentMarkdown: trimmedEditInput },
             });
             setIsEditing(false);
-        } catch {
-            // surfaced via mutation state
+            showSuccessToast(tToast('commentUpdateSuccess'));
+        } catch (updateCommentError) {
+            showErrorToast(
+                getMappedApiErrorMessage({
+                    error: updateCommentError,
+                    fallback: tBoard('updateCommentFailed'),
+                    unknownError: tBoard('updateCommentUnknownError'),
+                    isKnownErrorCode: isUpdateWorkspaceTaskCommentErrorCode,
+                    getKnownErrorMessage: errorCode => tUpdateErrors(errorCode),
+                }),
+            );
         }
     };
 

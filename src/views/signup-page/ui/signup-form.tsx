@@ -5,10 +5,11 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { SIGNUP_FORM_FIELDS, SignupSuccessModal, useSignupForm, useSignupMutation } from '@features/signup';
+import { isJoinUserErrorCode } from '@entities/user';
 
 import { useRouter } from '@shared/i18n';
 import { Button, LabeledInput } from '@shared/ui';
-import { getApiErrorMessage } from '@shared/api';
+import { getMappedApiErrorMessage } from '@shared/api';
 import {
     isPasswordConfirmed,
     isValidEmail,
@@ -22,6 +23,7 @@ import type { FormEvent } from 'react';
 
 export function SignupForm() {
     const t = useTranslations('auth');
+    const tErrors = useTranslations('auth.signupErrors');
     const router = useRouter();
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
     const { mutate, isPending, error } = useSignupMutation();
@@ -56,7 +58,15 @@ export function SignupForm() {
         router.push('/login');
     };
 
-    const submitErrorMessage = error ? getApiErrorMessage(error, t('signupFailed')) : null;
+    const submitErrorMessage = error
+        ? getMappedApiErrorMessage({
+              error,
+              fallback: t('signupFailed'),
+              unknownError: t('signupUnknownError'),
+              isKnownErrorCode: isJoinUserErrorCode,
+              getKnownErrorMessage: errorCode => tErrors(errorCode),
+          })
+        : null;
 
     const { isEmailError, isPasswordError, isConfirmPasswordError, isNameError } = {
         isEmailError: email.length > 0 && !isValidEmail(email),

@@ -2,8 +2,10 @@
 
 import { useTranslations } from 'next-intl';
 
+import { isDeleteWorkspaceErrorCode } from '@entities/workspace';
+
 import { Button, Modal } from '@shared/ui';
-import { getApiErrorMessage } from '@shared/api';
+import { getMappedApiErrorMessage } from '@shared/api';
 
 type WorkspaceDeleteModalProps = {
     open: boolean;
@@ -23,9 +25,18 @@ export function WorkspaceDeleteModal({
     onConfirm,
 }: WorkspaceDeleteModalProps) {
     const t = useTranslations('settings');
+    const tErrors = useTranslations('settings.workspaceDeleteErrors');
     const tCommon = useTranslations('common');
 
-    const submitErrorMessage = error ? getApiErrorMessage(error, t('workspaceDeleteFailed')) : null;
+    const submitErrorMessage = error
+        ? getMappedApiErrorMessage({
+              error,
+              fallback: t('workspaceDeleteFailed'),
+              unknownError: t('workspaceDeleteUnknownError'),
+              isKnownErrorCode: isDeleteWorkspaceErrorCode,
+              getKnownErrorMessage: errorCode => tErrors(errorCode),
+          })
+        : null;
 
     return (
         <Modal

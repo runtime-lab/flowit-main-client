@@ -7,10 +7,17 @@ import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { meWorkspacesQueryKeys } from '@entities/user';
-import { createWorkspace } from '@entities/workspace';
+import { createWorkspace, isCreateWorkspaceErrorCode } from '@entities/workspace';
 
 import { Button, LabeledInput, LabeledTextarea, Modal } from '@shared/ui';
-import { isValidWorkspaceName, MAX_DEFAULT_LENGTH, MAX_TEXT_AREA_LENGTH } from '@shared/lib';
+import { getMappedApiErrorMessage } from '@shared/api';
+import {
+    isValidWorkspaceName,
+    MAX_DEFAULT_LENGTH,
+    MAX_TEXT_AREA_LENGTH,
+    showErrorToast,
+    showSuccessToast,
+} from '@shared/lib';
 import { useModal } from '@shared/lib/hooks';
 
 import {
@@ -24,6 +31,8 @@ import type { ChangeEvent, FormEvent } from 'react';
 
 export function CreateWorkspace() {
     const t = useTranslations('workspaces');
+    const tErrors = useTranslations('workspaces.createWorkspaceErrors');
+    const tToast = useTranslations('toast');
     const tCommon = useTranslations('common');
     const queryClient = useQueryClient();
 
@@ -38,14 +47,36 @@ export function CreateWorkspace() {
         setFormValues(INITIAL_CREATE_WORKSPACE_FORM_VALUES);
     };
 
-    const { mutate: createWorkspaceMutate, isPending: isCreatingWorkspace } = useMutation({
+    const {
+        mutate: createWorkspaceMutate,
+        isPending: isCreatingWorkspace,
+        error,
+        reset,
+    } = useMutation({
         mutationKey: ['workspace', 'create'],
         mutationFn: createWorkspace,
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: meWorkspacesQueryKeys.all });
+            showSuccessToast(tToast('workspaceCreateSuccess'));
             handleClose();
         },
+        onError: mutationError => {
+            showErrorToast(
+                getMappedApiErrorMessage({
+                    error: mutationError,
+                    fallback: t('createWorkspaceFailed'),
+                    unknownError: t('createWorkspaceUnknownError'),
+                    isKnownErrorCode: isCreateWorkspaceErrorCode,
+                    getKnownErrorMessage: errorCode => tErrors(errorCode),
+                }),
+            );
+        },
     });
+
+    const handleModalClose = () => {
+        reset();
+        handleClose();
+    };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -71,6 +102,15 @@ export function CreateWorkspace() {
 
     const isNameError = workspaceName.length > 0 && !isValidWorkspaceName(workspaceName);
     const isSubmitDisabled = isCreatingWorkspace || !isValidWorkspaceName(workspaceName);
+    const submitErrorMessage = error
+        ? getMappedApiErrorMessage({
+              error,
+              fallback: t('createWorkspaceFailed'),
+              unknownError: t('createWorkspaceUnknownError'),
+              isKnownErrorCode: isCreateWorkspaceErrorCode,
+              getKnownErrorMessage: errorCode => tErrors(errorCode),
+          })
+        : null;
 
     return (
         <>
@@ -86,10 +126,10 @@ export function CreateWorkspace() {
             <Modal
                 open={open}
                 title={t('createWorkspace')}
-                onClose={handleClose}
+                onClose={handleModalClose}
                 footer={
                     <div className="flex w-full gap-3">
-                        <Button type="button" variant="neutral" size="md" onClick={handleClose} fullWidth>
+                        <Button type="button" variant="neutral" size="md" onClick={handleModalClose} fullWidth>
                             {tCommon('cancel')}
                         </Button>
                         <Button
@@ -125,6 +165,9 @@ export function CreateWorkspace() {
                             maxLength={MAX_TEXT_AREA_LENGTH}
                             rows={3}
                         />
+                        {submitErrorMessage ? (
+                            <p className="text-xs font-bold text-rose-500">{submitErrorMessage}</p>
+                        ) : null}
                     </div>
                 </form>
             </Modal>

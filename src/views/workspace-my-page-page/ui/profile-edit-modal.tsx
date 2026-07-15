@@ -4,11 +4,11 @@ import { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { useUpdateMeUserMutation } from '@entities/user';
+import { isUpdateMeUserErrorCode, useUpdateMeUserMutation } from '@entities/user';
 
 import { Button, LabeledInput, Modal } from '@shared/ui';
-import { getApiErrorMessage } from '@shared/api';
-import { isValidName, MAX_DEFAULT_LENGTH } from '@shared/lib';
+import { getMappedApiErrorMessage } from '@shared/api';
+import { isValidName, MAX_DEFAULT_LENGTH, showErrorToast, showSuccessToast } from '@shared/lib';
 
 import type { FormEvent } from 'react';
 
@@ -22,6 +22,8 @@ type ProfileEditModalProps = {
 
 export function ProfileEditModal({ open, initialNickname, onClose }: ProfileEditModalProps) {
     const t = useTranslations('myPage');
+    const tErrors = useTranslations('myPage.profileUpdateErrors');
+    const tToast = useTranslations('toast');
     const tAuth = useTranslations('auth');
     const tCommon = useTranslations('common');
 
@@ -46,7 +48,19 @@ export function ProfileEditModal({ open, initialNickname, onClose }: ProfileEdit
             { nickname: nicknameInputValue.trim() },
             {
                 onSuccess: () => {
+                    showSuccessToast(tToast('profileUpdateSuccess'));
                     handleClose();
+                },
+                onError: mutationError => {
+                    showErrorToast(
+                        getMappedApiErrorMessage({
+                            error: mutationError,
+                            fallback: t('profileUpdateFailed'),
+                            unknownError: t('profileUpdateUnknownError'),
+                            isKnownErrorCode: isUpdateMeUserErrorCode,
+                            getKnownErrorMessage: errorCode => tErrors(errorCode),
+                        }),
+                    );
                 },
             },
         );
@@ -54,7 +68,15 @@ export function ProfileEditModal({ open, initialNickname, onClose }: ProfileEdit
 
     const isNicknameError = nicknameInputValue.length > 0 && !isValidName(nicknameInputValue);
     const isSaveDisabled = isUpdatingMeUser || !isValidName(nicknameInputValue);
-    const submitErrorMessage = error ? getApiErrorMessage(error, t('profileUpdateFailed')) : null;
+    const submitErrorMessage = error
+        ? getMappedApiErrorMessage({
+              error,
+              fallback: t('profileUpdateFailed'),
+              unknownError: t('profileUpdateUnknownError'),
+              isKnownErrorCode: isUpdateMeUserErrorCode,
+              getKnownErrorMessage: errorCode => tErrors(errorCode),
+          })
+        : null;
 
     return (
         <Modal

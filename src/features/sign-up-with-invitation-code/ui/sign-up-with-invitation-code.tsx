@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 
 import { Button, LabeledInput, Modal } from '@shared/ui';
 import { getMappedApiErrorMessage } from '@shared/api';
+import { showErrorToast } from '@shared/lib';
 import { useModal } from '@shared/lib/hooks';
 
 import { isJoinInviteCodeErrorCode, useJoinWorkspaceByInviteCodeMutation } from '../model';
@@ -66,6 +67,17 @@ export function SignUpWithInvitationCode() {
             {
                 onSuccess: () => {
                     handleClose();
+                },
+                onError: mutationError => {
+                    showErrorToast(
+                        getMappedApiErrorMessage({
+                            error: mutationError,
+                            fallback: t('joinWithInvitationCodeFailed'),
+                            unknownError: t('joinInviteCodeUnknownError'),
+                            isKnownErrorCode: isJoinInviteCodeErrorCode,
+                            getKnownErrorMessage: errorCode => t(`joinInviteCodeErrors.${errorCode}`),
+                        }),
+                    );
                 },
             },
         );

@@ -8,7 +8,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useWorkspaceQuery } from '@entities/workspace';
 
 import { Button, Input, Modal } from '@shared/ui';
-import { isValidEmail } from '@shared/lib';
+import { isValidEmail, showErrorToast, showSuccessToast } from '@shared/lib';
 
 import { getInviteEmailErrorMessage } from '../lib';
 import { useInviteWorkspaceMemberMutation } from '../model';
@@ -57,6 +57,7 @@ function CopyButtonIcon({ isPending, isCopied }: { isPending: boolean; isCopied:
 
 export function InviteWorkspaceMemberModal({ workspaceId, open, onClose }: InviteWorkspaceMemberModalProps) {
     const t = useTranslations('inviteMember');
+    const tToast = useTranslations('toast');
     const tWorkspaces = useTranslations('workspaces');
     const tCommon = useTranslations('common');
     const locale = useLocale();
@@ -97,6 +98,16 @@ export function InviteWorkspaceMemberModal({ workspaceId, open, onClose }: Invit
             {
                 onSuccess: () => {
                     setInviteEmail('');
+                    showSuccessToast(tToast('inviteEmailSuccess'));
+                },
+                onError: mutationError => {
+                    showErrorToast(
+                        getInviteEmailErrorMessage({
+                            error: mutationError,
+                            fallback: t('sendFailed'),
+                            sandboxHint: t('sendFailedSandbox'),
+                        }),
+                    );
                 },
             },
         );

@@ -52,7 +52,7 @@
   - [x] 알림 모두 읽음 처리 API 연동
   - [x] 알림 web socket 연동
   - [x] Task 알림 추가
-  - [ ] 댓글 알림 추가 
+  - [x] 댓글 알림 추가 
 
 - [x] 유저 프로필 Dropdown
   - [x] 프로필 정보 UI
@@ -125,14 +125,14 @@
 ## Phase 9: 편의성
 
 - [x] 404 페이지 (`not-found.tsx`)
-- [ ] 403 / 접근 불가 페이지
+- [x] 403 / 접근 불가 페이지
 - [ ] 전역·워크스페이스 구간 error boundary
 - [ ] 라우트/데이터 로딩 UI (loading, Skeleton)
-- [ ] 토스트 알림 (성공/실패 공통)
+- [x] 토스트 알림 (성공/실패 공통)
 - [ ] 빈 상태 UI (워크스페이스, Task, 멤버 등)
 - [ ] URL·라우팅 가드
   - [ ] 잘못된/없는 workspaceId 처리
   - [ ] 로그인 후 returnUrl 복귀
   - [ ] locale 라우팅 정리
 - [x] 언어 전환 UI
-- [ ] 페이지 title/metadata
+- [x] 페이지 title/metadata
