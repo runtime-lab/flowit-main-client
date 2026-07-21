@@ -5,9 +5,3 @@ declare module 'next-intl' {
         Messages: typeof messages;
     }
 }
-
-declare module 'use-intl' {
-    interface AppConfig {
-        Messages: typeof messages;
-    }
-}
